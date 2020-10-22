@@ -13,7 +13,7 @@ using Windows.Storage;
 
 namespace GameBarToDo.Helpers
 {
-    class SQLiteHelper
+    public class SQLiteHelper
     {
         private string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Lists.db");
         private bool tablesCreated = false;
@@ -22,15 +22,17 @@ namespace GameBarToDo.Helpers
         {
             InitializeDatabase();
         }
-        public void InitializeDatabase()
+        public bool InitializeDatabase()
         {
-            ApplicationData.Current.LocalFolder.CreateFileAsync("Lists.db", CreationCollisionOption.OpenIfExists);
-            using (SqliteConnection db =
-               new SqliteConnection($"Filename={dbpath}"))
+            try
             {
-                db.Open();
+                ApplicationData.Current.LocalFolder.CreateFileAsync("Lists.db", CreationCollisionOption.OpenIfExists);
+                using (SqliteConnection db =
+                   new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
 
-                String createTables = @"PRAGMA foreign_keys = ON;
+                    String createTables = @"PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS Lists (
 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -55,11 +57,22 @@ created_date DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY(item_ID) REFERENCES List_items(id)
 );";
 
-                SqliteCommand createTable = new SqliteCommand(createTables, db);
+                    SqliteCommand createTable = new SqliteCommand(createTables, db);
 
-                createTable.ExecuteReader();
-                tablesCreated = true;
+                    createTable.ExecuteReader();
+                    tablesCreated = true;
+                    return true;
+                }
             }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveListFromTable(string v)
+        {
+            throw new NotImplementedException();
         }
 
         public void LoadDummyData()
@@ -448,7 +461,7 @@ DROP TABLE lists;";
 
         public string AddNewNoteToItemTable(string noteText, int itemID)
         {
-            return "";
+            throw new NotImplementedException();
         }
 
         public ObservableCollection<string> GetUserLists()

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using GameBarToDo.ViewModels;
+using GameBarToDo.Helpers;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,18 +11,45 @@ namespace GameBarToDo.Tests.MSTest
     [TestClass]
     public class Tests
     {
+
         [TestMethod]
-        public void TestMethod1()
+        public void TestInitializingDatabase()
         {
+            SQLiteHelper db = new SQLiteHelper();
+            Assert.IsTrue(db.InitializeDatabase());
         }
 
-        // TODO WTS: Add tests for functionality you add to MainViewModel.
         [TestMethod]
-        public void TestMainViewModelCreation()
+        public void TestAddingListToDatabase()
         {
-            // This test is trivial. Add your own tests for the logic you add to the ViewModel.
-            var vm = new MainViewModel();
-            Assert.IsNotNull(vm);
+            SQLiteHelper db = new SQLiteHelper();
+            db.InitializeDatabase();
+            Assert.AreEqual(db.AddNewListToTable("TestList"), "List created");
         }
+
+        [TestMethod]
+        public void TestAddingItemToList()
+        {
+            SQLiteHelper db = new SQLiteHelper();
+            db.InitializeDatabase();
+            Assert.AreEqual(db.AddNewItemToListItemTableByListName("TestItem", "TestList"), "Item Added");
+        }
+
+        [TestMethod]
+        public void TestAddingNoteToItem()
+        {
+            SQLiteHelper db = new SQLiteHelper();
+            db.InitializeDatabase();
+            Assert.AreEqual(db.AddNewNoteToItemTable("TestNote", 0), "Note added");
+        }
+
+        [TestMethod]
+        public void TestRemovingListFromDatabase()
+        {
+            SQLiteHelper db = new SQLiteHelper();
+            db.InitializeDatabase();
+            Assert.IsTrue(db.RemoveListFromTable("TestList"));
+        }
+
     }
 }
