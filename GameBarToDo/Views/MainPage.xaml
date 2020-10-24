@@ -3,8 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:lm="using:GameBarToDo.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     MaxWidth="400"
     MaxHeight="600"
     Style="{StaticResource PageStyle}"
@@ -32,7 +32,10 @@
                 SelectedItem="{x:Bind ViewModel.SelectedList, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="lm:ListModel">
-                        <StackPanel Orientation="Horizontal" Height="44" Padding="12">
+                        <StackPanel
+                            Height="44"
+                            Padding="12"
+                            Orientation="Horizontal">
                             <SymbolIcon Margin="2" Symbol="Add" />
                             <TextBlock Margin="2" Text="{x:Bind id}" />
                             <TextBlock Margin="2" Text="{x:Bind list_name}" />
@@ -48,12 +51,15 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0" PlaceholderText="New List"
-                    Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox
+                    Grid.Column="0"
+                    AcceptsReturn="True"
+                    PlaceholderText="New List"
+                    Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Grid.Column="1">
                     <SymbolIcon Symbol="Add" />
                 </Button>
-                
+
             </Grid>
         </Grid>
     </Grid>

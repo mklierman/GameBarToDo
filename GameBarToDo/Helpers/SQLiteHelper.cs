@@ -481,6 +481,35 @@ DROP TABLE lists;";
             return null;
         }
 
+        /// <summary>
+        /// Returns a ListModel object for the given list name
+        /// </summary>
+        /// <param name="listName">The name of the list to be returned</param>
+        /// <returns>A ListModel object</returns>
+        public ListModel GetSpecificList(string listName)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string selectScript = "Select * from Lists where list_name = @listName LIMIT 1;";
+                    SqliteCommand command = new SqliteCommand(selectScript, db);
+                    command.Parameters.AddWithValue("@listName", listName);
+                    SqliteDataReader reader = command.ExecuteReader();
+                    ListModel listModel = new ListModel();
+                    while (reader.Read())
+                    {
+                        listModel.id = Convert.ToInt32(reader["id"]);
+                        listModel.list_name = Convert.ToString(reader["list_name"]);
+                        listModel.created_date = Convert.ToDateTime(reader["created_date"]);
+                    }
+                    return listModel;
+                }
+            }
+            return null;
+        }
+
         public ObservableCollection<ListItemModel> GetListItems(ListModel listName)
         {
             if (tablesCreated)

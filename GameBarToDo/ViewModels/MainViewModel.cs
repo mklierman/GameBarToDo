@@ -25,6 +25,11 @@ namespace GameBarToDo.ViewModels
         {
             db.EraseAllData();
             //db.LoadDummyData();
+            LoadUserLists();
+        }
+
+        private void LoadUserLists()
+        {
             UserLists = db.GetUserLists();
         }
 
@@ -56,11 +61,11 @@ namespace GameBarToDo.ViewModels
             get { return _newListName; }
             set
             {
-                if (value.IsLastCharReturn())
+                if (value.Length > 0 && value.IsLastCharReturn())
                 {
                     value = value.Remove(value.Length - 1, 1);
                     Set(ref _newListName, value);
-                    db.AddNewListToTable(value);
+                    AddNewList(value);
                 }
                 else
                 {
@@ -69,9 +74,15 @@ namespace GameBarToDo.ViewModels
             }
         }
 
-        //private void AddNewListToTable(string value)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Adds the user defined list
+        /// </summary>
+        /// <param name="value"></param>
+        private void AddNewList(string value)
+        {
+            db.AddNewListToTable(value);
+            UserLists.Add(db.GetSpecificList(value));
+            NewListName = "";
+        }
     }
 }
