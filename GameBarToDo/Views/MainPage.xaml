@@ -40,16 +40,6 @@
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-
-                <!--<ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Padding" Value="3"/>
-                        <Setter Property="MinWidth" Value="0"/>
-                        <Setter Property="MinHeight" Value="0"/>
-                        <Setter Property="Margin" Value="3"/>
-                    </Style>
-                </ListView.ItemContainerStyle>-->
-                
             </ListView>
 
             <Grid Grid.Row="2">
@@ -57,7 +47,9 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" PlaceholderText="New List" />
+
+                <TextBox Grid.Column="0" PlaceholderText="New List"
+                    Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Grid.Column="1">
                     <SymbolIcon Symbol="Add" />
                 </Button>

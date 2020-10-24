@@ -23,7 +23,7 @@ namespace GameBarToDo.ViewModels
         public ICommand NewListItemCommand { get; set; }
         public MainViewModel()
         {
-            //db.EraseAllData();
+            db.EraseAllData();
             //db.LoadDummyData();
             UserLists = db.GetUserLists();
         }
@@ -50,5 +50,28 @@ namespace GameBarToDo.ViewModels
                 }
             }
         }
+
+        public string NewListName
+        {
+            get { return _newListName; }
+            set
+            {
+                if (value.IsLastCharReturn())
+                {
+                    value = value.Remove(value.Length - 1, 1);
+                    Set(ref _newListName, value);
+                    db.AddNewListToTable(value);
+                }
+                else
+                {
+                    Set(ref _newListName, value);
+                }
+            }
+        }
+
+        //private void AddNewListToTable(string value)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
