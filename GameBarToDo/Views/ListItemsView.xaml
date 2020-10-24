@@ -5,13 +5,33 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:GameBarToDo.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lm="using:GameBarToDo.Models"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <Grid>
         <StackPanel>
             <TextBlock Text="{x:Bind ViewModel.ListHeader}" />
-            <ListBox ItemsSource="{x:Bind ViewModel.ListItems, Mode=TwoWay}" />
+            <!--<ListBox ItemsSource="{x:Bind ViewModel.ListItems, Mode=TwoWay}" />-->
         </StackPanel>
+
+        <ListView
+                Grid.Row="1"
+                ItemsSource="{x:Bind ViewModel.ListItems, Mode=TwoWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedList, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="lm:ListItemModel">
+                    <StackPanel Orientation="Horizontal" Height="44" Padding="12">
+                        <SymbolIcon Margin="2" Symbol="Add" />
+                        <TextBlock Margin="2" Text="{x:Bind id}" />
+                        <TextBlock Margin="2" Text="{x:Bind item_name}" />
+                        <TextBlock Margin="2" Text="{x:Bind created_date}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+
+
     </Grid>
 </Page>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using GameBarToDo.Models;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -401,30 +402,30 @@ DROP TABLE lists;";
             }
         }
 
-        public string AddNewItemToListItemTableByListName(string itemName, string listName)
-        {
-            if (CheckIfListExistsByName(listName))
-            {
-                using (SqliteConnection db =
-                   new SqliteConnection($"Filename={dbpath}"))
-                {
-                    db.Open();
-                    string insertScript = "INSERT INTO list_items (list_ID, item_name, is_complete) VALUES ((Select id from Lists where list_name = @listName), @itemName, 0)";
+        //public string AddNewItemToListItemTableByListName(string itemName, string listName)
+        //{
+        //    if (CheckIfListExistsByName(listName))
+        //    {
+        //        using (SqliteConnection db =
+        //           new SqliteConnection($"Filename={dbpath}"))
+        //        {
+        //            db.Open();
+        //            string insertScript = "INSERT INTO list_items (list_ID, item_name, is_complete) VALUES ((Select id from Lists where list_name = @listName), @itemName, 0)";
 
-                    SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
-                    insertStuff.Parameters.AddWithValue("@itemName", itemName);
-                    insertStuff.Parameters.AddWithValue("@listName", listName);
+        //            SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
+        //            insertStuff.Parameters.AddWithValue("@itemName", itemName);
+        //            insertStuff.Parameters.AddWithValue("@listName", listName);
 
-                    insertStuff.ExecuteNonQuery();
+        //            insertStuff.ExecuteNonQuery();
 
-                    return "Item Added";
-                }
-            }
-            else
-            {
-                return "That list doesn't exist.";
-            }
-        }
+        //            return "Item Added";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return "That list doesn't exist.";
+        //    }
+        //}
 
         private bool CheckIfItemExistsByID(int itemID)
         {
@@ -451,20 +452,28 @@ DROP TABLE lists;";
             return "";
         }
 
-        public ObservableCollection<string> GetUserLists()
+        public ObservableCollection<ListModel> GetUserLists()
         {
             if (tablesCreated)
             {
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string selectScript = "Select list_name from Lists;";
+                    string selectScript = "Select * from Lists;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ObservableCollection<string> result = new ObservableCollection<string>();
+                    ObservableCollection<ListModel> result = new ObservableCollection<ListModel>();
                     while (reader.Read())
                     {
-                        result.Add(Convert.ToString(reader["list_name"]));
+                        ListModel listModel = new ListModel
+                        {
+                            id = Convert.ToInt32(reader["id"]),
+                            list_name = Convert.ToString(reader["list_name"]),
+                            created_date = Convert.ToDateTime(reader["created_date"])
+                        };
+                        result.Add(listModel);
+
+                        //result.Add(Convert.ToString(reader["list_name"]));
                     }
                     return result;
                 }
@@ -472,22 +481,32 @@ DROP TABLE lists;";
             return null;
         }
 
-        public ObservableCollection<string> GetListItems(string listName)
+        public ObservableCollection<ListItemModel> GetListItems(ListModel listName)
         {
             if (tablesCreated)
             {
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string selectScript = "Select item_name from List_items where list_ID = (Select [id] from Lists where list_name = @name LIMIT 1);";
+                    string selectScript = "Select * from List_items where list_ID = @list_ID;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
                     //command.Parameters.Add(new SqlParameter("@name", SqlDbType.Text).Value = listName);
-                    command.Parameters.AddWithValue("@name", listName);
+                    command.Parameters.AddWithValue("@list_ID", listName.id);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ObservableCollection<string> result = new ObservableCollection<string>();
+                    ObservableCollection<ListItemModel> result = new ObservableCollection<ListItemModel>();
                     while (reader.Read())
                     {
-                        result.Add(Convert.ToString(reader["item_name"]));
+                        ListItemModel listModel = new ListItemModel
+                        {
+                            id = Convert.ToInt32(reader["id"]),
+                            item_name = Convert.ToString(reader["item_name"]),
+                            created_date = Convert.ToDateTime(reader["created_date"]),
+                            is_complete = Convert.ToBoolean(reader["is_complete"]),
+                            list_id = Convert.ToInt32(reader["list_ID"])
+                        };
+                        result.Add(listModel);
+
+                        //result.Add(Convert.ToString(reader["item_name"]));
                     }
                     return result;
                 }

@@ -1,4 +1,5 @@
 ﻿using GameBarToDo.Helpers;
+using GameBarToDo.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,14 +11,14 @@ namespace GameBarToDo.ViewModels
 {
     public class ListItemsViewModel : Observable
     {
-        private ObservableCollection<string> _listItems;
+        private ObservableCollection<ListItemModel> _listItems;
         private SQLiteHelper db = new SQLiteHelper();
         private string _listHeader;
-        private string _selectedList;
+        private ListModel _selectedList;
         private string _newListName;
         private string _newListItemName;
 
-        public ObservableCollection<string> ListItems
+        public ObservableCollection<ListItemModel> ListItems
         {
             get { return _listItems; }
             set
@@ -50,7 +51,7 @@ namespace GameBarToDo.ViewModels
             }
         }
 
-        public string SelectedList
+        public ListModel SelectedList
         {
             get { return _selectedList; }
             set
@@ -59,7 +60,7 @@ namespace GameBarToDo.ViewModels
                 if (value != null)
                 {
                     GetListItems();
-                    ListHeader = value;
+                    ListHeader = value.list_name;
                 }
             }
         }
@@ -71,8 +72,8 @@ namespace GameBarToDo.ViewModels
 
         private void AddNewListItem()
         {
-            db.AddNewItemToListItemTableByListName(NewListItemName, SelectedList);
-            ListItems.Add(NewListItemName);
+            db.AddNewItemToListItemTable(NewListItemName, SelectedList.id);
+            GetListItems();
             NewListItemName = "";
         }
     }
