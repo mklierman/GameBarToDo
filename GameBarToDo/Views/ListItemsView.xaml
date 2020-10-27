@@ -3,9 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lm="using:GameBarToDo.Models"
     xmlns:local="using:GameBarToDo.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:lm="using:GameBarToDo.Models"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
@@ -31,7 +31,10 @@
                 SelectedItem="{x:Bind ViewModel.SelectedList, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="lm:ListItemModel">
-                        <StackPanel Orientation="Horizontal" Height="44" Padding="12">
+                        <StackPanel
+                            Height="44"
+                            Padding="12"
+                            Orientation="Horizontal">
                             <SymbolIcon Margin="2" Symbol="Add" />
                             <!--<TextBlock Margin="2" Text="{x:Bind id}" />-->
                             <TextBlock Margin="2" Text="{x:Bind item_name}" />
@@ -49,6 +52,7 @@
 
                 <TextBox
                     Grid.Column="0"
+                    MaxHeight="33"
                     AcceptsReturn="True"
                     PlaceholderText="New List"
                     Text="{x:Bind ViewModel.NewListItemName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

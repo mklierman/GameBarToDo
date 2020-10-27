@@ -55,7 +55,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0" MaxHeight="40" AcceptsReturn="True" PlaceholderText="New List"
+                <TextBox Grid.Column="0" MaxHeight="33" AcceptsReturn="True" PlaceholderText="New List"
                     Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Grid.Column="1">
                     <SymbolIcon Symbol="Add" />
