@@ -23,7 +23,7 @@ namespace GameBarToDo.ViewModels
         public ICommand NewListItemCommand { get; set; }
         public MainViewModel()
         {
-            db.EraseAllData();
+            //db.EraseAllData();
             //db.LoadDummyData();
             LoadUserLists();
         }
