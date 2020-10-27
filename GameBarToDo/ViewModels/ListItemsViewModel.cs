@@ -1,4 +1,5 @@
 ﻿using GameBarToDo.Helpers;
+using GameBarToDo.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,19 +11,63 @@ namespace GameBarToDo.ViewModels
 {
     public class ListItemsViewModel : Observable
     {
-        private ObservableCollection<string> _listItems;
+        private ObservableCollection<ListItemModel> _listItems;
         private SQLiteHelper db = new SQLiteHelper();
         private string _listHeader;
-        private string _selectedList;
+        private ListModel _selectedList;
         private string _newListName;
         private string _newListItemName;
 
-        public ObservableCollection<string> ListItems
+        public ListItemsViewModel()
+        {
+            //db.EraseAllData();
+            //db.LoadDummyData();
+            //GetListItems();
+        }
+
+        private void GetListItems()
+        {
+            ListItems = db.GetListItems(SelectedList);
+        }
+
+        public ObservableCollection<ListItemModel> ListItems
         {
             get { return _listItems; }
             set
             {
                 Set(ref _listItems, value);
+            }
+        }
+
+        public ListModel SelectedList
+        {
+            get { return _selectedList; }
+            set
+            {
+                Set(ref _selectedList, value);
+                if (value != null)
+                {
+                    GetListItems();
+                    ListHeader = value.list_name;
+                }
+            }
+        }
+
+        public string NewListItemName
+        {
+            get { return _newListItemName; }
+            set
+            {
+                if (value.Length > 0 && value.IsLastCharReturn())
+                {
+                    value = value.Remove(value.Length - 1, 1);
+                    Set(ref _newListItemName, value);
+                    AddNewListItem();
+                }
+                else
+                {
+                    Set(ref _newListItemName, value);
+                }
             }
         }
 
@@ -32,48 +77,24 @@ namespace GameBarToDo.ViewModels
             set { Set(ref _listHeader, value); }
         }
 
-        public string NewListItemName
-        {
-            get { return _newListItemName; }
-            set
-            {
-                if (value.IsLastCharReturn())
-                {
-                    value = value.Remove(value.Length - 1, 1);
-                    Set(ref _newListItemName, value);
-                    //AddNewListItem();
-                }
-                else
-                {
-                    Set(ref _newListItemName, value);
-                }
-            }
-        }
-
-        public string SelectedList
-        {
-            get { return _selectedList; }
-            set
-            {
-                Set(ref _selectedList, value);
-                if (value != null)
-                {
-                    GetListItems();
-                    ListHeader = value;
-                }
-            }
-        }
-
-        private void GetListItems()
-        {
-            ListItems = db.GetListItems(SelectedList);
-        }
-
         private void AddNewListItem()
         {
-            db.AddNewItemToListItemTableByListName(NewListItemName, SelectedList);
-            ListItems.Add(NewListItemName);
+            db.AddNewItemToListItemTable(NewListItemName, SelectedList.id);
+            //GetListItems();
+            ListItems.Add(db.GetSpecificListItem(NewListItemName));
             NewListItemName = "";
         }
+
+        ///// <summary>
+        ///// Adds the user defined list
+        ///// </summary>
+        ///// <param name="value"></param>
+        //private void Addnewlistitem(string value)
+        //{
+        //    //need to pass an id as well
+        //    db.AddNewItemToListItemTable(value);
+        //    ListItems.Add(db.GetListItems(value));
+        //    NewListItemName = "";
+        //}
     }
 }

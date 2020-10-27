@@ -30,9 +30,10 @@ namespace GameBarToDo.Views
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
+            //if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
+            if(e.Parameter != null)
             {
-                ViewModel.SelectedList = e.Parameter.ToString();
+                ViewModel.SelectedList = (Models.ListModel)e.Parameter;
             }
             else
             {
