@@ -22,9 +22,9 @@
             </Grid.RowDefinitions>
 
             <TextBlock
-                Grid.Row="0"
+                Grid.Row="0" Margin="8, 8 8, 8"
                 VerticalAlignment="Top"
-                Text="Game Bar To Do" />
+                Text="Game Bar To Do" FontWeight="Bold" FontSize="14" TextAlignment="Center" />
 
             <ListView
                 Grid.Row="1"
@@ -37,24 +37,28 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-
-                            <SymbolIcon  Grid.Column="0" Symbol="Add" />
-                            <TextBlock Grid.Column="1" Padding="2" Text="{x:Bind list_name}"  />
-                                <!--<StackPanel HorizontalAlignment="Stretch" Margin="3" Height="44" Padding="2" BorderThickness="1" CornerRadius="2" Background="#FF1B1B1B" BorderBrush="#FF303030">-->
-                         
-                            <!--<TextBlock Margin="2" Text="{x:Bind id}" />-->
-                            <!--<TextBlock Margin="2" Text="{x:Bind created_date}" />-->
+                            <!--XAML Elements-->
+                            <SymbolIcon  Grid.Column="0" Margin="8, 0, 0, 0" Symbol="Add" />
+                            <TextBlock Grid.Column="1" Padding="15, 5, 0, 5" Text="{x:Bind list_name}"  />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+
+                <!--Only way to make text block stretch-->
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" Margin="8, 8, 8, 8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
+                <!--Accepts user entry-->
                 <TextBox Grid.Column="0" MaxHeight="40" AcceptsReturn="True" PlaceholderText="New List"
                     Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Grid.Column="1">
