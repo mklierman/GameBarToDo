@@ -592,5 +592,40 @@ DROP TABLE lists;";
             return null;
         }
 
+        public bool UpdateList(ListModel listModel)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string updateScript = "Update Lists set list_name = @new_name where id = @id;";
+                    SqliteCommand command = new SqliteCommand(updateScript, db);
+                    command.Parameters.AddWithValue("@new_name", listModel.list_name);
+                    command.Parameters.AddWithValue("@id", listModel.id);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
+        public bool UpdateListItem(ListItemModel listItemModel)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string updateScript = "Update List_items set item_name = @new_name, is_complete = @is_complete where id = @id;";
+                    SqliteCommand command = new SqliteCommand(updateScript, db);
+                    command.Parameters.AddWithValue("@new_name", listItemModel.item_name);
+                    command.Parameters.AddWithValue("@is_complete", listItemModel.is_complete);
+                    command.Parameters.AddWithValue("@id", listItemModel.id);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
     }
 }
