@@ -11,5 +11,6 @@
 
    <ItemGroup>
      <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.0-rc.2.20475.6" />
+     <PackageReference Include="Microsoft.Gaming.XboxGameBar" Version="5.3.200605002" />
    </ItemGroup>
 </Project>

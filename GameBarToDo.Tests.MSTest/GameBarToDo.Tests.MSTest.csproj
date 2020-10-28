@@ -95,6 +95,9 @@
     <PackageReference Include="Microsoft.Data.Sqlite">
       <Version>5.0.0-rc.2.20475.6</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Gaming.XboxGameBar">
+      <Version>5.3.200605002</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
