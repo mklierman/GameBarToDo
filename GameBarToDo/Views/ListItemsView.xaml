@@ -6,12 +6,11 @@
     xmlns:lm="using:GameBarToDo.Models"
     xmlns:local="using:GameBarToDo.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:lm="using:GameBarToDo.Models"
     MaxWidth="400"
     MaxHeight="600"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-    
+
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid.RowDefinitions>
@@ -38,20 +37,30 @@
                 SelectedItem="{x:Bind ViewModel.SelectedList, Mode=TwoWay}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="lm:ListItemModel">
-                        <Grid Background="#FF1B1B1B" BorderBrush="#FF303030" BorderThickness="1">
+                        <Grid
+                            Background="#FF1B1B1B"
+                            BorderBrush="#FF303030"
+                            BorderThickness="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <!--XAML Elements-->
-                            <CheckBox Grid.Column="0" MinWidth="5" Margin="8, 0, 0, 0" IsChecked="{x:Bind is_complete, Mode=TwoWay}"/>
+                            <!--  XAML Elements  -->
+                            <CheckBox
+                                Grid.Column="0"
+                                MinWidth="5"
+                                Margin="8,0,0,0"
+                                IsChecked="{x:Bind is_complete, Mode=TwoWay}" />
                             <!--<SymbolIcon Grid.Column="0" Margin="8, 0, 0, 0" Symbol="Add" />-->
-                            <TextBlock Grid.Column="1" Padding="5, 5, 0, 5" Text="{x:Bind item_name}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Padding="5,5,0,5"
+                                Text="{x:Bind item_name}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
 
-                <!--Only way to make text block stretch-->
+                <!--  Only way to make text block stretch  -->
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -59,7 +68,7 @@
                 </ListView.ItemContainerStyle>
             </ListView>
 
-            <Grid Grid.Row="2" Margin="8, 8, 8, 8">
+            <Grid Grid.Row="2" Margin="8,8,8,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
