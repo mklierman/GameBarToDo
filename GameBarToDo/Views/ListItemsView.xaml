@@ -40,8 +40,9 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <!--XAML Elements-->
-                            <SymbolIcon Grid.Column="0" Margin="8, 0, 0, 0" Symbol="Add" />
-                            <TextBlock Grid.Column="1" Padding="15, 5, 0, 5" Text="{x:Bind item_name}" />
+                            <CheckBox Grid.Column="0" MinWidth="5" Margin="8, 0, 0, 0" IsChecked="{x:Bind is_complete, Mode=TwoWay}"/>
+                            <!--<SymbolIcon Grid.Column="0" Margin="8, 0, 0, 0" Symbol="Add" />-->
+                            <TextBlock Grid.Column="1" Padding="5, 5, 0, 5" Text="{x:Bind item_name}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
