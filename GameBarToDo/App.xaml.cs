@@ -84,7 +84,6 @@ namespace GameBarToDo
                             Window.Current.CoreWindow,
                             rootFrame);
                         rootFrame.Navigate(typeof(MainPage), widget1);
-
                         Window.Current.Closed += Widget1Window_Closed;
                     }
                     else if (widgetArgs.AppExtensionId == "Settings")

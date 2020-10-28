@@ -30,7 +30,6 @@ namespace GameBarToDo.Views
                 widget.RequestedOpacityChanged += Widget_RequestedOpacityChanged;
             }
         }
-
         private async void Widget_RequestedOpacityChanged(XboxGameBarWidget sender, object args)
         {
             await ContentArea.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
