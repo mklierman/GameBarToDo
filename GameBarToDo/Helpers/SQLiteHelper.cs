@@ -531,7 +531,7 @@ DROP TABLE lists;";
             return null;
         }
 
-        public ListItemModel GetSpecificListItem(string listItem)
+        public TaskModel GetSpecificListItem(string listItem)
         {
             if (tablesCreated)
             {
@@ -542,7 +542,7 @@ DROP TABLE lists;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
                     command.Parameters.AddWithValue("@itemName", listItem);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ListItemModel listItemModel = new ListItemModel();
+                    TaskModel listItemModel = new TaskModel();
                     while (reader.Read())
                     {
                         listItemModel.id = Convert.ToInt32(reader["id"]);
@@ -559,7 +559,7 @@ DROP TABLE lists;";
         }
 
 
-        public ObservableCollection<ListItemModel> GetListItems(ListModel listName)
+        public ObservableCollection<TaskModel> GetListItems(ListModel listName)
         {
             if (tablesCreated)
             {
@@ -571,10 +571,10 @@ DROP TABLE lists;";
                     //command.Parameters.Add(new SqlParameter("@name", SqlDbType.Text).Value = listName);
                     command.Parameters.AddWithValue("@list_ID", listName.id);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ObservableCollection<ListItemModel> result = new ObservableCollection<ListItemModel>();
+                    ObservableCollection<TaskModel> result = new ObservableCollection<TaskModel>();
                     while (reader.Read())
                     {
-                        ListItemModel listModel = new ListItemModel
+                        TaskModel listModel = new TaskModel
                         {
                             id = Convert.ToInt32(reader["id"]),
                             item_name = Convert.ToString(reader["item_name"]),
@@ -609,7 +609,7 @@ DROP TABLE lists;";
             return false;
         }
 
-        public bool UpdateListItem(ListItemModel listItemModel)
+        public bool UpdateListItem(TaskModel taskModel)
         {
             if (tablesCreated)
             {
@@ -618,13 +618,122 @@ DROP TABLE lists;";
                     db.Open();
                     string updateScript = "Update List_items set item_name = @new_name, is_complete = @is_complete where id = @id;";
                     SqliteCommand command = new SqliteCommand(updateScript, db);
-                    command.Parameters.AddWithValue("@new_name", listItemModel.item_name);
-                    command.Parameters.AddWithValue("@is_complete", listItemModel.is_complete);
-                    command.Parameters.AddWithValue("@id", listItemModel.id);
+                    command.Parameters.AddWithValue("@new_name", taskModel.item_name);
+                    command.Parameters.AddWithValue("@is_complete", taskModel.is_complete);
+                    command.Parameters.AddWithValue("@id", taskModel.id);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
                 }
             }
             return false;
+        }
+
+        public bool UpdateItemNote(NoteModel noteModel)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string updateScript = "Update Item_notes set note = @note where id = @id;";
+                    SqliteCommand command = new SqliteCommand(updateScript, db);
+                    command.Parameters.AddWithValue("@note", noteModel.note);
+                    command.Parameters.AddWithValue("@id", noteModel.id);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
+        public bool DeleteList(ListModel listModel)
+        {
+            if (tablesCreated)
+            {
+                DeleteAllListItems(listModel);
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string deleteScript = "Delete * from Lists where id = @id;";
+                    SqliteCommand command = new SqliteCommand(deleteScript, db);
+                    command.Parameters.AddWithValue("@id", listModel.id);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
+        public bool DeleteListItem(TaskModel taskModel)
+        {
+            if (tablesCreated)
+            {
+                DeleteAllItemNotes(null, taskModel);
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string deleteScript = "Delete * from List_items where id = @id;";
+                    SqliteCommand command = new SqliteCommand(deleteScript, db);
+                    command.Parameters.AddWithValue("@id", taskModel.id);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
+        public bool DeleteItemNote(NoteModel noteModel)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string deleteScript = "Delete * from Item_notes where id = @id;";
+                    SqliteCommand command = new SqliteCommand(deleteScript, db);
+                    command.Parameters.AddWithValue("@id", noteModel.id);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
+        public void DeleteAllListItems(ListModel listModel)
+        {
+            if (tablesCreated)
+            {
+                DeleteAllItemNotes(listModel);
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string deleteScript = "Delete * from List_items where list_id = @id;";
+                    SqliteCommand command = new SqliteCommand(deleteScript, db);
+                    command.Parameters.AddWithValue("@id", listModel.id);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteAllItemNotes(ListModel listModel = null, TaskModel taskModel = null)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string deleteScript = "";
+
+                    if (listModel != null)
+                        deleteScript = "DELETE * FROM Item_notes WHERE item_id IN (SELECT id FROM List_items WHERE list_id = @id);";
+                    else if (taskModel != null)
+                        deleteScript = "DELETE * FROM Item_notes WHERE item_id = @id;";
+
+                    SqliteCommand command = new SqliteCommand(deleteScript, db);
+
+                    if (listModel != null)
+                        command.Parameters.AddWithValue("@id", listModel.id);
+                    else if (taskModel != null)
+                        command.Parameters.AddWithValue("@id", taskModel.id);
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
     }

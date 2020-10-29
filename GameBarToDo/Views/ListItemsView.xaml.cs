@@ -24,7 +24,7 @@ namespace GameBarToDo.Views
     /// </summary>
     public sealed partial class ListItemsView : Page
     {
-        public ListItemsViewModel ViewModel { get; } = new ListItemsViewModel();
+        public TaskViewModel ViewModel { get; } = new TaskViewModel();
         private XboxGameBarWidget widget = null;
         public ListItemsView()
         {
