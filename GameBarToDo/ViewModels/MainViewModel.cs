@@ -23,11 +23,38 @@ namespace GameBarToDo.ViewModels
         private string _newListItemName;
         public ICommand NewListCommand { get; set; }
         public ICommand NewListItemCommand { get; set; }
+        public static RelayCommand<ListModel> DeleteListCommand { get; private set; }
         public MainViewModel()
         {
             //db.EraseAllData();
             //db.LoadDummyData();
+            DeleteListCommand = new RelayCommand<ListModel>(DeleteList);
             LoadUserLists();
+        }
+
+        private async void DeleteList(ListModel list)
+        {
+            ContentDialog deleteConfirmationDialog = new ContentDialog
+            {
+                Title = String.Format("Delete {0} List", list.list_name),
+                Content = String.Format("Are you sure you want to delete the {0} list? This cannot be undone.", list.list_name),
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel"
+            };
+
+            ContentDialogResult result = await deleteConfirmationDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+
+                db.DeleteList(list);
+                UserLists.Remove(list);
+            }
+            else
+            {
+                // The user clicked the CLoseButton, pressed ESC, Gamepad B, or the system back button.
+                // Do nothing.
+            }
         }
 
         private void LoadUserLists()

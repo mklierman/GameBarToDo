@@ -438,7 +438,7 @@ DROP TABLE lists;";
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string deleteScript = "Delete * from Lists where id = @id;";
+                    string deleteScript = "Delete from Lists where id = @id;";
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
                     command.Parameters.AddWithValue("@id", listModel.id);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
@@ -455,7 +455,7 @@ DROP TABLE lists;";
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string deleteScript = "Delete * from List_items where id = @id;";
+                    string deleteScript = "Delete from List_items where id = @id;";
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
                     command.Parameters.AddWithValue("@id", taskModel.id);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
@@ -471,7 +471,7 @@ DROP TABLE lists;";
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string deleteScript = "Delete * from Item_notes where id = @id;";
+                    string deleteScript = "Delete from Item_notes where id = @id;";
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
                     command.Parameters.AddWithValue("@id", noteModel.id);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
@@ -488,7 +488,7 @@ DROP TABLE lists;";
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string deleteScript = "Delete * from List_items where list_id = @id;";
+                    string deleteScript = "Delete from List_items where list_id = @id;";
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
                     command.Parameters.AddWithValue("@id", listModel.id);
                     command.ExecuteNonQuery();
@@ -506,9 +506,9 @@ DROP TABLE lists;";
                     string deleteScript = "";
 
                     if (listModel != null)
-                        deleteScript = "DELETE * FROM Item_notes WHERE item_id IN (SELECT id FROM List_items WHERE list_id = @id);";
+                        deleteScript = "DELETE FROM Item_notes WHERE item_id IN (SELECT id FROM List_items WHERE list_id = @id);";
                     else if (taskModel != null)
-                        deleteScript = "DELETE * FROM Item_notes WHERE item_id = @id;";
+                        deleteScript = "DELETE FROM Item_notes WHERE item_id = @id;";
 
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
 

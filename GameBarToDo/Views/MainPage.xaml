@@ -8,6 +8,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:lm="using:GameBarToDo.Models"
     xmlns:local="using:GameBarToDo.Views"
+    xmlns:vm="using:GameBarToDo.ViewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     MaxWidth="400"
     MaxHeight="600"
@@ -46,7 +47,10 @@
                             BorderThickness="1">
                             <FlyoutBase.AttachedFlyout>
                                 <MenuFlyout>
-                                    <MenuFlyoutItem Text="Delete List">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind vm:MainViewModel.DeleteListCommand}"
+                                        CommandParameter="{Binding}"
+                                        Text="Delete List">
                                         <MenuFlyoutItem.Icon>
                                             <SymbolIcon Symbol="Delete" />
                                         </MenuFlyoutItem.Icon>
