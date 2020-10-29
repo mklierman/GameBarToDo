@@ -4,8 +4,10 @@ using System.Windows.Input;
 using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
+using Microsoft.Xaml.Interactivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace GameBarToDo.ViewModels
 {
@@ -84,5 +86,7 @@ namespace GameBarToDo.ViewModels
             UserLists.Add(db.GetSpecificList(value));
             NewListName = "";
         }
+
+
     }
 }

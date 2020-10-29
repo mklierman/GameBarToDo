@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activation\ActivationHandler.cs" />
+    <Compile Include="Helpers\Actions.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Models\NoteModel.cs" />
     <Compile Include="Helpers\Observable.cs" />
