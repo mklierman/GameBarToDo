@@ -183,7 +183,7 @@ DROP TABLE lists;";
         }
 
         //User types in a new task while inside a list.
-        public string AddNewItemToListItemTable(string itemName, int listID)
+        public string AddNewTask(string itemName, int listID)
         {
             if (CheckIfListExistsByID(listID))
             {
@@ -316,7 +316,7 @@ DROP TABLE lists;";
             return null;
         }
 
-        public TaskModel GetSpecificListItem(string listItem)
+        public TaskModel GetSpecificTask(string listItem)
         {
             if (tablesCreated)
             {
@@ -345,7 +345,7 @@ DROP TABLE lists;";
         }
 
 
-        public ObservableCollection<TaskModel> GetListItems(ListModel listName)
+        public ObservableCollection<TaskModel> GetTasks(ListModel listName)
         {
             if (tablesCreated)
             {
@@ -395,7 +395,7 @@ DROP TABLE lists;";
             return false;
         }
 
-        public bool UpdateListItem(TaskModel taskModel)
+        public bool UpdateTask(TaskModel taskModel)
         {
             if (tablesCreated)
             {
@@ -447,7 +447,7 @@ DROP TABLE lists;";
             return false;
         }
 
-        public bool DeleteListItem(TaskModel taskModel)
+        public bool DeleteTask(TaskModel taskModel)
         {
             if (tablesCreated)
             {

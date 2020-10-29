@@ -2,13 +2,7 @@
 using GameBarToDo.Models;
 using GameBarToDo.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -16,35 +10,39 @@ namespace GameBarToDo.ViewModels
 {
     public class TaskViewModel : Observable
     {
-        Frame rootFrame = Window.Current.Content as Frame;
-        private ObservableCollection<TaskModel> _listItems;
+        private Frame rootFrame = Window.Current.Content as Frame;
+        private ObservableCollection<TaskModel> _tasks;
         private SQLiteHelper db = new SQLiteHelper();
         private string _listHeader;
         private ListModel _selectedList;
         private string _newListName;
-        private string _newListItemName;
-        private TaskModel _selectedItem;
+        private string _newTaskName;
+        private TaskModel _selectedTask;
         public RelayCommand BackCommand { get; private set; }
         public static RelayCommand<TaskModel> ItemCheckedCommand { get; private set; }
+        public static RelayCommand<TaskModel> DeleteTaskCommand { get; private set; }
 
         public TaskViewModel()
         {
             BackCommand = new RelayCommand(GoBack);
-            ItemCheckedCommand = new RelayCommand<TaskModel>(UpdateListItem);
-            //db.EraseAllData();
-            //db.LoadDummyData();
-            //GetListItems();
-
+            ItemCheckedCommand = new RelayCommand<TaskModel>(UpdateTask);
+            DeleteTaskCommand = new RelayCommand<TaskModel>(DeleteTask);
         }
 
-        private void UpdateListItem(TaskModel listItem)
+        private void DeleteTask(TaskModel task)
         {
-            db.UpdateListItem(listItem);
+            db.DeleteTask(task);
+            Tasks.Remove(task);
         }
 
-        private void GetListItems()
+        private void UpdateTask(TaskModel task)
         {
-            ListItems = db.GetListItems(SelectedList);
+            db.UpdateTask(task);
+        }
+
+        private void GetTasks()
+        {
+            Tasks = db.GetTasks(SelectedList);
         }
 
         public void GoBack()
@@ -52,21 +50,21 @@ namespace GameBarToDo.ViewModels
             this.rootFrame.Navigate(typeof(MainPage));
         }
 
-        public ObservableCollection<TaskModel> ListItems
+        public ObservableCollection<TaskModel> Tasks
         {
-            get { return _listItems; }
+            get { return _tasks; }
             set
             {
-                Set(ref _listItems, value);
+                Set(ref _tasks, value);
             }
         }
 
-        public TaskModel SelectedItem
+        public TaskModel SelectedTask
         {
-            get { return _selectedItem; }
+            get { return _selectedTask; }
             set
             {
-                Set(ref _selectedItem, value);
+                Set(ref _selectedTask, value);
             }
         }
 
@@ -78,26 +76,26 @@ namespace GameBarToDo.ViewModels
                 Set(ref _selectedList, value);
                 if (value != null)
                 {
-                    GetListItems();
+                    GetTasks();
                     ListHeader = value.list_name;
                 }
             }
         }
 
-        public string NewListItemName
+        public string NewTaskName
         {
-            get { return _newListItemName; }
+            get { return _newTaskName; }
             set
             {
                 if (value.Length > 0 && value.IsLastCharReturn())
                 {
                     value = value.Remove(value.Length - 1, 1);
-                    Set(ref _newListItemName, value);
-                    AddNewListItem();
+                    Set(ref _newTaskName, value);
+                    AddNewTask();
                 }
                 else
                 {
-                    Set(ref _newListItemName, value);
+                    Set(ref _newTaskName, value);
                 }
             }
         }
@@ -108,24 +106,11 @@ namespace GameBarToDo.ViewModels
             set { Set(ref _listHeader, value); }
         }
 
-        private void AddNewListItem()
+        private void AddNewTask()
         {
-            db.AddNewItemToListItemTable(NewListItemName, SelectedList.id);
-            //GetListItems();
-            ListItems.Add(db.GetSpecificListItem(NewListItemName));
-            NewListItemName = "";
+            db.AddNewTask(NewTaskName, SelectedList.id);
+            Tasks.Add(db.GetSpecificTask(NewTaskName));
+            NewTaskName = "";
         }
-
-        ///// <summary>
-        ///// Adds the user defined list
-        ///// </summary>
-        ///// <param name="value"></param>
-        //private void Addnewlistitem(string value)
-        //{
-        //    //need to pass an id as well
-        //    db.AddNewItemToListItemTable(value);
-        //    ListItems.Add(db.GetListItems(value));
-        //    NewListItemName = "";
-        //}
     }
 }
