@@ -24,7 +24,7 @@ namespace GameBarToDo.Views
     /// </summary>
     public sealed partial class ListItemsView : Page
     {
-        public ListItemsViewModel ViewModel { get; } = new ListItemsViewModel();
+        public TaskViewModel ViewModel { get; } = new TaskViewModel();
         private XboxGameBarWidget widget = null;
         public ListItemsView()
         {
@@ -46,7 +46,7 @@ namespace GameBarToDo.Views
             //if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
             if (e.Parameter != null)
             {
-                ViewModel.SelectedList = (Models.ListModel)e.Parameter;
+                ViewModel.SelectedList = (Models.TaskModel)e.Parameter;
             }
             else
             {

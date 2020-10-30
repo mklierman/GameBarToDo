@@ -12,11 +12,11 @@ namespace GameBarToDo.ViewModels
     public class MainViewModel : Observable
     {
         Frame rootFrame = Window.Current.Content as Frame;
-        private ObservableCollection<ListModel> _userLists;
-        private ObservableCollection<ListModel> _listItems;
+        private ObservableCollection<TaskModel> _userLists;
+        private ObservableCollection<TaskModel> _listItems;
         private SQLiteHelper db = new SQLiteHelper();
         private string _listHeader;
-        private ListModel _selectedList;
+        private TaskModel _selectedList;
         private string _newListName;
         private string _newListItemName;
         public ICommand NewListCommand { get; set; }
@@ -33,7 +33,7 @@ namespace GameBarToDo.ViewModels
             UserLists = db.GetUserLists();
         }
 
-        public ObservableCollection<ListModel> UserLists
+        public ObservableCollection<TaskModel> UserLists
         {
             get { return _userLists; }
             set
@@ -42,7 +42,7 @@ namespace GameBarToDo.ViewModels
             }
         }
 
-        public ListModel SelectedList
+        public TaskModel SelectedList
         {
             get { return _selectedList; }
             set

@@ -473,7 +473,7 @@ DROP TABLE lists;";
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<ListModel> GetUserLists()
+        public ObservableCollection<TaskModel> GetUserLists()
         {
             if (tablesCreated)
             {
@@ -483,10 +483,10 @@ DROP TABLE lists;";
                     string selectScript = "Select * from Lists;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ObservableCollection<ListModel> result = new ObservableCollection<ListModel>();
+                    ObservableCollection<TaskModel> result = new ObservableCollection<TaskModel>();
                     while (reader.Read())
                     {
-                        ListModel listModel = new ListModel
+                        TaskModel listModel = new TaskModel
                         {
                             id = Convert.ToInt32(reader["id"]),
                             list_name = Convert.ToString(reader["list_name"]),
@@ -507,7 +507,7 @@ DROP TABLE lists;";
         /// </summary>
         /// <param name="listName">The name of the list to be returned</param>
         /// <returns>A ListModel object</returns>
-        public ListModel GetSpecificList(string listName)
+        public TaskModel GetSpecificList(string listName)
         {
             if (tablesCreated)
             {
@@ -518,7 +518,7 @@ DROP TABLE lists;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
                     command.Parameters.AddWithValue("@listName", listName);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ListModel listModel = new ListModel();
+                    TaskModel listModel = new TaskModel();
                     while (reader.Read())
                     {
                         listModel.id = Convert.ToInt32(reader["id"]);
@@ -531,7 +531,7 @@ DROP TABLE lists;";
             return null;
         }
 
-        public ListItemModel GetSpecificListItem(string listItem)
+        public TaskModel GetSpecificListItem(string listItem)
         {
             if (tablesCreated)
             {
@@ -542,7 +542,7 @@ DROP TABLE lists;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
                     command.Parameters.AddWithValue("@itemName", listItem);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ListItemModel listItemModel = new ListItemModel();
+                    TaskModel listItemModel = new TaskModel();
                     while (reader.Read())
                     {
                         listItemModel.id = Convert.ToInt32(reader["id"]);
@@ -559,7 +559,7 @@ DROP TABLE lists;";
         }
 
 
-        public ObservableCollection<ListItemModel> GetListItems(ListModel listName)
+        public ObservableCollection<TaskModel> GetListItems(TaskModel listName)
         {
             if (tablesCreated)
             {
@@ -571,10 +571,10 @@ DROP TABLE lists;";
                     //command.Parameters.Add(new SqlParameter("@name", SqlDbType.Text).Value = listName);
                     command.Parameters.AddWithValue("@list_ID", listName.id);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ObservableCollection<ListItemModel> result = new ObservableCollection<ListItemModel>();
+                    ObservableCollection<TaskModel> result = new ObservableCollection<TaskModel>();
                     while (reader.Read())
                     {
-                        ListItemModel listModel = new ListItemModel
+                        TaskModel listModel = new TaskModel
                         {
                             id = Convert.ToInt32(reader["id"]),
                             item_name = Convert.ToString(reader["item_name"]),
@@ -592,7 +592,7 @@ DROP TABLE lists;";
             return null;
         }
 
-        public bool UpdateList(ListModel listModel)
+        public bool UpdateList(TaskModel listModel)
         {
             if (tablesCreated)
             {
@@ -609,7 +609,7 @@ DROP TABLE lists;";
             return false;
         }
 
-        public bool UpdateListItem(ListItemModel listItemModel)
+        public bool UpdateListItem(TaskModel listItemModel)
         {
             if (tablesCreated)
             {
