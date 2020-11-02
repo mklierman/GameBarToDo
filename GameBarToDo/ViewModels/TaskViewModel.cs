@@ -1,7 +1,6 @@
 ﻿using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
-using System;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -38,6 +37,14 @@ namespace GameBarToDo.ViewModels
         private void UpdateTask(TaskModel task)
         {
             db.UpdateTask(task);
+
+            foreach (TaskModel _task in Tasks)
+            {
+                if (_task.id == task.id)
+                {
+                    _task.is_complete = task.is_complete;
+                }
+            }
         }
 
         private void GetTasks()
