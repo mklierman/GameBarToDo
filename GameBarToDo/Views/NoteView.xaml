@@ -3,17 +3,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:local="using:GameBarToDo"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:GameBarToDo.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:lm="using:GameBarToDo.Models"
-    xmlns:vm="using:GameBarToDo.ViewModels"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:GameBarToDo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    xmlns:vm="using:GameBarToDo.ViewModels"
     MaxWidth="400"
     MaxHeight="600"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
 
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid.RowDefinitions>
@@ -33,8 +33,12 @@
                 <TextBlock Text="{x:Bind ViewModel.TaskHeader}" />
             </StackPanel>
 
-            <TextBox Grid.Row="1" Margin="8,8,8,8" TextWrapping="Wrap" AcceptsReturn="True"
-                     Text="{x:Bind ViewModel.Note.note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox
+                Grid.Row="1"
+                Margin="8,8,8,8"
+                AcceptsReturn="True"
+                Text="{x:Bind ViewModel.NoteText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                TextWrapping="Wrap" />
         </Grid>
     </Grid>
 </Page>

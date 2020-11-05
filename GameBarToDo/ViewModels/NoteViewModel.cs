@@ -22,18 +22,19 @@ namespace GameBarToDo.ViewModels
         public NoteViewModel()
         {
             BackCommand = new RelayCommand(GoBack);
-            //GetNote();
+            GetNote();
         }
 
         public void GoBack()
         {
             //Creating a new ListItemsView page, need to fix how it goes back.
-            this.rootFrame.Navigate(typeof(ListItemsView));
+            ListModel listModel = db.GetListByID(SelectedTask.list_id);
+            this.rootFrame.Navigate(typeof(ListItemsView), listModel);
         }
 
         private void GetNote()
         {
-            if (Note != null)
+            if (Note == null)
             {
                 Note = db.GetNote(SelectedTask);
             }
@@ -44,15 +45,7 @@ namespace GameBarToDo.ViewModels
             get { return _notes; }
             set
             {
-                if (value.note.Length > 0)
-                {
                     Set(ref _notes, value);
-                    UpdateNote();
-                }
-                else
-                {
-                    Set(ref _notes, value);
-                };
             }
         }
 
@@ -77,8 +70,17 @@ namespace GameBarToDo.ViewModels
             {
                 if (value.Length > 0)
                 {
+
                     Set(ref _noteText, value);
-                    UpdateNote();
+                    if (Note == null)
+                    {
+                        CreateNewNote();
+                    }
+                    else
+                    {
+                        Note.note = value;
+                        UpdateNote();
+                    }
                 }
                 else
                 {
@@ -93,9 +95,13 @@ namespace GameBarToDo.ViewModels
             set { Set(ref _taskHeader, value); }
         }
 
+        private void CreateNewNote()
+        {
+            Note = db.AddNewNoteToItemTable(NoteText, SelectedTask.id);
+        }
+
         private void UpdateNote()
         {
-            Note.note = NoteText;
             db.UpdateItemNote(Note);
         }
 

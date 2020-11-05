@@ -253,7 +253,7 @@ DROP TABLE lists;";
             return false;
         }
 
-        public string AddNewNoteToItemTable(string noteText, int itemID)
+        public NoteModel AddNewNoteToItemTable(string noteText, int itemID)
         {
             throw new NotImplementedException();
         }
@@ -314,6 +314,11 @@ DROP TABLE lists;";
                 }
             }
             return null;
+        }
+
+        public ListModel GetListByID(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public TaskModel GetSpecificTask(string listItem)
