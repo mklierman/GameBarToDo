@@ -65,6 +65,11 @@ namespace GameBarToDo.ViewModels
             set
             {
                 Set(ref _selectedTask, value);
+                if (value != null)
+                {
+                    //Navigate to Note page
+                    this.rootFrame.Navigate(typeof(NoteView), SelectedTask);
+                }
             }
         }
 

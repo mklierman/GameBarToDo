@@ -378,6 +378,34 @@ DROP TABLE lists;";
             return null;
         }
 
+        public NoteModel GetNote(TaskModel taskName)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string selectScript = "Select * from Item_notes where item_ID = @item_ID;";
+                    SqliteCommand command = new SqliteCommand(selectScript, db);
+                    command.Parameters.AddWithValue("@item_ID", taskName.id);
+                    SqliteDataReader reader = command.ExecuteReader();
+                    NoteModel result = new NoteModel();
+                    while (reader.Read())
+                    {
+                        NoteModel noteModel = new NoteModel
+                        {
+                            id = Convert.ToInt32(reader["id"]),
+                            item_ID = Convert.ToInt32(reader["item_ID"]),
+                            note = Convert.ToString(reader["note"]),
+                            created_date = Convert.ToDateTime(reader["created_date"])
+                        };
+                    }
+                    return result;
+                }
+            }
+            return null;
+        }
+
         public bool UpdateList(ListModel listModel)
         {
             if (tablesCreated)
