@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using GameBarToDo.Helpers;
 using GameBarToDo.Models;
@@ -20,15 +21,14 @@ namespace GameBarToDo.ViewModels
         private string _listHeader;
         private ListModel _selectedList;
         private string _newListName;
-        private string _newListItemName;
-        public ICommand NewListCommand { get; set; }
-        public ICommand NewListItemCommand { get; set; }
+        public RelayCommand<string> NewListCommand { get; set; }
         public static RelayCommand<ListModel> DeleteListCommand { get; private set; }
         public MainViewModel()
         {
             //db.EraseAllData();
             //db.LoadDummyData();
             DeleteListCommand = new RelayCommand<ListModel>(DeleteList);
+            NewListCommand = new RelayCommand<string>(AddNewList);
             LoadUserLists();
         }
 
@@ -92,7 +92,7 @@ namespace GameBarToDo.ViewModels
             {
                 if (value.Length > 0 && value.IsLastCharReturn())
                 {
-                    value = value.Remove(value.Length - 1, 1);
+                    value = value.RemoveReturnChars();
                     Set(ref _newListName, value);
                     AddNewList(value);
                 }
@@ -107,11 +107,27 @@ namespace GameBarToDo.ViewModels
         /// Adds the user defined list
         /// </summary>
         /// <param name="value"></param>
-        private void AddNewList(string value)
+        private async void AddNewList(string value)
         {
-            db.AddNewListToTable(value);
-            UserLists.Add(db.GetSpecificList(value));
-            NewListName = "";
+            if (value != null && value.Length > 0)
+            {
+                NewListName = "";
+                if (UserLists.Any(str => str.list_name.Equals(value)))
+                {
+                    ContentDialog listAlreadyExistsDialog = new ContentDialog
+                    {
+
+                        Content = String.Format("A list by the name {0} already exists.", value),
+                        CloseButtonText = "Ok"
+                    };
+                    ContentDialogResult result = await listAlreadyExistsDialog.ShowAsync();
+                }
+                else
+                {
+                    db.AddNewListToTable(value);
+                    UserLists.Add(db.GetSpecificList(value));
+                }
+            }
         }
 
 

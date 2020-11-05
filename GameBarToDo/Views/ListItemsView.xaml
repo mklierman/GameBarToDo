@@ -34,14 +34,10 @@
                 </Button>
                 <TextBlock Text="{x:Bind ViewModel.ListHeader}" />
             </StackPanel>
-
             <ListView
                 Grid.Row="1"
                 ItemsSource="{x:Bind ViewModel.Tasks, Mode=TwoWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedTask, Mode=TwoWay}">
-                <ListView.Resources>
-                    <helpers:BoolToStrikethroughConverter x:Key="BoolConverter" />
-                </ListView.Resources>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="lm:TaskModel">
                         <Grid
