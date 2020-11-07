@@ -255,7 +255,26 @@ DROP TABLE lists;";
 
         public NoteModel AddNewNoteToItemTable(string noteText, int itemID)
         {
-            throw new NotImplementedException();
+            if (tablesCreated)
+            {
+                using (SqliteConnection db =
+                   new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string insertScript = "INSERT INTO Item_notes (item_ID, noteTest) VALUES (@itemID, @noteTest)";
+
+                    SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
+                    insertStuff.Parameters.AddWithValue("@itemID", itemID);
+                    insertStuff.Parameters.AddWithValue("@noteText", noteText);
+                    insertStuff.ExecuteNonQuery();
+
+                }
+                return GetNote(null, itemID);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public ObservableCollection<ListModel> GetUserLists()
@@ -316,7 +335,7 @@ DROP TABLE lists;";
             return null;
         }
 
-        public ObservableCollection<TaskModel> GetListByID(int id)
+        public ListModel GetListByID(int id)
         {
             if (tablesCreated)
             {
@@ -325,20 +344,16 @@ DROP TABLE lists;";
                     db.Open();
                     string selectScript = "Select * from List_items where list_ID = @list_ID";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
-                    command.Parameters.AddWithValue("@list_ID", listName.id);
+                    command.Parameters.AddWithValue("@list_ID", id);
                     SqliteDataReader reader = command.ExecuteReader();
-                    ObservableCollection<TaskModel> listModel = new ObservableCollection<TaskModel>();
+                    ListModel listModel = new ListModel();
                     while (reader.Read())
                     {
-                        TaskModel listModel = new TaskModel
-                        {
                             listModel.id = Convert.ToInt32(reader["id"]);
                             listModel.list_name = Convert.ToString(reader["list_name"]);
                             listModel.created_date = Convert.ToDateTime(reader["created_date"]);
-                        }
-                        
                     }
-                    
+                    return listModel;
                 }
             }
             return null;
@@ -415,7 +430,7 @@ DROP TABLE lists;";
             return null;
         }
 
-        public NoteModel GetNote(TaskModel taskName)
+        public NoteModel GetNote(TaskModel taskName, int itemID = -1)
         {
             if (tablesCreated)
             {
@@ -424,7 +439,14 @@ DROP TABLE lists;";
                     db.Open();
                     string selectScript = "Select * from Item_notes where item_ID = @item_ID;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
-                    command.Parameters.AddWithValue("@item_ID", taskName.id);
+                    if (itemID < 0)
+                    {
+                        command.Parameters.AddWithValue("@item_ID", taskName.id);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@item_ID", itemID);
+                    }
                     SqliteDataReader reader = command.ExecuteReader();
                     NoteModel result = new NoteModel();
                     while (reader.Read())
@@ -478,14 +500,14 @@ DROP TABLE lists;";
             return false;
         }
 
-        public bool UpdateItemNote(NoteModel noteModel)
+        public bool UpsertNote(NoteModel noteModel)
         {
             if (tablesCreated)
             {
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string updateScript = "Update Item_notes set note = @note where id = @id;";
+                    string updateScript = "INSERT INTO List_notes (note, item_ID) VALUES(@note, @id) ON CONFLICT(@id) DO UPDATE SET note = @note; ";
                     SqliteCommand command = new SqliteCommand(updateScript, db);
                     command.Parameters.AddWithValue("@note", noteModel.note);
                     command.Parameters.AddWithValue("@id", noteModel.id);

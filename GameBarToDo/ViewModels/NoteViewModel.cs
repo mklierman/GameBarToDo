@@ -11,7 +11,7 @@ namespace GameBarToDo.ViewModels
     public class NoteViewModel : Observable
     {
         private Frame rootFrame = Window.Current.Content as Frame;
-        private NoteModel _notes;
+        private NoteModel _note;
         private SQLiteHelper db = new SQLiteHelper();
         private string _taskHeader;
         private string _noteText;
@@ -34,7 +34,7 @@ namespace GameBarToDo.ViewModels
 
         private void GetNote()
         {
-            if (Note == null)
+            if (Note == null && SelectedTask != null)
             {
                 Note = db.GetNote(SelectedTask);
             }
@@ -42,10 +42,10 @@ namespace GameBarToDo.ViewModels
 
         public NoteModel Note
         {
-            get { return _notes; }
+            get { return _note; }
             set
             {
-                    Set(ref _notes, value);
+                Set(ref _note, value);
             }
         }
 
@@ -72,15 +72,8 @@ namespace GameBarToDo.ViewModels
                 {
 
                     Set(ref _noteText, value);
-                    if (Note == null)
-                    {
-                        CreateNewNote();
-                    }
-                    else
-                    {
-                        Note.note = value;
-                        UpdateNote();
-                    }
+                    Note.note = value;
+                    UpsertNote();
                 }
                 else
                 {
@@ -97,12 +90,13 @@ namespace GameBarToDo.ViewModels
 
         private void CreateNewNote()
         {
-            Note = db.AddNewNoteToItemTable(NoteText, SelectedTask.id);
+            NoteModel nm = db.AddNewNoteToItemTable(NoteText, SelectedTask.id);
+            Note = nm;
         }
 
-        private void UpdateNote()
+        private void UpsertNote()
         {
-            db.UpdateItemNote(Note);
+            db.UpsertNote(Note);
         }
 
     }
