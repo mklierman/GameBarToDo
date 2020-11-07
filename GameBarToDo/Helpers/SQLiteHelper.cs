@@ -316,10 +316,42 @@ DROP TABLE lists;";
             return null;
         }
 
-        public ListModel GetListByID(int id)
+        public ObservableCollection<TaskModel> GetListByID(int id)
         {
-            throw new NotImplementedException();
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string selectScript = "Select * from List_items where list_ID = @list_ID";
+                    SqliteCommand command = new SqliteCommand(selectScript, db);
+                    command.Parameters.AddWithValue("@list_ID", listName.id);
+                    SqliteDataReader reader = command.ExecuteReader();
+                    ObservableCollection<TaskModel> listModel = new ObservableCollection<TaskModel>();
+                    while (reader.Read())
+                    {
+                        TaskModel listModel = new TaskModel
+                        {
+                            listModel.id = Convert.ToInt32(reader["id"]);
+                            listModel.list_name = Convert.ToString(reader["list_name"]);
+                            listModel.created_date = Convert.ToDateTime(reader["created_date"]);
+                        }
+                        
+                    }
+                    
+                }
+            }
+            return null;
         }
+//"Select count(*) from Lists where id = @itemID";
+//CREATE TABLE IF NOT EXISTS List_items(
+//id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+//list_ID INTEGER,
+//item_name TEXT NOT NULL,
+//is_complete BIT NOT NULL,
+//created_date DEFAULT CURRENT_TIMESTAMP,
+//FOREIGN KEY(list_ID) REFERENCES Lists(id)
+//);
 
         public TaskModel GetSpecificTask(string listItem)
         {
