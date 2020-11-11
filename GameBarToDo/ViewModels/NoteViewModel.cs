@@ -15,29 +15,21 @@ namespace GameBarToDo.ViewModels
         private SQLiteHelper db = new SQLiteHelper();
         private string _taskHeader;
         private string _noteText;
-        private TaskModel _selectedTask;
+        private int _taskID;
+        private ListModel _selectedList;
 
         public RelayCommand BackCommand { get; private set; }
 
         public NoteViewModel()
         {
             BackCommand = new RelayCommand(GoBack);
-            GetNote();
         }
 
         public void GoBack()
         {
             //Creating a new ListItemsView page, need to fix how it goes back.
-            ListModel listModel = db.GetListByID(SelectedTask.list_id);
-            this.rootFrame.Navigate(typeof(ListItemsView), listModel);
-        }
-
-        private void GetNote()
-        {
-            if (Note == null && SelectedTask != null)
-            {
-                Note = db.GetNote(SelectedTask);
-            }
+            //ListModel listModel = db.GetListByID(SelectedTask.list_id);
+            this.rootFrame.Navigate(typeof(ListItemsView), SelectedList);
         }
 
         public NoteModel Note
@@ -49,17 +41,12 @@ namespace GameBarToDo.ViewModels
             }
         }
 
-        public TaskModel SelectedTask
+        public ListModel SelectedList
         {
-            get { return _selectedTask; }
+            get { return _selectedList; }
             set
             {
-                Set(ref _selectedTask, value);
-                if (value != null)
-                {
-                    GetNote();
-                    TaskHeader = value.item_name;
-                }
+                Set(ref _selectedList, value);
             }
         }
 
@@ -68,17 +55,17 @@ namespace GameBarToDo.ViewModels
             get { return _noteText; }
             set
             {
-                if (value.Length > 0)
-                {
+                Set(ref _noteText, value);
+                UpdateNote();
+            }
+        }
 
-                    Set(ref _noteText, value);
-                    Note.note = value;
-                    UpsertNote();
-                }
-                else
-                {
-                    Set(ref _noteText, value);
-                }
+        public int TaskID
+        {
+            get { return _taskID; }
+            set
+            {
+                Set(ref _taskID, value);
             }
         }
 
@@ -88,15 +75,9 @@ namespace GameBarToDo.ViewModels
             set { Set(ref _taskHeader, value); }
         }
 
-        private void CreateNewNote()
+        private void UpdateNote()
         {
-            NoteModel nm = db.AddNewNoteToItemTable(NoteText, SelectedTask.id);
-            Note = nm;
-        }
-
-        private void UpsertNote()
-        {
-            db.UpsertNote(Note);
+            db.UpdateNote(NoteText ,TaskID);
         }
 
     }

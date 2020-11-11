@@ -1,4 +1,5 @@
-﻿using GameBarToDo.ViewModels;
+﻿using GameBarToDo.Models;
+using GameBarToDo.ViewModels;
 using Microsoft.Gaming.XboxGameBar;
 using System;
 using System.Collections.Generic;
@@ -44,15 +45,20 @@ namespace GameBarToDo.Views
                 widget.RequestedOpacityChanged += Widget_RequestedOpacityChanged;
             }
 
-            if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
-                if (e.Parameter != null)
-                {
-                    ViewModel.SelectedTask = (Models.TaskModel)e.Parameter;
-                }
-                else
-                {
+            //if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
+            if (e.Parameter != null)
+            {
+                //ViewModel.Note = (Models.NoteModel)e.Parameter;
+                List<object> lists = (List<object>)e.Parameter;
+                ViewModel.NoteText = lists[0].ToString();
+                ViewModel.TaskID = Convert.ToInt32(lists[1]);
+                ViewModel.TaskHeader = lists[2].ToString();
+                ViewModel.SelectedList = (ListModel)lists[3];
+            }
+            else
+            {
 
-                }
+            }
             base.OnNavigatedTo(e);
         }
 

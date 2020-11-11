@@ -2,6 +2,7 @@
 using GameBarToDo.Models;
 using GameBarToDo.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -67,8 +68,23 @@ namespace GameBarToDo.ViewModels
                 Set(ref _selectedTask, value);
                 if (value != null)
                 {
+                    //Check if Task has note
+                    NoteModel note = db.GetNote(SelectedTask);
+                    //If it doesn't have a note, create a blank one
+                    if (note.id < 1)
+                    {
+                        note = db.AddNewNoteToItemTable("Test", SelectedTask.id);
+                    }
                     //Navigate to Note page
-                    this.rootFrame.Navigate(typeof(NoteView), SelectedTask);
+                    List<object> list = new List<object>
+                    {
+                        note.note,
+                        note.item_ID,
+                        SelectedTask.item_name,
+                        SelectedList
+
+                    };
+                    this.rootFrame.Navigate(typeof(NoteView), list);
                 }
             }
         }

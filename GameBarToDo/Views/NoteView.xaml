@@ -37,7 +37,7 @@
                 Grid.Row="1"
                 Margin="8,8,8,8"
                 AcceptsReturn="True"
-                Text="{x:Bind ViewModel.NoteText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                Text="{x:Bind ViewModel.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap" />
         </Grid>
     </Grid>

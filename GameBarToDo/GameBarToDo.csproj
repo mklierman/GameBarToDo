@@ -136,10 +136,10 @@
     <Compile Include="Activation\ActivationHandler.cs" />
     <Compile Include="Helpers\Actions.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
-    <Compile Include="Models\NoteModel.cs" />
     <Compile Include="Helpers\Observable.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\SQLiteHelper.cs" />
+    <Compile Include="Models\NoteModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\ListModel.cs" />
     <Compile Include="Services\ActivationService.cs" />

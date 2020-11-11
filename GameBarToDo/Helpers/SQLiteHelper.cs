@@ -261,7 +261,7 @@ DROP TABLE lists;";
                    new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string insertScript = "INSERT INTO Item_notes (item_ID, noteTest) VALUES (@itemID, @noteTest)";
+                    string insertScript = "INSERT INTO Item_notes (item_ID, note) VALUES (@itemID, @noteText)";
 
                     SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
                     insertStuff.Parameters.AddWithValue("@itemID", itemID);
@@ -458,6 +458,7 @@ DROP TABLE lists;";
                             note = Convert.ToString(reader["note"]),
                             created_date = Convert.ToDateTime(reader["created_date"])
                         };
+                        result = noteModel;
                     }
                     return result;
                 }
@@ -500,17 +501,17 @@ DROP TABLE lists;";
             return false;
         }
 
-        public bool UpsertNote(NoteModel noteModel)
+        public bool UpdateNote(string note, int TaskID)
         {
             if (tablesCreated)
             {
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string updateScript = "INSERT INTO List_notes (note, item_ID) VALUES(@note, @id) ON CONFLICT(@id) DO UPDATE SET note = @note; ";
+                    string updateScript = "UPDATE Item_notes SET note = @note where item_ID = @TaskID; ";
                     SqliteCommand command = new SqliteCommand(updateScript, db);
-                    command.Parameters.AddWithValue("@note", noteModel.note);
-                    command.Parameters.AddWithValue("@id", noteModel.id);
+                    command.Parameters.AddWithValue("@note", note);
+                    command.Parameters.AddWithValue("@TaskID", TaskID);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
                 }
             }
