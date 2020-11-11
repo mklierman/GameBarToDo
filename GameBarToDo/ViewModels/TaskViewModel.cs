@@ -20,12 +20,14 @@ namespace GameBarToDo.ViewModels
         public RelayCommand BackCommand { get; private set; }
         public static RelayCommand<TaskModel> ItemCheckedCommand { get; private set; }
         public static RelayCommand<TaskModel> DeleteTaskCommand { get; private set; }
+        public RelayCommand NewTaskCommand { get; set; }
 
         public TaskViewModel()
         {
             BackCommand = new RelayCommand(GoBack);
             ItemCheckedCommand = new RelayCommand<TaskModel>(UpdateTask);
             DeleteTaskCommand = new RelayCommand<TaskModel>(DeleteTask);
+            NewTaskCommand = new RelayCommand(AddNewTask);
         }
 
         private void DeleteTask(TaskModel task)

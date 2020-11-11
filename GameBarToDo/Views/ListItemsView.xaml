@@ -110,9 +110,11 @@
                     Grid.Column="0"
                     MaxHeight="33"
                     AcceptsReturn="True"
-                    PlaceholderText="New List"
+                    PlaceholderText="New Task"
                     Text="{x:Bind ViewModel.NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <Button Grid.Column="1">
+                <Button Grid.Column="1"
+                    Command="{x:Bind ViewModel.NewTaskCommand}"
+                    CommandParameter="{x:Bind ViewModel.NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <SymbolIcon Symbol="Add" />
                 </Button>
 
