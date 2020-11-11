@@ -51,5 +51,12 @@ namespace GameBarToDo.Tests.MSTest
             //Assert.IsTrue(db.RemoveListFromTable("TestList"));
         }
 
+        [TestMethod]
+        public void TestAddingList()
+        {
+            MainViewModel mainViewModel = new MainViewModel();
+            mainViewModel.NewListCommand("Test");
+        }
+
     }
 }
