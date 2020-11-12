@@ -46,5 +46,10 @@ namespace GameBarToDo.Views
         {
             await widget.ActivateSettingsAsync();
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
