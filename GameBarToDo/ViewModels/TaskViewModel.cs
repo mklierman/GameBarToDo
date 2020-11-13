@@ -83,7 +83,7 @@ namespace GameBarToDo.ViewModels
                     //If it doesn't have a note, create a blank one
                     if (note.id < 1)
                     {
-                        note = db.AddNewNoteToItemTable("Test", SelectedTask.id);
+                        note = db.AddNewNoteToItemTable("", SelectedTask.id);
                     }
                     //Navigate to Note page
                     List<object> list = new List<object>
