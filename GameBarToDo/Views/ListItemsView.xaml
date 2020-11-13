@@ -199,7 +199,6 @@
                 </Button>
                 <TextBlock Margin="8" FontSize="16" FontWeight="Bold" TextAlignment="Center" Text="{x:Bind ViewModel.ListHeader}" />
             </StackPanel>
-
             <ListView
                 Grid.Row="1"
                 ItemsSource="{x:Bind ViewModel.Tasks, Mode=TwoWay}"
@@ -243,7 +242,17 @@
                             <TextBlock
                                 Grid.Column="1"
                                 Padding="5,5,0,5"
-                                Text="{x:Bind item_name}" />
+                                Text="{x:Bind item_name}">
+                                <i:Interaction.Behaviors>
+                                    <core:DataTriggerBehavior Binding="{x:Bind is_complete, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                        <core:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource ButtonForegroundThemeBrush}" />
+                                    </core:DataTriggerBehavior>
+
+                                    <core:DataTriggerBehavior Binding="{x:Bind is_complete, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                        <core:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource ButtonDisabledForegroundThemeBrush}" />
+                                    </core:DataTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                            </TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -266,9 +275,11 @@
                     Grid.Column="0"
                     MaxHeight="33"
                     AcceptsReturn="True"
-                    PlaceholderText="New List"
+                    PlaceholderText="New Task"
                     Text="{x:Bind ViewModel.NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <Button Grid.Column="1">
+                <Button Grid.Column="1"
+                    Command="{x:Bind ViewModel.NewTaskCommand}"
+                    CommandParameter="{x:Bind ViewModel.NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <SymbolIcon Symbol="Add" />
                 </Button>
 

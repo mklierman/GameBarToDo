@@ -15,5 +15,16 @@ namespace GameBarToDo.Helpers
             else
                 return false;
         }
+
+        public static string RemoveReturnChars(this String str)
+        {
+            if (str.Contains("\r"))
+            {
+                string newStr = str.Replace("\r", "");
+                return newStr;
+            }
+
+            return str;
+        }
     }
 }

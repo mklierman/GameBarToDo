@@ -8,8 +8,8 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:lm="using:GameBarToDo.Models"
     xmlns:local="using:GameBarToDo.Views"
-    xmlns:vm="using:GameBarToDo.ViewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:GameBarToDo.ViewModels"
     MaxWidth="400"
     MaxHeight="600"
     Style="{StaticResource PageStyle}"
@@ -265,8 +265,17 @@
                     MaxHeight="40"
                     AcceptsReturn="True"
                     PlaceholderText="New List"
+<<<<<<< HEAD
                     Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
                 <Button Grid.Column="1">
+=======
+                    TextWrapping="NoWrap"
+                    Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{x:Bind ViewModel.NewListCommand}"
+                    CommandParameter="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+>>>>>>> origin/master
                     <SymbolIcon Symbol="Add" />
                 </Button>
 
