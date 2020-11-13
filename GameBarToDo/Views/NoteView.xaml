@@ -185,24 +185,21 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+        <Grid Grid.Row="0" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" Margin="-5,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Button Command="{x:Bind ViewModel.BackCommand}">
-                    <SymbolIcon Symbol="Back" />
+                <Button Command="{x:Bind ViewModel.BackCommand}" Click="Button_Click" UseLayoutRounding="False" Margin="8,4,4,4">
+                    <SymbolIcon Symbol="Back"  />
                 </Button>
-                <TextBlock Text="{x:Bind ViewModel.TaskHeader}" />
+                <TextBlock Margin="8" FontSize="16" FontWeight="Bold" TextAlignment="Center"  Text="{x:Bind ViewModel.TaskHeader}" />
             </StackPanel>
 
             <TextBox Style="{StaticResource TextBoxStyle1}" Grid.Row="1" Margin="8,8,8,8" AcceptsReturn="True" TextWrapping="Wrap"
                 Text="{x:Bind ViewModel.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <TextBox.Resources>
-                    
-                </TextBox.Resources>
             </TextBox>
         </Grid>
     </Grid>

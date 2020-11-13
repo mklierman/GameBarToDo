@@ -194,10 +194,10 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Button Command="{x:Bind ViewModel.BackCommand}">
+                <Button Margin="8,4,4,4" Command="{x:Bind ViewModel.BackCommand}">
                     <SymbolIcon Symbol="Back" />
                 </Button>
-                <TextBlock Text="{x:Bind ViewModel.ListHeader}" />
+                <TextBlock Margin="8" FontSize="16" FontWeight="Bold" TextAlignment="Center" Text="{x:Bind ViewModel.ListHeader}" />
             </StackPanel>
 
             <ListView

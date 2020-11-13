@@ -195,7 +195,7 @@
                 Grid.Row="0"
                 Margin="8,8,8,8"
                 VerticalAlignment="Top"
-                FontSize="14"
+                FontSize="16"
                 FontWeight="Bold"
                 Text="Game Bar To Do"
                 TextAlignment="Center" />

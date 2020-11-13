@@ -75,6 +75,11 @@ namespace GameBarToDo.Views
         {
             await widget.ActivateSettingsAsync();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 
