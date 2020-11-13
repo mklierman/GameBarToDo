@@ -265,17 +265,12 @@
                     MaxHeight="40"
                     AcceptsReturn="True"
                     PlaceholderText="New List"
-<<<<<<< HEAD
-                    Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
-                <Button Grid.Column="1">
-=======
                     TextWrapping="NoWrap"
                     Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Grid.Column="1"
                     Command="{x:Bind ViewModel.NewListCommand}"
                     CommandParameter="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
->>>>>>> origin/master
                     <SymbolIcon Symbol="Add" />
                 </Button>
 
