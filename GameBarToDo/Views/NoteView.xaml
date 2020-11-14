@@ -2,14 +2,8 @@
     x:Class="GameBarToDo.Views.NoteView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helpers="using:GameBarToDo.Helpers"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:lm="using:GameBarToDo.Models"
-    xmlns:local="using:GameBarToDo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:GameBarToDo.ViewModels"
     MaxWidth="400"
     MaxHeight="600"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -199,7 +193,7 @@
             </StackPanel>
 
             <TextBox Style="{StaticResource TextBoxStyle1}" Grid.Row="1" Margin="8,8,8,8" AcceptsReturn="True" TextWrapping="Wrap"
-                Text="{x:Bind ViewModel.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                PlaceholderText="Notes" Text="{x:Bind ViewModel.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </TextBox>
         </Grid>
     </Grid>

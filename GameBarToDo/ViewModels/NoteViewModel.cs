@@ -1,8 +1,6 @@
 ﻿using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
-using System;
-using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

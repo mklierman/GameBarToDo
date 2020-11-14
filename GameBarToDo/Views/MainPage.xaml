@@ -7,7 +7,6 @@
     xmlns:helpers="using:GameBarToDo.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:lm="using:GameBarToDo.Models"
-    xmlns:local="using:GameBarToDo.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:GameBarToDo.ViewModels"
     MaxWidth="400"
@@ -231,7 +230,6 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <!--  XAML Elements  -->
                             <SymbolIcon
                                 Grid.Column="0"
                                 Margin="8,0,0,0"
@@ -240,7 +238,6 @@
                                 Grid.Column="1"
                                 Padding="15,5,0,5"
                                 Text="{x:Bind list_name}" />
-
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -266,6 +263,7 @@
                     AcceptsReturn="True"
                     PlaceholderText="New List"
                     TextWrapping="NoWrap"
+                    MaxLength="45"
                     Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Grid.Column="1"

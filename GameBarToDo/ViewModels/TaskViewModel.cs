@@ -1,7 +1,6 @@
 ﻿using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
@@ -16,7 +15,6 @@ namespace GameBarToDo.ViewModels
         private SQLiteHelper db = new SQLiteHelper();
         private string _listHeader;
         private ListModel _selectedList;
-        private string _newListName;
         private string _newTaskName;
         private TaskModel _selectedTask;
         public RelayCommand BackCommand { get; private set; }
@@ -92,7 +90,6 @@ namespace GameBarToDo.ViewModels
                         note.item_ID,
                         SelectedTask.item_name,
                         SelectedList
-
                     };
                     this.rootFrame.Navigate(typeof(NoteView), list);
                 }
