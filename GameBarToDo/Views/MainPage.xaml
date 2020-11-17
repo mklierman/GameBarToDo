@@ -236,6 +236,7 @@
                                 Symbol="Add" />
                             <TextBlock
                                 Grid.Column="1"
+                                Margin="0,3,0,3"
                                 Padding="15,5,0,5"
                                 Text="{x:Bind list_name}" />
                         </Grid>

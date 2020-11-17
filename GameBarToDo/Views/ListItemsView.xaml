@@ -241,6 +241,7 @@
                             <!--<SymbolIcon Grid.Column="0" Margin="8, 0, 0, 0" Symbol="Add" />-->
                             <TextBlock
                                 Grid.Column="1"
+                                Margin="0,3,0,3"
                                 Padding="5,5,0,5"
                                 Text="{x:Bind item_name}">
                                 <i:Interaction.Behaviors>
