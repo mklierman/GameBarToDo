@@ -39,6 +39,11 @@
                 Grid.Row="1"
                 ItemsSource="{x:Bind ViewModel.UserLists, Mode=TwoWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedList, Mode=TwoWay}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel VerticalAlignment="Top" ItemsUpdatingScrollMode="KeepLastItemInView"  />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="lm:ListModel">
                         <Grid
@@ -74,7 +79,8 @@
                             <TextBlock
                                 Grid.Column="1"
                                 Padding="15,5,0,5"
-                                Text="{x:Bind list_name}" />
+                                MaxLines="1"
+                                Text="{x:Bind list_name}" TextWrapping="WrapWholeWords" />
 
                         </Grid>
                     </DataTemplate>
@@ -100,8 +106,8 @@
                     MaxHeight="40"
                     AcceptsReturn="True"
                     PlaceholderText="New List"
-                    TextWrapping="NoWrap"
-                    Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="NoWrap" />
                 <Button
                     Grid.Column="1"
                     Command="{x:Bind ViewModel.NewListCommand}"
