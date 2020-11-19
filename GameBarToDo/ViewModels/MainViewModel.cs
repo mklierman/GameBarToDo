@@ -85,16 +85,7 @@ namespace GameBarToDo.ViewModels
             get { return _newListName; }
             set
             {
-                if (value.Length > 0 && value.IsLastCharReturn())
-                {
-                    value = value.RemoveReturnChars();
                     Set(ref _newListName, value);
-                    AddNewList(value);
-                }
-                else
-                {
-                        Set(ref _newListName, value);
-                }
             }
         }
 

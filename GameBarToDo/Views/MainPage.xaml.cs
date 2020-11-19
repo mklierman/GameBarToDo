@@ -3,6 +3,7 @@
 using GameBarToDo.ViewModels;
 using Microsoft.Gaming.XboxGameBar;
 using Microsoft.Xaml.Interactivity;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -50,6 +51,14 @@ namespace GameBarToDo.Views
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void TextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                ViewModel.NewListCommand.Execute(ViewModel.NewListName);
+            }
         }
     }
 }
