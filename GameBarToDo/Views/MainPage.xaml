@@ -325,8 +325,8 @@
                                 Symbol="Add" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="0,3,0,3"
-                                Padding="15,5,0,5"
+                                Margin="0,10,0,10"
+                                Padding="15,0,0,0"
                                 Text="{x:Bind list_name}" />
                         </Grid>
                     </DataTemplate>

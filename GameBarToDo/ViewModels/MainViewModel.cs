@@ -85,7 +85,7 @@ namespace GameBarToDo.ViewModels
             get { return _newListName; }
             set
             {
-                    Set(ref _newListName, value);
+                Set(ref _newListName, value);
             }
         }
 
