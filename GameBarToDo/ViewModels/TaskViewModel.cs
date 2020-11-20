@@ -1,6 +1,7 @@
 ﻿using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
+using Microsoft.Gaming.XboxGameBar;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +20,7 @@ namespace GameBarToDo.ViewModels
         private string _newListName;
         private string _newTaskName;
         private TaskModel _selectedTask;
+        private XboxGameBarWidget _widget;
         public RelayCommand BackCommand { get; private set; }
         public static RelayCommand<TaskModel> ItemCheckedCommand { get; private set; }
         public static RelayCommand<TaskModel> DeleteTaskCommand { get; private set; }
@@ -60,6 +62,11 @@ namespace GameBarToDo.ViewModels
         {
             this.rootFrame.Navigate(typeof(MainPage));
         }
+        public XboxGameBarWidget Widget
+        {
+            get { return _widget; }
+            set { Set(ref _widget, value); }
+        }
 
         public ObservableCollection<TaskModel> Tasks
         {
@@ -91,7 +98,8 @@ namespace GameBarToDo.ViewModels
                         note.note,
                         note.item_ID,
                         SelectedTask.item_name,
-                        SelectedList
+                        SelectedList,
+                        Widget
 
                     };
                     this.rootFrame.Navigate(typeof(NoteView), list);

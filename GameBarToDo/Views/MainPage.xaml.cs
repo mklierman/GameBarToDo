@@ -23,6 +23,11 @@ namespace GameBarToDo.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             widget = e.Parameter as XboxGameBarWidget;
+            ViewModel.Widget = widget;
+            if (widget != null)
+            {
+                BackgroundGrid.Opacity = widget.RequestedOpacity;
+            }
 
             //Hook up events for when the ui is updated.
             if (widget != null)

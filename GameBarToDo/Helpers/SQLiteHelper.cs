@@ -185,7 +185,7 @@ DROP TABLE lists;";
         //User types in a new task while inside a list.
         public string AddNewTask(string itemName, int listID)
         {
-            if (CheckIfListExistsByID(listID))
+            if (CheckIfListExistsByID(listID) && itemName != null)
             {
                 using (SqliteConnection db =
                    new SqliteConnection($"Filename={dbpath}"))

@@ -1,7 +1,9 @@
 ﻿using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
+using Microsoft.Gaming.XboxGameBar;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,6 +18,7 @@ namespace GameBarToDo.ViewModels
         private string _taskHeader;
         private string _noteText;
         private int _taskID;
+        private XboxGameBarWidget _widget;
         private ListModel _selectedList;
 
         public RelayCommand BackCommand { get; private set; }
@@ -27,9 +30,17 @@ namespace GameBarToDo.ViewModels
 
         public void GoBack()
         {
-            //Creating a new ListItemsView page, need to fix how it goes back.
-            //ListModel listModel = db.GetListByID(SelectedTask.list_id);
-            this.rootFrame.Navigate(typeof(ListItemsView), SelectedList);
+            List<object> list = new List<object>
+                    {
+                        SelectedList,
+                        Widget
+                    };
+            this.rootFrame.Navigate(typeof(ListItemsView), list);
+        }
+        public XboxGameBarWidget Widget
+        {
+            get { return _widget; }
+            set { Set(ref _widget, value); }
         }
 
         public NoteModel Note

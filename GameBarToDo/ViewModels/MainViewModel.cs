@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
+using Microsoft.Gaming.XboxGameBar;
 using Microsoft.Xaml.Interactivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -21,6 +23,7 @@ namespace GameBarToDo.ViewModels
         private string _listHeader;
         private ListModel _selectedList;
         private string _newListName;
+        private XboxGameBarWidget _widget;
         public RelayCommand<string> NewListCommand { get; set; }
         public static RelayCommand<ListModel> DeleteListCommand { get; private set; }
         public MainViewModel()
@@ -57,6 +60,12 @@ namespace GameBarToDo.ViewModels
             }
         }
 
+        public XboxGameBarWidget Widget
+        {
+            get { return _widget; }
+            set { Set(ref _widget, value); }
+        }
+
         private void LoadUserLists()
         {
             UserLists = db.GetUserLists();
@@ -80,7 +89,12 @@ namespace GameBarToDo.ViewModels
                 if (value != null)
                 {
                     //Navigate to ListItem page
-                    this.rootFrame.Navigate(typeof(ListItemsView), SelectedList);
+                    List<object> list = new List<object>
+                    {
+                        SelectedList,
+                        Widget
+                    };
+                    this.rootFrame.Navigate(typeof(ListItemsView), list);
                 }
             }
         }

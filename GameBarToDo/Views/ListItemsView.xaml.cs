@@ -32,7 +32,19 @@ namespace GameBarToDo.Views
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            widget = e.Parameter as XboxGameBarWidget;
+            if (e.Parameter != null)
+            {
+                //ViewModel.Note = (Models.NoteModel)e.Parameter;
+                List<object> lists = (List<object>)e.Parameter;
+                ViewModel.SelectedList = (Models.ListModel)lists[0];
+                widget = (XboxGameBarWidget)lists[1];
+                ViewModel.Widget = widget;
+            }
+
+            if (widget != null)
+            {
+                BackgroundGrid.Opacity = widget.RequestedOpacity;
+            }
 
             //Hook up events for when the ui is updated.
             if (widget != null)
@@ -44,23 +56,15 @@ namespace GameBarToDo.Views
             }
 
             //if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
-            if (e.Parameter != null)
-            {
-                ViewModel.SelectedList = (Models.ListModel)e.Parameter;
-            }
-            else
-            {
-
-            }
             base.OnNavigatedTo(e);
         }
 
         private async void Widget_RequestedOpacityChanged(XboxGameBarWidget sender, object args)
         {
-            await ContentArea.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            await BackgroundGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 // adjust the opacity of your background as appropriate
-                ContentArea.Opacity = widget.RequestedOpacity;
+                BackgroundGrid.Opacity = widget.RequestedOpacity;
             });
         }
 

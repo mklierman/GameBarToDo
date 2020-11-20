@@ -54,20 +54,23 @@ namespace GameBarToDo.Views
                 ViewModel.TaskID = Convert.ToInt32(lists[1]);
                 ViewModel.TaskHeader = lists[2].ToString();
                 ViewModel.SelectedList = (ListModel)lists[3];
+                widget = (XboxGameBarWidget)lists[4];
+                ViewModel.Widget = widget;
             }
-            else
+            if (widget != null)
             {
-
+                BackgroundGrid.Opacity = widget.RequestedOpacity;
             }
             base.OnNavigatedTo(e);
         }
 
         private async void Widget_RequestedOpacityChanged(XboxGameBarWidget sender, object args)
         {
-            await ContentArea.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+
+            await BackgroundGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 // adjust the opacity of your background as appropriate
-                ContentArea.Opacity = widget.RequestedOpacity;
+                BackgroundGrid.Opacity = widget.RequestedOpacity;
             });
         }
 
