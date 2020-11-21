@@ -17,21 +17,20 @@ namespace GameBarToDo.ViewModels
         private SQLiteHelper db = new SQLiteHelper();
         private string _listHeader;
         private ListModel _selectedList;
-        private string _newListName;
         private string _newTaskName;
         private TaskModel _selectedTask;
         private XboxGameBarWidget _widget;
         public RelayCommand BackCommand { get; private set; }
         public static RelayCommand<TaskModel> ItemCheckedCommand { get; private set; }
         public static RelayCommand<TaskModel> DeleteTaskCommand { get; private set; }
-        public RelayCommand NewTaskCommand { get; set; }
+        public RelayCommand<string> NewTaskCommand { get; set; }
 
         public TaskViewModel()
         {
             BackCommand = new RelayCommand(GoBack);
             ItemCheckedCommand = new RelayCommand<TaskModel>(UpdateTask);
             DeleteTaskCommand = new RelayCommand<TaskModel>(DeleteTask);
-            NewTaskCommand = new RelayCommand(AddNewTask);
+            NewTaskCommand = new RelayCommand<string>(AddNewTask);
         }
 
         private void DeleteTask(TaskModel task)
@@ -98,9 +97,13 @@ namespace GameBarToDo.ViewModels
                         note.note,
                         note.item_ID,
                         SelectedTask.item_name,
+<<<<<<< HEAD
                         SelectedList,
                         Widget
 
+=======
+                        SelectedList
+>>>>>>> characterLimit
                     };
                     this.rootFrame.Navigate(typeof(NoteView), list);
                 }
@@ -126,16 +129,7 @@ namespace GameBarToDo.ViewModels
             get { return _newTaskName; }
             set
             {
-                if (value.Length > 0 && value.IsLastCharReturn())
-                {
-                    value = value.Remove(value.Length - 1, 1);
-                    Set(ref _newTaskName, value);
-                    AddNewTask();
-                }
-                else
-                {
-                    Set(ref _newTaskName, value);
-                }
+                Set(ref _newTaskName, value);
             }
         }
 
@@ -145,11 +139,14 @@ namespace GameBarToDo.ViewModels
             set { Set(ref _listHeader, value); }
         }
 
-        private void AddNewTask()
+        private void AddNewTask(string value)
         {
-            db.AddNewTask(NewTaskName, SelectedList.id);
-            Tasks.Add(db.GetSpecificTask(NewTaskName));
             NewTaskName = "";
+            if (value != null && value.Length > 0)
+            {
+                db.AddNewTask(value, SelectedList.id);
+                Tasks.Add(db.GetSpecificTask(value));
+            }
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
@@ -10,7 +9,6 @@ using Microsoft.Gaming.XboxGameBar;
 using Microsoft.Xaml.Interactivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 
 namespace GameBarToDo.ViewModels
 {
@@ -18,9 +16,7 @@ namespace GameBarToDo.ViewModels
     {
         Frame rootFrame = Window.Current.Content as Frame;
         private ObservableCollection<ListModel> _userLists;
-        private ObservableCollection<ListModel> _listItems;
         private SQLiteHelper db = new SQLiteHelper();
-        private string _listHeader;
         private ListModel _selectedList;
         private string _newListName;
         private XboxGameBarWidget _widget;
@@ -104,16 +100,7 @@ namespace GameBarToDo.ViewModels
             get { return _newListName; }
             set
             {
-                if (value.Length > 0 && value.IsLastCharReturn())
-                {
-                    value = value.RemoveReturnChars();
-                    Set(ref _newListName, value);
-                    AddNewList(value);
-                }
-                else
-                {
-                    Set(ref _newListName, value);
-                }
+                Set(ref _newListName, value);
             }
         }
 
@@ -143,7 +130,5 @@ namespace GameBarToDo.ViewModels
                 }
             }
         }
-
-
     }
 }
