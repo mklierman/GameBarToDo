@@ -64,7 +64,7 @@ namespace GameBarToDo.Views
             await BackgroundGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 // adjust the opacity of your background as appropriate
-                BackgroundGrid.Opacity = widget.RequestedOpacity;
+                BackgroundGrid.Opacity = sender.RequestedOpacity;
             });
         }
 
