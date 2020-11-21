@@ -60,7 +60,7 @@ namespace GameBarToDo.ViewModels
 
         public void GoBack()
         {
-            this.rootFrame.Navigate(typeof(MainPage));
+            this.rootFrame.Navigate(typeof(MainPage), Widget);
         }
         public XboxGameBarWidget Widget
         {

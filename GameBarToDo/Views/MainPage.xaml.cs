@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Diagnostics;
 using GameBarToDo.ViewModels;
 using Microsoft.Gaming.XboxGameBar;
 using Microsoft.Xaml.Interactivity;
@@ -43,7 +43,8 @@ namespace GameBarToDo.Views
             await BackgroundGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 // adjust the opacity of your background as appropriate
-                BackgroundGrid.Opacity = sender.RequestedOpacity;
+                widget = sender;
+                BackgroundGrid.Opacity = widget.RequestedOpacity;
             });
         }
 
