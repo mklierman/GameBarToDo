@@ -97,13 +97,9 @@ namespace GameBarToDo.ViewModels
                         note.note,
                         note.item_ID,
                         SelectedTask.item_name,
-<<<<<<< HEAD
                         SelectedList,
                         Widget
 
-=======
-                        SelectedList
->>>>>>> characterLimit
                     };
                     this.rootFrame.Navigate(typeof(NoteView), list);
                 }
