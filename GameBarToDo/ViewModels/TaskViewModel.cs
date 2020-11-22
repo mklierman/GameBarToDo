@@ -138,7 +138,7 @@ namespace GameBarToDo.ViewModels
         private void AddNewTask(string value)
         {
             NewTaskName = "";
-            if (value != null && value.Length > 0)
+            if (value != null && value.Length > 0 && value.Trim().Length > 0)
             {
                 db.AddNewTask(value, SelectedList.id);
                 Tasks.Add(db.GetSpecificTask(value));

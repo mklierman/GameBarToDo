@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using GameBarToDo.Helpers;
 using GameBarToDo.Models;
@@ -123,7 +124,7 @@ namespace GameBarToDo.ViewModels
                     };
                     ContentDialogResult result = await listAlreadyExistsDialog.ShowAsync();
                 }
-                else
+                else if (value.Trim().Length > 0) //Prevent only spaces from being used as a name
                 {
                     db.AddNewListToTable(value);
                     UserLists.Add(db.GetSpecificList(value));

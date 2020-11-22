@@ -65,6 +65,7 @@ namespace GameBarToDo.Views
             {
                 ViewModel.NewListCommand.Execute(ViewModel.NewListName);
             }
+            TextBox textBox = (TextBox)sender;
         }
     }
 }
