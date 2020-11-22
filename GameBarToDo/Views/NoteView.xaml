@@ -289,9 +289,16 @@
                         TextAlignment="Center" />
                 </StackPanel>
 
-                <TextBox Style="{StaticResource TextBoxStyle1}" Grid.Row="1" Margin="8,8,8,8" AcceptsReturn="True" TextWrapping="Wrap"
-                PlaceholderText="Notes" Text="{x:Bind ViewModel.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                </TextBox>
+                <TextBox
+                    Grid.Row="1"
+                    Margin="8,8,8,8"
+                    AcceptsReturn="True"
+                    PlaceholderText="Notes"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.VerticalScrollMode="Auto"
+                    Style="{StaticResource TextBoxStyle1}"
+                    Text="{x:Bind ViewModel.NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="Wrap" />
             </Grid>
         </Grid>
     </Grid>
