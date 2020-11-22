@@ -13,7 +13,7 @@
     MaxWidth="400"
     MaxHeight="600"
     mc:Ignorable="d">
-     <Page.Resources>
+    <Page.Resources>
         <Style x:Key="TextBoxStyle1" TargetType="TextBox">
             <Setter Property="Foreground" Value="{ThemeResource TextControlForeground}" />
             <Setter Property="Background" Value="{ThemeResource TextControlBackground}" />
@@ -280,44 +280,49 @@
                 </Grid.RowDefinitions>
 
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Button Margin="8,4,4,4" Command="{x:Bind ViewModel.BackCommand}">
-                    <SymbolIcon Symbol="Back" />
-                </Button>
-                <TextBlock Margin="8" FontSize="16" FontWeight="Bold" TextAlignment="Center" Text="{x:Bind ViewModel.ListHeader}" />
-            </StackPanel>
-            <ListView
-                Grid.Row="1"
-                ItemsSource="{x:Bind ViewModel.Tasks, Mode=TwoWay}"
-                SelectedItem="{x:Bind ViewModel.SelectedTask, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="lm:TaskModel">
-                        <Grid
-                            Background="{ThemeResource ButtonBackgroundThemeBrush}"
-                            BorderBrush="#FF303030"
-                            BorderThickness="1">
-                            <FlyoutBase.AttachedFlyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem
-                                        Command="{x:Bind vm:TaskViewModel.DeleteTaskCommand}"
-                                        CommandParameter="{Binding}"
-                                        Text="Delete Task">
-                                        <MenuFlyoutItem.Icon>
-                                            <SymbolIcon Symbol="Delete" />
-                                        </MenuFlyoutItem.Icon>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </FlyoutBase.AttachedFlyout>
-                            <i:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="RightTapped">
-                                    <helpers:OpenFlyoutAction />
-                                </core:EventTriggerBehavior>
-                            </i:Interaction.Behaviors>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <!--  XAML Elements  -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button Margin="8,4,4,4" Command="{x:Bind ViewModel.BackCommand}">
+                        <SymbolIcon Symbol="Back" />
+                    </Button>
+                    <TextBlock
+                        Margin="8"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Text="{x:Bind ViewModel.ListHeader}"
+                        TextAlignment="Center" />
+                </StackPanel>
+                <ListView
+                    Grid.Row="1"
+                    ItemsSource="{x:Bind ViewModel.Tasks, Mode=TwoWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedTask, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="lm:TaskModel">
+                            <Grid
+                                Background="{ThemeResource ButtonBackgroundThemeBrush}"
+                                BorderBrush="#FF303030"
+                                BorderThickness="1">
+                                <FlyoutBase.AttachedFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem
+                                            Command="{x:Bind vm:TaskViewModel.DeleteTaskCommand}"
+                                            CommandParameter="{Binding}"
+                                            Text="Delete Task">
+                                            <MenuFlyoutItem.Icon>
+                                                <SymbolIcon Symbol="Delete" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </FlyoutBase.AttachedFlyout>
+                                <i:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="RightTapped">
+                                        <helpers:OpenFlyoutAction />
+                                    </core:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!--  XAML Elements  -->
                                 <CheckBox
                                     Grid.Column="0"
                                     MinWidth="5"
@@ -353,25 +358,30 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
 
-                <Grid Grid.Row="2" Margin="8,8,8,8">
+                <Grid
+                    x:Name="NewTaskGrid"
+                    Grid.Row="2"
+                    Margin="8,8,8,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                <TextBox Style="{StaticResource TextBoxStyle1}"
-                    Grid.Column="0"
-                    MaxHeight="33"
-                    PlaceholderText="New Task"
-                    KeyDown="TextBox_KeyDown"
-                    MaxLength="45"
-                    Text="{x:Bind ViewModel.NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    TextWrapping="NoWrap"/>
-                <Button Grid.Column="1"
-                    Command="{x:Bind ViewModel.NewTaskCommand}"
-                    CommandParameter="{x:Bind ViewModel.NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <SymbolIcon Symbol="Add" />
-                </Button>
+                    <TextBox
+                        Grid.Column="0"
+                        MaxHeight="33"
+                        KeyDown="TextBox_KeyDown"
+                        MaxLength="45"
+                        PlaceholderText="New Task"
+                        Style="{StaticResource TextBoxStyle1}"
+                        Text="{x:Bind ViewModel.NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="NoWrap" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{x:Bind ViewModel.NewTaskCommand}"
+                        CommandParameter="{x:Bind ViewModel.NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <SymbolIcon Symbol="Add" />
+                    </Button>
 
                 </Grid>
             </Grid>

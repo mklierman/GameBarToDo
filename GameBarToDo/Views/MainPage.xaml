@@ -289,22 +289,22 @@
                     Text="Game Bar To Do"
                     TextAlignment="Center" />
 
-            <ListView
-                Grid.Row="1"
-                ItemsSource="{x:Bind ViewModel.UserLists, Mode=TwoWay}"
-                SelectedItem="{x:Bind ViewModel.SelectedList, Mode=TwoWay}">
+                <ListView
+                    Grid.Row="1"
+                    ItemsSource="{x:Bind ViewModel.UserLists, Mode=TwoWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedList, Mode=TwoWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="lm:ListModel">
                             <Grid
-                            Background="#FF1B1B1B"
-                            BorderBrush="#FF303030"
-                            BorderThickness="1">
+                                Background="#FF1B1B1B"
+                                BorderBrush="#FF303030"
+                                BorderThickness="1">
                                 <FlyoutBase.AttachedFlyout>
                                     <MenuFlyout>
                                         <MenuFlyoutItem
-                                        Command="{x:Bind vm:MainViewModel.DeleteListCommand}"
-                                        CommandParameter="{Binding}"
-                                        Text="Delete List">
+                                            Command="{x:Bind vm:MainViewModel.DeleteListCommand}"
+                                            CommandParameter="{Binding}"
+                                            Text="Delete List">
                                             <MenuFlyoutItem.Icon>
                                                 <SymbolIcon Symbol="Delete" />
                                             </MenuFlyoutItem.Icon>
@@ -321,14 +321,14 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <SymbolIcon
-                                Grid.Column="0"
-                                Margin="8,0,0,0"
-                                Symbol="Add" />
+                                    Grid.Column="0"
+                                    Margin="8,0,0,0"
+                                    Symbol="Add" />
                                 <TextBlock
-                                Grid.Column="1"
-                                Margin="0,10,0,10"
-                                Padding="15,0,0,0"
-                                Text="{x:Bind list_name}" />
+                                    Grid.Column="1"
+                                    Margin="0,10,0,10"
+                                    Padding="15,0,0,0"
+                                    Text="{x:Bind list_name}" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -341,28 +341,31 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
 
-                <Grid Grid.Row="2" Margin="8,8,8,8">
+                <Grid
+                    x:Name="NewListGrid"
+                    Grid.Row="2"
+                    Margin="8,8,8,8">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                <!--  Accepts user entry  -->
-                <TextBox
-                    Grid.Column="0"
-                    MaxHeight="40"
-                    InputScope="Text"
-                    KeyDown="TextBox_KeyDown"
-                    MaxLength="45"
-                    PlaceholderText="New List"
-                    Style="{StaticResource TextBoxStyle1}"
-                    Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    TextWrapping="NoWrap" />
-                <Button
-                    Grid.Column="1"
-                    Command="{x:Bind ViewModel.NewListCommand}"
-                    CommandParameter="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <SymbolIcon Symbol="Add" />
-                </Button>
+                    <!--  Accepts user entry  -->
+                    <TextBox
+                        Grid.Column="0"
+                        MaxHeight="40"
+                        InputScope="Text"
+                        KeyDown="TextBox_KeyDown"
+                        MaxLength="45"
+                        PlaceholderText="New List"
+                        Style="{StaticResource TextBoxStyle1}"
+                        Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="NoWrap" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{x:Bind ViewModel.NewListCommand}"
+                        CommandParameter="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <SymbolIcon Symbol="Add" />
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>

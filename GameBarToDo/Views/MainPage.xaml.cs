@@ -25,20 +25,34 @@ namespace GameBarToDo.Views
         {
             widget = e.Parameter as XboxGameBarWidget;
             ViewModel.Widget = widget;
-            if (widget != null)
-            {
-                BackgroundGrid.Opacity = widget.RequestedOpacity;
-            }
 
             //Hook up events for when the ui is updated.
             if (widget != null)
             {
                 widget.SettingsClicked += Widget_SettingsClicked;
-
-                // subscribe for RequestedOpacityChanged events
                 widget.RequestedOpacityChanged += Widget_RequestedOpacityChanged;
+                widget.GameBarDisplayModeChanged += Widget_GameBarDisplayModeChanged;
+
+                Widget_RequestedOpacityChanged(widget, null);
+                Widget_GameBarDisplayModeChanged(widget, null);
             }
         }
+
+        private async void Widget_GameBarDisplayModeChanged(XboxGameBarWidget sender, object args)
+        {
+            await NewListGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (sender.GameBarDisplayMode == XboxGameBarDisplayMode.PinnedOnly && sender.Pinned)
+                {
+                    NewListGrid.Height = 0;
+                }
+                else
+                {
+                    NewListGrid.Height = 40;
+                }
+            });
+        }
+
         private async void Widget_RequestedOpacityChanged(XboxGameBarWidget sender, object args)
         {
             await BackgroundGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>

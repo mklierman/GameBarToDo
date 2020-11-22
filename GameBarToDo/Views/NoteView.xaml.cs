@@ -34,17 +34,6 @@ namespace GameBarToDo.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            widget = e.Parameter as XboxGameBarWidget;
-
-            //Hook up events for when the ui is updated.
-            if (widget != null)
-            {
-                widget.SettingsClicked += Widget_SettingsClicked;
-
-                // subscribe for RequestedOpacityChanged events
-                widget.RequestedOpacityChanged += Widget_RequestedOpacityChanged;
-            }
-
             //if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
             if (e.Parameter != null)
             {
@@ -57,11 +46,34 @@ namespace GameBarToDo.Views
                 widget = (XboxGameBarWidget)lists[4];
                 ViewModel.Widget = widget;
             }
+
             if (widget != null)
             {
-                BackgroundGrid.Opacity = widget.RequestedOpacity;
+                widget.SettingsClicked += Widget_SettingsClicked;
+                widget.RequestedOpacityChanged += Widget_RequestedOpacityChanged;
+                widget.GameBarDisplayModeChanged += Widget_GameBarDisplayModeChanged;
+
+                Widget_RequestedOpacityChanged(widget, null);
+                Widget_GameBarDisplayModeChanged(widget, null);
             }
+
             base.OnNavigatedTo(e);
+        }
+
+        private async void Widget_GameBarDisplayModeChanged(XboxGameBarWidget sender, object args)
+        {
+            //Need to adjust Disabled visual stype
+            await NoteTextBox.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (sender.GameBarDisplayMode == XboxGameBarDisplayMode.PinnedOnly && sender.Pinned)
+                {
+                    NoteTextBox.IsEnabled = false;
+                }
+                else
+                {
+                    NoteTextBox.IsEnabled = true;
+                }
+            });
         }
 
         private async void Widget_RequestedOpacityChanged(XboxGameBarWidget sender, object args)

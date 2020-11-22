@@ -42,22 +42,34 @@ namespace GameBarToDo.Views
                 ViewModel.Widget = widget;
             }
 
-            if (widget != null)
-            {
-                BackgroundGrid.Opacity = widget.RequestedOpacity;
-            }
-
             //Hook up events for when the ui is updated.
             if (widget != null)
             {
                 widget.SettingsClicked += Widget_SettingsClicked;
-
-                // subscribe for RequestedOpacityChanged events
                 widget.RequestedOpacityChanged += Widget_RequestedOpacityChanged;
+                widget.GameBarDisplayModeChanged += Widget_GameBarDisplayModeChanged;
+
+                Widget_RequestedOpacityChanged(widget, null);
+                Widget_GameBarDisplayModeChanged(widget, null);
             }
 
             //if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
             base.OnNavigatedTo(e);
+        }
+
+        private async void Widget_GameBarDisplayModeChanged(XboxGameBarWidget sender, object args)
+        {
+            await NewTaskGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (sender.GameBarDisplayMode == XboxGameBarDisplayMode.PinnedOnly && sender.Pinned)
+                {
+                    NewTaskGrid.Height = 0;
+                }
+                else
+                {
+                    NewTaskGrid.Height = 40;
+                }
+            });
         }
 
         private async void Widget_RequestedOpacityChanged(XboxGameBarWidget sender, object args)

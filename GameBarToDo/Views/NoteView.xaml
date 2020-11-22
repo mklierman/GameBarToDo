@@ -290,6 +290,7 @@
                 </StackPanel>
 
                 <TextBox
+                    x:Name="NoteTextBox"
                     Grid.Row="1"
                     Margin="8,8,8,8"
                     AcceptsReturn="True"
