@@ -52,7 +52,7 @@
                 <HomeMenuVisible>true</HomeMenuVisible>
                 <PinningSupported>true</PinningSupported>
 				<!-- Settings change-->
-				<SettingsSupported AppExtensionId="SettingsView" />
+				<SettingsSupported AppExtensionId="Settings" />
                 <Window>
                   <Size>
                     <Height>600</Height>
