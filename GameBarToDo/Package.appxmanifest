@@ -26,7 +26,6 @@
   <Resources>
     <Resource Language="x-generate"/>
   </Resources>
-
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
@@ -37,7 +36,7 @@
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="ms-resource:AppDescription"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>  
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
 
@@ -47,12 +46,13 @@
                              Id="MainPage"
                              DisplayName="Game Bar To-Do"
                              Description="A To-Do Application for the Xbox Game Bar"
-                             PublicFolder="GameBar">
-            <uap3:Properties>
+                             PublicFolder="Assets">
+            <uap3:Properties>	
               <GameBarWidget Type="Standard">
                 <HomeMenuVisible>true</HomeMenuVisible>
                 <PinningSupported>true</PinningSupported>
-                <SettingsSupported AppExtensionId="YourSettingsExtensionId" />
+				<!-- Settings change-->
+				<SettingsSupported AppExtensionId="SettingsView" />
                 <Window>
                   <Size>
                     <Height>600</Height>
@@ -69,6 +69,32 @@
             </uap3:Properties>
           </uap3:AppExtension>
         </uap3:Extension>
+
+		<!-- Additional code for settings widget-->
+		<uap3:Extension Category="windows.appExtension">
+			<uap3:AppExtension Name="microsoft.gameBarUIExtension"
+								Id="Settings"
+								DisplayName="About the app"
+								Description="Widget Settings Sample - Settings Description"
+								PublicFolder="Assets">
+				<uap3:Properties>
+					<GameBarWidget Type="Settings">
+						<Window>
+							<Size>
+								<Height>600</Height>
+								<Width>400</Width>
+								<MinHeight>150</MinHeight>
+								<MinWidth>200</MinWidth>
+							</Size>
+							<ResizeSupported>
+								<Horizontal>true</Horizontal>
+								<Vertical>true</Vertical>
+							</ResizeSupported>
+						</Window>
+					</GameBarWidget>
+				</uap3:Properties>
+			</uap3:AppExtension>
+		</uap3:Extension> 
       </Extensions>
     </Application>
   </Applications>
