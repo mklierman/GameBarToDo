@@ -152,9 +152,6 @@
     <Content Include="..\GameBarToDo\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
       <Link>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</Link>
     </Content>
-    <Content Include="..\GameBarToDo\Assets\StoreLogo.png">
-      <Link>Assets\StoreLogo.png</Link>
-    </Content>
     <Content Include="..\GameBarToDo\Assets\Wide310x150Logo.scale-200.png">
       <Link>Assets\Wide310x150Logo.scale-200.png</Link>
     </Content>
