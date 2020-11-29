@@ -9,13 +9,41 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock
-            Grid.Row="0"
-            Margin="8,8,8,8"
-            VerticalAlignment="Top"
-            FontSize="16"
-            FontWeight="Bold"
-            Text="Hello World"
-            TextAlignment="Center" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="-5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="10"
+                VerticalAlignment="Top"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="Hello World"
+                TextAlignment="Center" />
+
+            <TextBlock xml:space="preserve"
+                Grid.Row="1"
+                Margin="4"
+                Padding="1"
+                VerticalAlignment="Top"
+                FontSize="11"
+                FontWeight="Normal"   
+                TextAlignment="Left">
+    App Devlopers: Mark Lierman, Derek Drennan                               g
+
+    This app was created by two BYU-Idaho students as a senior project for
+    a Software Engineering Bachelors degree requirement.
+
+    
+            </TextBlock>
+
+        </Grid>
     </Grid>
 </Page>
