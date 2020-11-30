@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Navigation;
+using Windows.ApplicationModel.Activation;
 
 namespace GameBarToDo.Views
 {
@@ -65,6 +66,7 @@ namespace GameBarToDo.Views
 
         private async void Widget_SettingsClicked(XboxGameBarWidget sender, object args)
         {
+            //Changed to sender.Activate() from widget.Activate()
             await widget.ActivateSettingsAsync();
         }
 

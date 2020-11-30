@@ -96,7 +96,10 @@ namespace GameBarToDo
 
                         Window.Current.Closed += Widget1SettingsWindow_Closed;
                     }
-
+                    else
+                    {
+                        return;
+                    }
                     // Create Game Bar widget object which bootstraps the connection with Game Bar
                     //widget1 = new XboxGameBarWidget(
                     //    widgetArgs,
