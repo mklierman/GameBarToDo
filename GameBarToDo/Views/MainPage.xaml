@@ -357,7 +357,7 @@
                         MaxLength="45"
                         PlaceholderText="New List"
                         Style="{StaticResource TextBoxStyle1}"
-                        Text="{x:Bind ViewModel.NewListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="car&#xD;&#xA;"
                         TextWrapping="NoWrap" />
                     <Button
                         Grid.Column="1"

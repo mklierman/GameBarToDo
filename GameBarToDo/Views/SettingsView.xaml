@@ -25,7 +25,7 @@
                 VerticalAlignment="Top"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="Hello World"
+                Text="About the app"
                 TextAlignment="Center" />
 
             <TextBlock xml:space="preserve"
@@ -33,13 +33,23 @@
                 Margin="4"
                 Padding="1"
                 VerticalAlignment="Top"
-                FontSize="11"
+                FontSize="12"
                 FontWeight="Normal"   
                 TextAlignment="Left">
-    App Devlopers: Mark Lierman, Derek Drennan                               g
+    App Devlopers: Mark Lierman, Derek Drennan
 
-    This app was created by two BYU-Idaho students as a senior project for
-    a Software Engineering Bachelors degree requirement.
+    This app was created by two BYU-Idaho students as a senior project
+    for a Software Engineering Bachelors degree requirement.
+
+    This app will benefit laptop and single monitor PCs users. We
+    encourage users to experiment with the opacity settings in the Xbox
+    Game Bar menu so you can "pin" the app. This allows you to click
+    through the app, but it will not minimize as you interact with
+    other programs or games.
+                
+    Contact information:
+    Mark Liermarman: MarkLierman@Outlook.com
+    Derek Drennan: derdrennan@gmail.com
 
     
             </TextBlock>
