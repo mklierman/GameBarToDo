@@ -82,6 +82,7 @@
                                     Padding="15,0,0,0"
                                     Text="{x:Bind item_name}">
                                     <i:Interaction.Behaviors>
+                                        <!--  When a Task is checked as complete, grey it out  -->
                                         <core:DataTriggerBehavior Binding="{x:Bind is_complete, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="False">
                                             <core:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource ButtonForegroundThemeBrush}" />
                                         </core:DataTriggerBehavior>

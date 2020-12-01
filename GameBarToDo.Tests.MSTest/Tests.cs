@@ -1,8 +1,6 @@
-﻿using System;
-
-using GameBarToDo.ViewModels;
+﻿
 using GameBarToDo.Helpers;
-
+using GameBarToDo.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GameBarToDo.Tests.MSTest

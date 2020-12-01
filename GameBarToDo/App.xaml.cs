@@ -1,20 +1,10 @@
 ﻿using GameBarToDo.Views;
 using Microsoft.Gaming.XboxGameBar;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace GameBarToDo
@@ -30,8 +20,8 @@ namespace GameBarToDo
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         protected override void OnActivated(IActivatedEventArgs args)
@@ -39,7 +29,7 @@ namespace GameBarToDo
             XboxGameBarWidgetActivatedEventArgs widgetArgs = null;
             if (args.Kind == ActivationKind.Protocol)
             {
-                var protocolArgs = args as IProtocolActivatedEventArgs;
+                IProtocolActivatedEventArgs protocolArgs = args as IProtocolActivatedEventArgs;
                 string scheme = protocolArgs.Uri.Scheme;
                 if (scheme.Equals("ms-gamebarwidget"))
                 {
@@ -73,7 +63,7 @@ namespace GameBarToDo
                 //
                 if (widgetArgs.IsLaunchActivation)
                 {
-                    var rootFrame = new Frame();
+                    Frame rootFrame = new Frame();
                     rootFrame.NavigationFailed += OnNavigationFailed;
                     Window.Current.Content = rootFrame;
 
@@ -96,16 +86,6 @@ namespace GameBarToDo
 
                         Window.Current.Closed += Widget1SettingsWindow_Closed;
                     }
-                    else
-                    {
-                        return;
-                    }
-                    // Create Game Bar widget object which bootstraps the connection with Game Bar
-                    //widget1 = new XboxGameBarWidget(
-                    //    widgetArgs,
-                    //    Window.Current.CoreWindow,
-                    //    rootFrame);
-                    //rootFrame.Navigate(typeof(MainPage));
 
                     //Window.Current.Closed += Widget1Window_Closed;
 
@@ -118,12 +98,12 @@ namespace GameBarToDo
             }
         }
 
-
         private void Widget1Window_Closed(object sender, Windows.UI.Core.CoreWindowEventArgs e)
         {
             widget1 = null;
             Window.Current.Closed -= Widget1Window_Closed;
         }
+
         private void Widget1SettingsWindow_Closed(object sender, Windows.UI.Core.CoreWindowEventArgs e)
         {
             widget1Settings = null;
@@ -171,7 +151,7 @@ namespace GameBarToDo
 
                 Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
-                var desiredSize = new Windows.Foundation.Size(((float)320 * 96.0f / DPI), ((float)200 * 96.0f / DPI));
+                Windows.Foundation.Size desiredSize = new Windows.Foundation.Size((320 * 96.0f / DPI), (200 * 96.0f / DPI));
 
                 Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = desiredSize;
 
@@ -186,7 +166,7 @@ namespace GameBarToDo
         /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
@@ -205,7 +185,7 @@ namespace GameBarToDo
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
+            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
 
             widget1 = null;
             widget1Settings = null;

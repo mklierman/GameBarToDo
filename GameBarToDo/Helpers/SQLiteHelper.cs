@@ -1,28 +1,26 @@
 ﻿using GameBarToDo.Models;
 using Microsoft.Data.Sqlite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
-
 
 namespace GameBarToDo.Helpers
 {
     public class SQLiteHelper
     {
-        private string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Lists.db");
+        private readonly string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Lists.db");
         private bool tablesCreated = false;
 
         public SQLiteHelper()
         {
             InitializeDatabase();
         }
+
+        /// <summary>
+        /// Create needed tables if they don't already exist
+        /// </summary>
+        /// <returns>True or False</returns>
         public bool InitializeDatabase()
         {
             try
@@ -33,30 +31,30 @@ namespace GameBarToDo.Helpers
                 {
                     db.Open();
 
-                    String createTables = @"PRAGMA foreign_keys = ON;
+                    string createTables = @"PRAGMA foreign_keys = ON;
 
-CREATE TABLE IF NOT EXISTS Lists (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-list_name TEXT NOT NULL,
-created_date DEFAULT CURRENT_TIMESTAMP
-);
+                    CREATE TABLE IF NOT EXISTS Lists (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    list_name TEXT NOT NULL,
+                    created_date DEFAULT CURRENT_TIMESTAMP
+                    );
 
-CREATE TABLE IF NOT EXISTS List_items (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-list_ID INTEGER,
-item_name TEXT NOT NULL,
-is_complete BIT NOT NULL,
-created_date DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY(list_ID) REFERENCES Lists(id)
-);
+                    CREATE TABLE IF NOT EXISTS List_items (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    list_ID INTEGER,
+                    item_name TEXT NOT NULL,
+                    is_complete BIT NOT NULL,
+                    created_date DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY(list_ID) REFERENCES Lists(id)
+                    );
 
-CREATE TABLE IF NOT EXISTS Item_notes (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-item_ID INTEGER,
-note TEXT NOT NULL,
-created_date DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY(item_ID) REFERENCES List_items(id)
-);";
+                    CREATE TABLE IF NOT EXISTS Item_notes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    item_ID INTEGER,
+                    note TEXT NOT NULL,
+                    created_date DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY(item_ID) REFERENCES List_items(id)
+                    );";
 
                     SqliteCommand createTable = new SqliteCommand(createTables, db);
 
@@ -71,47 +69,6 @@ FOREIGN KEY(item_ID) REFERENCES List_items(id)
             }
         }
 
-        private bool RunSQLNonQuery(string sqlString, List<SqliteParameter> parameters)
-        {
-            if (tablesCreated)
-            {
-                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-                {
-                    db.Open();
-
-                    SqliteCommand sqliteCommand = new SqliteCommand(sqlString, db);
-                    foreach (SqliteParameter parameter in parameters)
-                    {
-                        sqliteCommand.Parameters.Add(parameter);
-                    }
-                    return Convert.ToBoolean(sqliteCommand.ExecuteNonQuery());
-                }
-            }
-            return false;
-        }
-
-        //Clear DB
-        public void EraseAllData()
-        {
-            if (tablesCreated)
-            {
-                using (SqliteConnection db =
-                  new SqliteConnection($"Filename={dbpath}"))
-                {
-                    db.Open();
-                    string deleteScript = @"
-DROP TABLE Item_notes;
-DROP TABLE List_items;
-DROP TABLE lists;";
-
-                    SqliteCommand selectCommand = new SqliteCommand(deleteScript, db);
-                    selectCommand.ExecuteNonQuery();
-                }
-
-                InitializeDatabase();
-            }
-        }
-
         //Make sure we don't have repeat lists
         private bool CheckIfListExistsByName(string listName)
         {
@@ -123,11 +80,10 @@ DROP TABLE lists;";
                     db.Open();
                     string selectScript = "Select count(*) from Lists where list_name = @listName";
 
-
                     SqliteCommand selectCommand = new SqliteCommand(selectScript, db);
                     selectCommand.Parameters.AddWithValue("@listName", listName);
 
-                    return (Int64)selectCommand.ExecuteScalar() == 1;
+                    return (long)selectCommand.ExecuteScalar() == 1;
                 }
             }
             return false;
@@ -144,18 +100,20 @@ DROP TABLE lists;";
                     db.Open();
                     string selectScript = "Select count(*) from Lists where id = @listID";
 
-
                     SqliteCommand selectCommand = new SqliteCommand(selectScript, db);
                     selectCommand.Parameters.AddWithValue("@listID", listID);
 
-
-                    return Convert.ToInt32 (selectCommand.ExecuteScalar()) == 1;
+                    return Convert.ToInt32(selectCommand.ExecuteScalar()) == 1;
                 }
             }
             return false;
         }
 
-        //User types in a new list name. We add this to the table here.
+        /// <summary>
+        /// User types in a new list name. We add this to the table here.
+        /// </summary>
+        /// <param name="listName">List to be added</param>
+        /// <returns>Success or failure message as string</returns>
         public string AddNewListToTable(string listName)
         {
             if (CheckIfListExistsByName(listName))
@@ -182,10 +140,15 @@ DROP TABLE lists;";
             return "Something went wrong";
         }
 
-        //User types in a new task while inside a list.
-        public string AddNewTask(string itemName, int listID)
+        /// <summary>
+        /// User types in a new task while inside a list.
+        /// </summary>
+        /// <param name="taskName">Task to be added</param>
+        /// <param name="listID">ListID for Task to be added to</param>
+        /// <returns>Success or failure message as string</returns>
+        public string AddNewTask(string taskName, int listID)
         {
-            if (CheckIfListExistsByID(listID) && itemName != null)
+            if (CheckIfListExistsByID(listID) && taskName != null)
             {
                 using (SqliteConnection db =
                    new SqliteConnection($"Filename={dbpath}"))
@@ -194,7 +157,7 @@ DROP TABLE lists;";
                     string insertScript = "INSERT INTO list_items (list_ID, item_name, is_complete) VALUES (@listID, @itemName, 0)";
 
                     SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
-                    insertStuff.Parameters.AddWithValue("@itemName", itemName);
+                    insertStuff.Parameters.AddWithValue("@itemName", taskName);
                     insertStuff.Parameters.AddWithValue("@listID", listID);
 
                     insertStuff.ExecuteNonQuery();
@@ -208,52 +171,13 @@ DROP TABLE lists;";
             }
         }
 
-        //public string AddNewItemToListItemTableByListName(string itemName, string listName)
-        //{
-        //    if (CheckIfListExistsByName(listName))
-        //    {
-        //        using (SqliteConnection db =
-        //           new SqliteConnection($"Filename={dbpath}"))
-        //        {
-        //            db.Open();
-        //            string insertScript = "INSERT INTO list_items (list_ID, item_name, is_complete) VALUES ((Select id from Lists where list_name = @listName), @itemName, 0)";
-
-        //            SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
-        //            insertStuff.Parameters.AddWithValue("@itemName", itemName);
-        //            insertStuff.Parameters.AddWithValue("@listName", listName);
-
-        //            insertStuff.ExecuteNonQuery();
-
-        //            return "Item Added";
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return "That list doesn't exist.";
-        //    }
-        //}
-
-        private bool CheckIfItemExistsByID(int itemID)
-        {
-            if (tablesCreated)
-            {
-                using (SqliteConnection db =
-                   new SqliteConnection($"Filename={dbpath}"))
-                {
-                    db.Open();
-                    string selectScript = "Select count(*) from Lists where id = @itemID";
-
-
-                    SqliteCommand selectCommand = new SqliteCommand(selectScript, db);
-                    selectCommand.Parameters.Add(new SqlParameter("@itemID", SqlDbType.Int).Value = itemID);
-
-                    return (int)selectCommand.ExecuteScalar() == 1;
-                }
-            }
-            return false;
-        }
-
-        public NoteModel AddNewNoteToItemTable(string noteText, int itemID)
+        /// <summary>
+        /// Adds a row to the Item_notes table
+        /// </summary>
+        /// <param name="noteText">The Note text to be added</param>
+        /// <param name="taskID">The taskID the Note should be added to</param>
+        /// <returns>A NoteModel object of the newly created note</returns>
+        public NoteModel AddNewNoteToItemTable(string noteText, int taskID)
         {
             if (tablesCreated)
             {
@@ -264,12 +188,11 @@ DROP TABLE lists;";
                     string insertScript = "INSERT INTO Item_notes (item_ID, note) VALUES (@itemID, @noteText)";
 
                     SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
-                    insertStuff.Parameters.AddWithValue("@itemID", itemID);
+                    insertStuff.Parameters.AddWithValue("@itemID", taskID);
                     insertStuff.Parameters.AddWithValue("@noteText", noteText);
                     insertStuff.ExecuteNonQuery();
-
                 }
-                return GetNote(null, itemID);
+                return GetNote(null, taskID);
             }
             else
             {
@@ -277,6 +200,10 @@ DROP TABLE lists;";
             }
         }
 
+        /// <summary>
+        /// Get a collection of the Main Lists
+        /// </summary>
+        /// <returns>Collection of ListModel objects</returns>
         public ObservableCollection<ListModel> GetUserLists()
         {
             if (tablesCreated)
@@ -335,40 +262,12 @@ DROP TABLE lists;";
             return null;
         }
 
-        public ListModel GetListByID(int id)
-        {
-            if (tablesCreated)
-            {
-                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-                {
-                    db.Open();
-                    string selectScript = "Select * from List_items where list_ID = @list_ID";
-                    SqliteCommand command = new SqliteCommand(selectScript, db);
-                    command.Parameters.AddWithValue("@list_ID", id);
-                    SqliteDataReader reader = command.ExecuteReader();
-                    ListModel listModel = new ListModel();
-                    while (reader.Read())
-                    {
-                            listModel.id = Convert.ToInt32(reader["id"]);
-                            listModel.list_name = Convert.ToString(reader["list_name"]);
-                            listModel.created_date = Convert.ToDateTime(reader["created_date"]);
-                    }
-                    return listModel;
-                }
-            }
-            return null;
-        }
-//"Select count(*) from Lists where id = @itemID";
-//CREATE TABLE IF NOT EXISTS List_items(
-//id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-//list_ID INTEGER,
-//item_name TEXT NOT NULL,
-//is_complete BIT NOT NULL,
-//created_date DEFAULT CURRENT_TIMESTAMP,
-//FOREIGN KEY(list_ID) REFERENCES Lists(id)
-//);
-
-        public TaskModel GetSpecificTask(string listItem)
+        /// <summary>
+        /// Gets a Task by Name
+        /// </summary>
+        /// <param name="taskName">The name of the Task to get</param>
+        /// <returns>A TaskModel object</returns>
+        public TaskModel GetSpecificTask(string taskName)
         {
             if (tablesCreated)
             {
@@ -378,7 +277,7 @@ DROP TABLE lists;";
                     string selectScript = "Select * from List_Items where item_name = @itemName ORDER BY id desc LIMIT 1;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
 
-                    command.Parameters.AddWithValue("@itemName", listItem);
+                    command.Parameters.AddWithValue("@itemName", taskName);
                     SqliteDataReader reader = command.ExecuteReader();
                     TaskModel listItemModel = new TaskModel();
                     while (reader.Read())
@@ -396,7 +295,11 @@ DROP TABLE lists;";
             return null;
         }
 
-
+        /// <summary>
+        /// Gets all Tasks for a given List
+        /// </summary>
+        /// <param name="listName">The name of the list to get Tasks for</param>
+        /// <returns>Collection of TaskModel objects</returns>
         public ObservableCollection<TaskModel> GetTasks(ListModel listName)
         {
             if (tablesCreated)
@@ -406,7 +309,6 @@ DROP TABLE lists;";
                     db.Open();
                     string selectScript = "Select * from List_items where list_ID = @list_ID;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
-                    //command.Parameters.Add(new SqlParameter("@name", SqlDbType.Text).Value = listName);
                     command.Parameters.AddWithValue("@list_ID", listName.id);
                     SqliteDataReader reader = command.ExecuteReader();
                     ObservableCollection<TaskModel> result = new ObservableCollection<TaskModel>();
@@ -421,8 +323,6 @@ DROP TABLE lists;";
                             list_id = Convert.ToInt32(reader["list_ID"])
                         };
                         result.Add(listModel);
-
-                        //result.Add(Convert.ToString(reader["item_name"]));
                     }
                     return result;
                 }
@@ -430,7 +330,13 @@ DROP TABLE lists;";
             return null;
         }
 
-        public NoteModel GetNote(TaskModel taskName, int itemID = -1)
+        /// <summary>
+        /// Gets a NoteModel object by Task name or ID
+        /// </summary>
+        /// <param name="taskName">Name of Task to get Note for</param>
+        /// <param name="taskID">ID of the Task to get Note for</param>
+        /// <returns>A NoteModel object</returns>
+        public NoteModel GetNote(TaskModel taskName, int taskID = -1)
         {
             if (tablesCreated)
             {
@@ -439,13 +345,13 @@ DROP TABLE lists;";
                     db.Open();
                     string selectScript = "Select * from Item_notes where item_ID = @item_ID;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
-                    if (itemID < 0)
+                    if (taskID < 0)
                     {
                         command.Parameters.AddWithValue("@item_ID", taskName.id);
                     }
                     else
                     {
-                        command.Parameters.AddWithValue("@item_ID", itemID);
+                        command.Parameters.AddWithValue("@item_ID", taskID);
                     }
                     SqliteDataReader reader = command.ExecuteReader();
                     NoteModel result = new NoteModel();
@@ -466,6 +372,11 @@ DROP TABLE lists;";
             return null;
         }
 
+        /// <summary>
+        /// Renames a List
+        /// </summary>
+        /// <param name="listModel">The ListModel object to be renamed</param>
+        /// <returns>True or False</returns>
         public bool RenameList(string newListName, int ListID)
         {
             if (tablesCreated)
@@ -500,7 +411,12 @@ DROP TABLE lists;";
             return false;
         }
 
-        public bool UpdateTask(TaskModel taskModel)
+        /// <summary>
+        /// Renames a Task
+        /// </summary>
+        /// <param name="taskModel">The Taskmodel object to be renamed</param>
+        /// <returns>True or False</returns>
+        public bool RenameTask(TaskModel taskModel)
         {
             if (tablesCreated)
             {
@@ -518,6 +434,12 @@ DROP TABLE lists;";
             return false;
         }
 
+        /// <summary>
+        /// Updates the content of a note
+        /// </summary>
+        /// <param name="note">The string content of the note</param>
+        /// <param name="TaskID">The ID of the Task containing the note</param>
+        /// <returns>Success bool</returns>
         public bool UpdateNote(string note, int TaskID)
         {
             if (tablesCreated)
@@ -535,28 +457,11 @@ DROP TABLE lists;";
             return false;
         }
 
-        public bool RenameTask(string newTaskName, int TaskID)
-        {
-            if (tablesCreated)
-            {
-                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-                {
-                    db.Open();
-                    string updateScript = "UPDATE List_items set item_name = @new_name where id = @TaskID; ";
-                    SqliteCommand command = new SqliteCommand(updateScript, db);
-                    command.Parameters.AddWithValue("@new_name", newTaskName);
-                    command.Parameters.AddWithValue("@TaskID", TaskID);
-                    return Convert.ToBoolean(command.ExecuteNonQuery());
-                }
-            }
-            return false;
-        }
-
         public bool DeleteList(ListModel listModel)
         {
             if (tablesCreated)
             {
-                DeleteAllListItems(listModel);
+                DeleteAllTasks(listModel);
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
@@ -569,11 +474,16 @@ DROP TABLE lists;";
             return false;
         }
 
+        /// <summary>
+        /// Deletes a Task from the db
+        /// </summary>
+        /// <param name="taskModel">Task to be deleted</param>
+        /// <returns>Success bool</returns>
         public bool DeleteTask(TaskModel taskModel)
         {
             if (tablesCreated)
             {
-                DeleteAllItemNotes(null, taskModel);
+                DeleteAllTaskNotes(null, taskModel);
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
@@ -586,6 +496,11 @@ DROP TABLE lists;";
             return false;
         }
 
+        /// <summary>
+        /// Deletes a Note from the db
+        /// </summary>
+        /// <param name="noteModel">Note to be deleted</param>
+        /// <returns>Success bool</returns>
         public bool DeleteItemNote(NoteModel noteModel)
         {
             if (tablesCreated)
@@ -602,11 +517,12 @@ DROP TABLE lists;";
             return false;
         }
 
-        public void DeleteAllListItems(ListModel listModel)
+        //Deletes all Tasks within a list. Needed when trying to delete a list
+        private void DeleteAllTasks(ListModel listModel)
         {
             if (tablesCreated)
             {
-                DeleteAllItemNotes(listModel);
+                DeleteAllTaskNotes(listModel);
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
@@ -618,7 +534,8 @@ DROP TABLE lists;";
             }
         }
 
-        public void DeleteAllItemNotes(ListModel listModel = null, TaskModel taskModel = null)
+        //Deletes all notes for a Task or for all Tasks in a list
+        private void DeleteAllTaskNotes(ListModel listModel = null, TaskModel taskModel = null)
         {
             if (tablesCreated)
             {
@@ -628,21 +545,28 @@ DROP TABLE lists;";
                     string deleteScript = "";
 
                     if (listModel != null)
+                    {
                         deleteScript = "DELETE FROM Item_notes WHERE item_id IN (SELECT id FROM List_items WHERE list_id = @id);";
+                    }
                     else if (taskModel != null)
+                    {
                         deleteScript = "DELETE FROM Item_notes WHERE item_id = @id;";
+                    }
 
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
 
                     if (listModel != null)
+                    {
                         command.Parameters.AddWithValue("@id", listModel.id);
+                    }
                     else if (taskModel != null)
+                    {
                         command.Parameters.AddWithValue("@id", taskModel.id);
+                    }
 
                     command.ExecuteNonQuery();
                 }
             }
         }
-
     }
 }

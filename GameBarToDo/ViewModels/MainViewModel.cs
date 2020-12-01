@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using GameBarToDo.Helpers;
+﻿using GameBarToDo.Helpers;
 using GameBarToDo.Models;
 using GameBarToDo.Views;
 using Microsoft.Gaming.XboxGameBar;
-using Microsoft.Xaml.Interactivity;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -15,71 +13,38 @@ namespace GameBarToDo.ViewModels
 {
     public class MainViewModel : Observable
     {
-        Frame rootFrame = Window.Current.Content as Frame;
-        private ObservableCollection<ListModel> _userLists;
-        private SQLiteHelper db = new SQLiteHelper();
-        private ListModel _selectedList;
         private string _newListName;
+        private ListModel _selectedList;
+        private ObservableCollection<ListModel> _userLists;
         private XboxGameBarWidget _widget;
-        public RelayCommand<string> NewListCommand { get; set; }
-        public static RelayCommand<ListModel> DeleteListCommand { get; private set; }
+        private readonly SQLiteHelper db = new SQLiteHelper();
+        private readonly Frame rootFrame = Window.Current.Content as Frame;
+
         public MainViewModel()
         {
-            //db.EraseAllData();
-            //db.LoadDummyData();
             DeleteListCommand = new RelayCommand<ListModel>(DeleteList);
             NewListCommand = new RelayCommand<string>(AddNewList);
             LoadUserLists();
         }
 
-        private async void DeleteList(ListModel list)
+        public static RelayCommand<ListModel> DeleteListCommand { get; private set; }
+        public RelayCommand<string> NewListCommand { get; set; }
+
+        /// <summary>
+        /// The name of a new List
+        /// </summary>
+        public string NewListName
         {
-            ContentDialog deleteConfirmationDialog = new ContentDialog
-            {
-                Title = String.Format("Delete {0} List", list.list_name),
-                Content = String.Format("Are you sure you want to delete the {0} list? This cannot be undone.", list.list_name),
-                PrimaryButtonText = "Delete",
-                CloseButtonText = "Cancel"
-            };
-
-            ContentDialogResult result = await deleteConfirmationDialog.ShowAsync();
-
-            if (result == ContentDialogResult.Primary)
-            {
-
-                db.DeleteList(list);
-                UserLists.Remove(list);
-            }
-            else
-            {
-                // The user clicked the CLoseButton, pressed ESC, Gamepad B, or the system back button.
-                // Do nothing.
-            }
+            get => _newListName;
+            set => Set(ref _newListName, value);
         }
 
-        public XboxGameBarWidget Widget
-        {
-            get { return _widget; }
-            set { Set(ref _widget, value); }
-        }
-
-        private void LoadUserLists()
-        {
-            UserLists = db.GetUserLists();
-        }
-
-        public ObservableCollection<ListModel> UserLists
-        {
-            get { return _userLists; }
-            set
-            {
-                Set(ref _userLists, value);
-            }
-        }
-
+        /// <summary>
+        /// The ListModel object for the item the user clicked on
+        /// </summary>
         public ListModel SelectedList
         {
-            get { return _selectedList; }
+            get => _selectedList;
             set
             {
                 Set(ref _selectedList, value);
@@ -91,18 +56,27 @@ namespace GameBarToDo.ViewModels
                         SelectedList,
                         Widget
                     };
-                    this.rootFrame.Navigate(typeof(ListItemsView), list);
+                    rootFrame.Navigate(typeof(ListItemsView), list);
                 }
             }
         }
 
-        public string NewListName
+        /// <summary>
+        /// The collection of all the ListModel objects
+        /// </summary>
+        public ObservableCollection<ListModel> UserLists
         {
-            get { return _newListName; }
-            set
-            {
-                Set(ref _newListName, value);
-            }
+            get => _userLists;
+            set => Set(ref _userLists, value);
+        }
+
+        /// <summary>
+        /// The Xbox Game Bar Widget to be passed around pages
+        /// </summary>
+        public XboxGameBarWidget Widget
+        {
+            get => _widget;
+            set => Set(ref _widget, value);
         }
 
         /// <summary>
@@ -118,8 +92,7 @@ namespace GameBarToDo.ViewModels
                 {
                     ContentDialog listAlreadyExistsDialog = new ContentDialog
                     {
-
-                        Content = String.Format("A list by the name {0} already exists.", value),
+                        Content = string.Format("A list by the name {0} already exists.", value),
                         CloseButtonText = "Ok"
                     };
                     ContentDialogResult result = await listAlreadyExistsDialog.ShowAsync();
@@ -130,6 +103,42 @@ namespace GameBarToDo.ViewModels
                     UserLists.Add(db.GetSpecificList(value));
                 }
             }
+        }
+
+        /// <summary>
+        /// Delete a List
+        /// </summary>
+        /// <param name="list">The List to be deleted</param>
+        private async void DeleteList(ListModel list)
+        {
+            ContentDialog deleteConfirmationDialog = new ContentDialog
+            {
+                Title = string.Format("Delete {0} List", list.list_name),
+                Content = string.Format("Are you sure you want to delete the {0} list? This cannot be undone.", list.list_name),
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel"
+            };
+
+            ContentDialogResult result = await deleteConfirmationDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                db.DeleteList(list);
+                UserLists.Remove(list);
+            }
+            else
+            {
+                // The user clicked the CloseButton, pressed ESC, Gamepad B, or the system back button.
+                // Do nothing.
+            }
+        }
+
+        /// <summary>
+        /// Get all the lists
+        /// </summary>
+        private void LoadUserLists()
+        {
+            UserLists = db.GetUserLists();
         }
     }
 }

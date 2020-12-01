@@ -23,7 +23,6 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
                     <Button
                         Margin="8,4,4,4"
-                        Click="Button_Click"
                         Command="{x:Bind ViewModel.BackCommand}"
                         UseLayoutRounding="False">
                         <SymbolIcon Symbol="Back" />

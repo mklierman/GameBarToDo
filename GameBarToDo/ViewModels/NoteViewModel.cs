@@ -2,9 +2,7 @@
 using GameBarToDo.Models;
 using GameBarToDo.Views;
 using Microsoft.Gaming.XboxGameBar;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -12,58 +10,37 @@ namespace GameBarToDo.ViewModels
 {
     public class NoteViewModel : Observable
     {
-        private Frame rootFrame = Window.Current.Content as Frame;
         private NoteModel _note;
-        private SQLiteHelper db = new SQLiteHelper();
-        private string _taskHeader;
         private string _noteText;
+        private ListModel _selectedList;
+        private string _taskHeader;
         private int _taskID;
         private XboxGameBarWidget _widget;
-        private ListModel _selectedList;
-
-        public RelayCommand BackCommand { get; private set; }
+        private readonly SQLiteHelper db = new SQLiteHelper();
+        private readonly Frame rootFrame = Window.Current.Content as Frame;
 
         public NoteViewModel()
         {
             BackCommand = new RelayCommand(GoBack);
         }
 
-        public void GoBack()
-        {
-            List<object> list = new List<object>
-                    {
-                        SelectedList,
-                        Widget
-                    };
-            this.rootFrame.Navigate(typeof(ListItemsView), list);
-        }
-        public XboxGameBarWidget Widget
-        {
-            get { return _widget; }
-            set { Set(ref _widget, value); }
-        }
+        public RelayCommand BackCommand { get; private set; }
 
+        /// <summary>
+        /// The NoteModel object for the page
+        /// </summary>
         public NoteModel Note
         {
-            get { return _note; }
-            set
-            {
-                Set(ref _note, value);
-            }
+            get => _note;
+            set => Set(ref _note, value);
         }
 
-        public ListModel SelectedList
-        {
-            get { return _selectedList; }
-            set
-            {
-                Set(ref _selectedList, value);
-            }
-        }
-
+        /// <summary>
+        /// The text the user types for the Note
+        /// </summary>
         public string NoteText
         {
-            get { return _noteText; }
+            get => _noteText;
             set
             {
                 Set(ref _noteText, value);
@@ -71,29 +48,61 @@ namespace GameBarToDo.ViewModels
             }
         }
 
-        public int TaskID
+        /// <summary>
+        /// The ListModel object associated with the current note
+        /// </summary>
+        public ListModel SelectedList
         {
-            get { return _taskID; }
-            set
-            {
-                Set(ref _taskID, value);
-            }
+            get => _selectedList;
+            set => Set(ref _selectedList, value);
         }
 
+        /// <summary>
+        /// The Task Name for the node used as the header
+        /// </summary>
         public string TaskHeader
         {
-            get { return _taskHeader; }
-            set
-            {
-                Set(ref _taskHeader, value);
-                db.RenameTask(value, TaskID);
-            }
+            get => _taskHeader;
+            set => Set(ref _taskHeader, value); db.RenameTask(value, TaskID);
         }
 
+        /// <summary>
+        /// The ID for the Task associated with the current note
+        /// </summary>
+        public int TaskID
+        {
+            get => _taskID;
+            set => Set(ref _taskID, value);
+        }
+
+        /// <summary>
+        /// The Xbox Game Bar Widget to be passed around pages
+        /// </summary>
+        public XboxGameBarWidget Widget
+        {
+            get => _widget;
+            set => Set(ref _widget, value);
+                
+        }
+
+        /// <summary>
+        /// Returns to the list of Tasks for the current List
+        /// </summary>
+        public void GoBack()
+        {
+            List<object> list = new List<object>
+                    {
+                        SelectedList,
+                        Widget
+                    };
+            rootFrame.Navigate(typeof(ListItemsView), list);
+        }
+        /// <summary>
+        /// Updates the note with the current Note text
+        /// </summary>
         private void UpdateNote()
         {
-            db.UpdateNote(NoteText ,TaskID);
+            db.UpdateNote(NoteText, TaskID);
         }
-
     }
 }

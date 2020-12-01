@@ -8,6 +8,9 @@ namespace GameBarToDo.Helpers
     {
     }
 
+    /// <summary>
+    /// Used for R-Click actions
+    /// </summary>
     public class OpenFlyoutAction : DependencyObject, IAction
     {
         public object Execute(object sender, object parameter)

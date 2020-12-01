@@ -1,16 +1,14 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GameBarToDo")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("GameBar ToDo")]
+[assembly: AssemblyDescription("An Xbox Game Bar compatible To-Do List")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GameBarToDo")]
+[assembly: AssemblyProduct("GameBar ToDo")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
