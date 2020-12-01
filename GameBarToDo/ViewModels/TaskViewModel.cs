@@ -40,7 +40,11 @@ namespace GameBarToDo.ViewModels
         public string ListHeader
         {
             get => _listHeader;
-            set => Set(ref _listHeader, value);  db.RenameList(value, SelectedList.id);
+            set
+            {
+                Set(ref _listHeader, value);
+                db.RenameList(value, SelectedList.id);
+            }
         }
 
 
@@ -128,7 +132,7 @@ namespace GameBarToDo.ViewModels
         public void GoBack()
         {
             rootFrame.Navigate(typeof(MainPage), Widget);
-               
+
         }
 
         private void AddNewTask(string value)
@@ -154,7 +158,7 @@ namespace GameBarToDo.ViewModels
 
         private void UpdateTask(TaskModel task)
         {
-            db.RenameTask(task);
+            db.UpdateTask(task);
 
             foreach (TaskModel _task in Tasks)
             {
@@ -166,3 +170,4 @@ namespace GameBarToDo.ViewModels
         }
     }
 }
+
