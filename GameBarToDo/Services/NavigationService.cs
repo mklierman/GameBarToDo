@@ -52,7 +52,10 @@ namespace GameBarToDo.Services
             return false;
         }
 
-        public static void GoForward() => Frame.GoForward();
+        public static void GoForward()
+        {
+            Frame.GoForward();
+        }
 
         public static bool Navigate(Type pageType, object parameter = null, NavigationTransitionInfo infoOverride = null)
         {
@@ -64,7 +67,7 @@ namespace GameBarToDo.Services
             // Don't open the same page multiple times
             if (Frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(_lastParamUsed)))
             {
-                var navigationResult = Frame.Navigate(pageType, parameter, infoOverride);
+                bool navigationResult = Frame.Navigate(pageType, parameter, infoOverride);
                 if (navigationResult)
                 {
                     _lastParamUsed = parameter;
@@ -80,7 +83,9 @@ namespace GameBarToDo.Services
 
         public static bool Navigate<T>(object parameter = null, NavigationTransitionInfo infoOverride = null)
             where T : Page
-            => Navigate(typeof(T), parameter, infoOverride);
+        {
+            return Navigate(typeof(T), parameter, infoOverride);
+        }
 
         private static void RegisterFrameEvents()
         {
@@ -100,8 +105,14 @@ namespace GameBarToDo.Services
             }
         }
 
-        private static void Frame_NavigationFailed(object sender, NavigationFailedEventArgs e) => NavigationFailed?.Invoke(sender, e);
+        private static void Frame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            NavigationFailed?.Invoke(sender, e);
+        }
 
-        private static void Frame_Navigated(object sender, NavigationEventArgs e) => Navigated?.Invoke(sender, e);
+        private static void Frame_Navigated(object sender, NavigationEventArgs e)
+        {
+            Navigated?.Invoke(sender, e);
+        }
     }
 }

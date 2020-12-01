@@ -17,15 +17,15 @@ namespace GameBarToDo.ViewModels
         private TaskModel _selectedTask;
         private ObservableCollection<TaskModel> _tasks;
         private XboxGameBarWidget _widget;
-        private SQLiteHelper db = new SQLiteHelper();
-        private Frame rootFrame = Window.Current.Content as Frame;
+        private readonly SQLiteHelper db = new SQLiteHelper();
+        private readonly Frame rootFrame = Window.Current.Content as Frame;
 
         public TaskViewModel()
         {
             //Initialize the Relay Commands
-            BackCommand        = new RelayCommand(GoBack);
-            NewTaskCommand     = new RelayCommand<string>(AddNewTask);
-            DeleteTaskCommand  = new RelayCommand<TaskModel>(DeleteTask);
+            BackCommand = new RelayCommand(GoBack);
+            NewTaskCommand = new RelayCommand<string>(AddNewTask);
+            DeleteTaskCommand = new RelayCommand<TaskModel>(DeleteTask);
             ItemCheckedCommand = new RelayCommand<TaskModel>(UpdateTask);
         }
 
@@ -39,8 +39,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public string ListHeader
         {
-            get { return _listHeader; }
-            set { Set(ref _listHeader, value); }
+            get => _listHeader;
+            set => Set(ref _listHeader, value);
         }
 
 
@@ -49,11 +49,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public string NewTaskName
         {
-            get { return _newTaskName; }
-            set
-            {
-                Set(ref _newTaskName, value);
-            }
+            get => _newTaskName;
+            set => Set(ref _newTaskName, value);
         }
 
         /// <summary>
@@ -61,7 +58,7 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public ListModel SelectedList
         {
-            get { return _selectedList; }
+            get => _selectedList;
             set
             {
                 Set(ref _selectedList, value);
@@ -78,7 +75,7 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public TaskModel SelectedTask
         {
-            get { return _selectedTask; }
+            get => _selectedTask;
             set
             {
                 Set(ref _selectedTask, value);
@@ -102,7 +99,7 @@ namespace GameBarToDo.ViewModels
                         SelectedList,
                         Widget
                     };
-                    this.rootFrame.Navigate(typeof(NoteView), list);
+                    rootFrame.Navigate(typeof(NoteView), list);
                 }
             }
         }
@@ -112,11 +109,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public ObservableCollection<TaskModel> Tasks
         {
-            get { return _tasks; }
-            set
-            {
-                Set(ref _tasks, value);
-            }
+            get => _tasks;
+            set => Set(ref _tasks, value);
         }
 
         /// <summary>
@@ -124,8 +118,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public XboxGameBarWidget Widget
         {
-            get { return _widget; }
-            set { Set(ref _widget, value); }
+            get => _widget;
+            set => Set(ref _widget, value);
         }
 
         /// <summary>
@@ -133,7 +127,7 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public void GoBack()
         {
-            this.rootFrame.Navigate(typeof(MainPage), Widget);
+            rootFrame.Navigate(typeof(MainPage), Widget);
         }
 
         private void AddNewTask(string value)

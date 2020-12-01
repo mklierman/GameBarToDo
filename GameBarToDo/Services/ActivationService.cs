@@ -1,10 +1,8 @@
-﻿using System;
+﻿using GameBarToDo.Activation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using GameBarToDo.Activation;
-
 using Windows.ApplicationModel.Activation;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -19,7 +17,7 @@ namespace GameBarToDo.Services
     {
         private readonly App _app;
         private readonly Type _defaultNavItem;
-        private Lazy<UIElement> _shell;
+        private readonly Lazy<UIElement> _shell;
 
         private object _lastActivationArgs;
 
@@ -72,7 +70,7 @@ namespace GameBarToDo.Services
 
         private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
         {
-            var keyboardAccelerator = new KeyboardAccelerator() { Key = key };
+            KeyboardAccelerator keyboardAccelerator = new KeyboardAccelerator() { Key = key };
             if (modifiers.HasValue)
             {
                 keyboardAccelerator.Modifiers = modifiers.Value;
@@ -84,7 +82,7 @@ namespace GameBarToDo.Services
 
         private static void OnKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
-            var result = NavigationService.GoBack();
+            bool result = NavigationService.GoBack();
             args.Handled = result;
         }
 
@@ -95,7 +93,7 @@ namespace GameBarToDo.Services
 
         private async Task HandleActivationAsync(object activationArgs)
         {
-            var activationHandler = GetActivationHandlers()
+            ActivationHandler activationHandler = GetActivationHandlers()
                                                 .FirstOrDefault(h => h.CanHandle(activationArgs));
 
             if (activationHandler != null)
@@ -105,7 +103,7 @@ namespace GameBarToDo.Services
 
             if (IsInteractive(activationArgs))
             {
-                var defaultHandler = new DefaultActivationHandler(_defaultNavItem);
+                DefaultActivationHandler defaultHandler = new DefaultActivationHandler(_defaultNavItem);
                 if (defaultHandler.CanHandle(activationArgs))
                 {
                     await defaultHandler.HandleAsync(activationArgs);

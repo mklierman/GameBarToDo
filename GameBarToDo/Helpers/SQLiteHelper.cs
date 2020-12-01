@@ -1,10 +1,7 @@
 ﻿using GameBarToDo.Models;
 using Microsoft.Data.Sqlite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using Windows.Storage;
 
@@ -12,7 +9,7 @@ namespace GameBarToDo.Helpers
 {
     public class SQLiteHelper
     {
-        private string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Lists.db");
+        private readonly string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Lists.db");
         private bool tablesCreated = false;
 
         public SQLiteHelper()
@@ -34,7 +31,7 @@ namespace GameBarToDo.Helpers
                 {
                     db.Open();
 
-                    String createTables = @"PRAGMA foreign_keys = ON;
+                    string createTables = @"PRAGMA foreign_keys = ON;
 
                     CREATE TABLE IF NOT EXISTS Lists (
                     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -86,7 +83,7 @@ namespace GameBarToDo.Helpers
                     SqliteCommand selectCommand = new SqliteCommand(selectScript, db);
                     selectCommand.Parameters.AddWithValue("@listName", listName);
 
-                    return (Int64)selectCommand.ExecuteScalar() == 1;
+                    return (long)selectCommand.ExecuteScalar() == 1;
                 }
             }
             return false;
@@ -536,16 +533,24 @@ namespace GameBarToDo.Helpers
                     string deleteScript = "";
 
                     if (listModel != null)
+                    {
                         deleteScript = "DELETE FROM Item_notes WHERE item_id IN (SELECT id FROM List_items WHERE list_id = @id);";
+                    }
                     else if (taskModel != null)
+                    {
                         deleteScript = "DELETE FROM Item_notes WHERE item_id = @id;";
+                    }
 
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
 
                     if (listModel != null)
+                    {
                         command.Parameters.AddWithValue("@id", listModel.id);
+                    }
                     else if (taskModel != null)
+                    {
                         command.Parameters.AddWithValue("@id", taskModel.id);
+                    }
 
                     command.ExecuteNonQuery();
                 }

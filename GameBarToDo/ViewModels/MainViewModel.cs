@@ -17,8 +17,8 @@ namespace GameBarToDo.ViewModels
         private ListModel _selectedList;
         private ObservableCollection<ListModel> _userLists;
         private XboxGameBarWidget _widget;
-        private SQLiteHelper db = new SQLiteHelper();
-        private Frame rootFrame = Window.Current.Content as Frame;
+        private readonly SQLiteHelper db = new SQLiteHelper();
+        private readonly Frame rootFrame = Window.Current.Content as Frame;
 
         public MainViewModel()
         {
@@ -35,11 +35,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public string NewListName
         {
-            get { return _newListName; }
-            set
-            {
-                Set(ref _newListName, value);
-            }
+            get => _newListName;
+            set => Set(ref _newListName, value);
         }
 
         /// <summary>
@@ -47,7 +44,7 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public ListModel SelectedList
         {
-            get { return _selectedList; }
+            get => _selectedList;
             set
             {
                 Set(ref _selectedList, value);
@@ -59,7 +56,7 @@ namespace GameBarToDo.ViewModels
                         SelectedList,
                         Widget
                     };
-                    this.rootFrame.Navigate(typeof(ListItemsView), list);
+                    rootFrame.Navigate(typeof(ListItemsView), list);
                 }
             }
         }
@@ -69,11 +66,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public ObservableCollection<ListModel> UserLists
         {
-            get { return _userLists; }
-            set
-            {
-                Set(ref _userLists, value);
-            }
+            get => _userLists;
+            set => Set(ref _userLists, value);
         }
 
         /// <summary>
@@ -81,8 +75,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public XboxGameBarWidget Widget
         {
-            get { return _widget; }
-            set { Set(ref _widget, value); }
+            get => _widget;
+            set => Set(ref _widget, value);
         }
 
         /// <summary>
@@ -98,7 +92,7 @@ namespace GameBarToDo.ViewModels
                 {
                     ContentDialog listAlreadyExistsDialog = new ContentDialog
                     {
-                        Content = String.Format("A list by the name {0} already exists.", value),
+                        Content = string.Format("A list by the name {0} already exists.", value),
                         CloseButtonText = "Ok"
                     };
                     ContentDialogResult result = await listAlreadyExistsDialog.ShowAsync();
@@ -119,8 +113,8 @@ namespace GameBarToDo.ViewModels
         {
             ContentDialog deleteConfirmationDialog = new ContentDialog
             {
-                Title = String.Format("Delete {0} List", list.list_name),
-                Content = String.Format("Are you sure you want to delete the {0} list? This cannot be undone.", list.list_name),
+                Title = string.Format("Delete {0} List", list.list_name),
+                Content = string.Format("Are you sure you want to delete the {0} list? This cannot be undone.", list.list_name),
                 PrimaryButtonText = "Delete",
                 CloseButtonText = "Cancel"
             };

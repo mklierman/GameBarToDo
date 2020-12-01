@@ -3,7 +3,6 @@ using GameBarToDo.ViewModels;
 using Microsoft.Gaming.XboxGameBar;
 using System;
 using System.Collections.Generic;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -16,7 +15,7 @@ namespace GameBarToDo.Views
 
         public NoteView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

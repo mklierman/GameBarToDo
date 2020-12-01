@@ -20,8 +20,8 @@ namespace GameBarToDo
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         protected override void OnActivated(IActivatedEventArgs args)
@@ -29,7 +29,7 @@ namespace GameBarToDo
             XboxGameBarWidgetActivatedEventArgs widgetArgs = null;
             if (args.Kind == ActivationKind.Protocol)
             {
-                var protocolArgs = args as IProtocolActivatedEventArgs;
+                IProtocolActivatedEventArgs protocolArgs = args as IProtocolActivatedEventArgs;
                 string scheme = protocolArgs.Uri.Scheme;
                 if (scheme.Equals("ms-gamebarwidget"))
                 {
@@ -63,7 +63,7 @@ namespace GameBarToDo
                 //
                 if (widgetArgs.IsLaunchActivation)
                 {
-                    var rootFrame = new Frame();
+                    Frame rootFrame = new Frame();
                     rootFrame.NavigationFailed += OnNavigationFailed;
                     Window.Current.Content = rootFrame;
 
@@ -151,7 +151,7 @@ namespace GameBarToDo
 
                 Windows.UI.ViewManagement.ApplicationView.PreferredLaunchWindowingMode = Windows.UI.ViewManagement.ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
-                var desiredSize = new Windows.Foundation.Size(((float)320 * 96.0f / DPI), ((float)200 * 96.0f / DPI));
+                Windows.Foundation.Size desiredSize = new Windows.Foundation.Size((320 * 96.0f / DPI), (200 * 96.0f / DPI));
 
                 Windows.UI.ViewManagement.ApplicationView.PreferredLaunchViewSize = desiredSize;
 
@@ -185,7 +185,7 @@ namespace GameBarToDo
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            var deferral = e.SuspendingOperation.GetDeferral();
+            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
 
             widget1 = null;
             widget1Settings = null;

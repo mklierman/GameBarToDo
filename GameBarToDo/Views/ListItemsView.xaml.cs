@@ -16,7 +16,7 @@ namespace GameBarToDo.Views
 
         public ListItemsView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

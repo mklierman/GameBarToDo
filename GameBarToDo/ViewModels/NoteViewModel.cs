@@ -16,8 +16,8 @@ namespace GameBarToDo.ViewModels
         private string _taskHeader;
         private int _taskID;
         private XboxGameBarWidget _widget;
-        private SQLiteHelper db = new SQLiteHelper();
-        private Frame rootFrame = Window.Current.Content as Frame;
+        private readonly SQLiteHelper db = new SQLiteHelper();
+        private readonly Frame rootFrame = Window.Current.Content as Frame;
 
         public NoteViewModel()
         {
@@ -31,11 +31,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public NoteModel Note
         {
-            get { return _note; }
-            set
-            {
-                Set(ref _note, value);
-            }
+            get => _note;
+            set => Set(ref _note, value);
         }
 
         /// <summary>
@@ -43,7 +40,7 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public string NoteText
         {
-            get { return _noteText; }
+            get => _noteText;
             set
             {
                 Set(ref _noteText, value);
@@ -56,11 +53,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public ListModel SelectedList
         {
-            get { return _selectedList; }
-            set
-            {
-                Set(ref _selectedList, value);
-            }
+            get => _selectedList;
+            set => Set(ref _selectedList, value);
         }
 
         /// <summary>
@@ -68,8 +62,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public string TaskHeader
         {
-            get { return _taskHeader; }
-            set { Set(ref _taskHeader, value); }
+            get => _taskHeader;
+            set => Set(ref _taskHeader, value);
         }
 
         /// <summary>
@@ -77,11 +71,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public int TaskID
         {
-            get { return _taskID; }
-            set
-            {
-                Set(ref _taskID, value);
-            }
+            get => _taskID;
+            set => Set(ref _taskID, value);
         }
 
         /// <summary>
@@ -89,8 +80,8 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public XboxGameBarWidget Widget
         {
-            get { return _widget; }
-            set { Set(ref _widget, value); }
+            get => _widget;
+            set => Set(ref _widget, value);
         }
 
         /// <summary>
@@ -103,7 +94,7 @@ namespace GameBarToDo.ViewModels
                         SelectedList,
                         Widget
                     };
-            this.rootFrame.Navigate(typeof(ListItemsView), list);
+            rootFrame.Navigate(typeof(ListItemsView), list);
         }
         /// <summary>
         /// Updates the note with the current Note text

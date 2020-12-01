@@ -1,8 +1,6 @@
-﻿using System;
+﻿using GameBarToDo.Services;
+using System;
 using System.Threading.Tasks;
-
-using GameBarToDo.Services;
-
 using Windows.ApplicationModel.Activation;
 
 namespace GameBarToDo.Activation
