@@ -32,7 +32,7 @@
                     VerticalAlignment="Top"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Game Bar To Do"
+                    Text="My Lists"
                     TextAlignment="Center" />
 
                 <ListView

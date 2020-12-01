@@ -1,25 +1,22 @@
-﻿using System;
-using System.Diagnostics;
-using GameBarToDo.ViewModels;
+﻿using GameBarToDo.ViewModels;
 using Microsoft.Gaming.XboxGameBar;
-using Microsoft.Xaml.Interactivity;
+using System;
 using Windows.System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Navigation;
 
 namespace GameBarToDo.Views
 {
     public sealed partial class MainPage : Page
     {
-        public MainViewModel ViewModel { get; } = new MainViewModel();
         private XboxGameBarWidget widget = null;
 
         public MainPage()
         {
             InitializeComponent();
         }
+
+        public MainViewModel ViewModel { get; } = new MainViewModel();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -38,10 +35,19 @@ namespace GameBarToDo.Views
             }
         }
 
+        private void TextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                ViewModel.NewListCommand.Execute(ViewModel.NewListName);
+            }
+        }
+
         private async void Widget_GameBarDisplayModeChanged(XboxGameBarWidget sender, object args)
         {
             await NewListGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
+                //If the widget is pinned and the overlay isn't on, hide the New List grid.
                 if (sender.GameBarDisplayMode == XboxGameBarDisplayMode.PinnedOnly && sender.Pinned)
                 {
                     NewListGrid.Height = 0;
@@ -66,20 +72,6 @@ namespace GameBarToDo.Views
         private async void Widget_SettingsClicked(XboxGameBarWidget sender, object args)
         {
             await widget.ActivateSettingsAsync();
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Enter)
-            {
-                ViewModel.NewListCommand.Execute(ViewModel.NewListName);
-            }
-            TextBox textBox = (TextBox)sender;
         }
     }
 }

@@ -1,20 +1,10 @@
 ﻿using GameBarToDo.Views;
 using Microsoft.Gaming.XboxGameBar;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace GameBarToDo
@@ -97,13 +87,6 @@ namespace GameBarToDo
                         Window.Current.Closed += Widget1SettingsWindow_Closed;
                     }
 
-                    // Create Game Bar widget object which bootstraps the connection with Game Bar
-                    //widget1 = new XboxGameBarWidget(
-                    //    widgetArgs,
-                    //    Window.Current.CoreWindow,
-                    //    rootFrame);
-                    //rootFrame.Navigate(typeof(MainPage));
-
                     //Window.Current.Closed += Widget1Window_Closed;
 
                     Window.Current.Activate();
@@ -115,12 +98,12 @@ namespace GameBarToDo
             }
         }
 
-
         private void Widget1Window_Closed(object sender, Windows.UI.Core.CoreWindowEventArgs e)
         {
             widget1 = null;
             Window.Current.Closed -= Widget1Window_Closed;
         }
+
         private void Widget1SettingsWindow_Closed(object sender, Windows.UI.Core.CoreWindowEventArgs e)
         {
             widget1Settings = null;
@@ -183,7 +166,7 @@ namespace GameBarToDo
         /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
