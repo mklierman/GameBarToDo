@@ -83,7 +83,11 @@ namespace GameBarToDo.ViewModels
         public string TaskHeader
         {
             get { return _taskHeader; }
-            set { Set(ref _taskHeader, value); }
+            set
+            {
+                Set(ref _taskHeader, value);
+                db.RenameTask(value, TaskID);
+            }
         }
 
         private void UpdateNote()

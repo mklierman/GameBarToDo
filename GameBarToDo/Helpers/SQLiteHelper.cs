@@ -466,6 +466,23 @@ DROP TABLE lists;";
             return null;
         }
 
+        public bool RenameList(string newListName, int ListID)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string updateScript = "UPDATE Lists set list_name = @new_name where id = @id; ";
+                    SqliteCommand command = new SqliteCommand(updateScript, db);
+                    command.Parameters.AddWithValue("@new_name", newListName);
+                    command.Parameters.AddWithValue("@id", ListID);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
         public bool UpdateList(ListModel listModel)
         {
             if (tablesCreated)
@@ -511,6 +528,23 @@ DROP TABLE lists;";
                     string updateScript = "UPDATE Item_notes SET note = @note where item_ID = @TaskID; ";
                     SqliteCommand command = new SqliteCommand(updateScript, db);
                     command.Parameters.AddWithValue("@note", note);
+                    command.Parameters.AddWithValue("@TaskID", TaskID);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
+        public bool RenameTask(string newTaskName, int TaskID)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string updateScript = "UPDATE List_items set item_name = @new_name where id = @TaskID; ";
+                    SqliteCommand command = new SqliteCommand(updateScript, db);
+                    command.Parameters.AddWithValue("@new_name", newTaskName);
                     command.Parameters.AddWithValue("@TaskID", TaskID);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
                 }

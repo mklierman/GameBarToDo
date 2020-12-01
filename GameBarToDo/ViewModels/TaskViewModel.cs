@@ -132,7 +132,11 @@ namespace GameBarToDo.ViewModels
         public string ListHeader
         {
             get { return _listHeader; }
-            set { Set(ref _listHeader, value); }
+            set
+            {
+                Set(ref _listHeader, value);
+                db.RenameList(value, SelectedList.id);
+            }
         }
 
         private void AddNewTask(string value)
