@@ -27,18 +27,19 @@
                         UseLayoutRounding="False">
                         <SymbolIcon Symbol="Back" />
                     </Button>
-                    <TextBlock
+                    <TextBox
+                        x:Name="NewTaskGrid"
+                        Grid.Row="1"
                         Margin="8"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="{x:Bind ViewModel.TaskHeader}"
-                        TextAlignment="Center" />
+                        MaxLength="45"
+                        Style="{StaticResource TextBoxStyle1}"
+                        Text="{x:Bind ViewModel.TaskHeader, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                 </StackPanel>
 
                 <TextBox
                     x:Name="NoteTextBox"
                     Grid.Row="1"
-                    Margin="8,8,8,8"
+                    Margin="8"
                     AcceptsReturn="True"
                     PlaceholderText="Notes"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"

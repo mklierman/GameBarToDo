@@ -63,7 +63,7 @@ namespace GameBarToDo.ViewModels
         public string TaskHeader
         {
             get => _taskHeader;
-            set => Set(ref _taskHeader, value);
+            set => Set(ref _taskHeader, value); db.RenameTask(value, TaskID);
         }
 
         /// <summary>
@@ -82,6 +82,7 @@ namespace GameBarToDo.ViewModels
         {
             get => _widget;
             set => Set(ref _widget, value);
+                
         }
 
         /// <summary>

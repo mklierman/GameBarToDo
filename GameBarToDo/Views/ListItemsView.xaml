@@ -29,12 +29,12 @@
                     <Button Margin="8,4,4,4" Command="{x:Bind ViewModel.BackCommand}">
                         <SymbolIcon Symbol="Back" />
                     </Button>
-                    <TextBlock
+                    <TextBox
+                        x:Name="NewListGrid"
                         Margin="8"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="{x:Bind ViewModel.ListHeader}"
-                        TextAlignment="Center" />
+                        MaxLength="45"
+                        Style="{StaticResource TextBoxStyle1}"
+                        Text="{x:Bind ViewModel.ListHeader, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                 </StackPanel>
                 <ListView
                     Grid.Row="1"

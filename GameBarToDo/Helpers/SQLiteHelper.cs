@@ -377,7 +377,24 @@ namespace GameBarToDo.Helpers
         /// </summary>
         /// <param name="listModel">The ListModel object to be renamed</param>
         /// <returns>True or False</returns>
-        public bool RenameList(ListModel listModel)
+        public bool RenameList(string newListName, int ListID)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string updateScript = "UPDATE Lists set list_name = @new_name where id = @id; ";
+                    SqliteCommand command = new SqliteCommand(updateScript, db);
+                    command.Parameters.AddWithValue("@new_name", newListName);
+                    command.Parameters.AddWithValue("@id", ListID);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
+        public bool UpdateList(ListModel listModel)
         {
             if (tablesCreated)
             {
@@ -440,11 +457,6 @@ namespace GameBarToDo.Helpers
             return false;
         }
 
-        /// <summary>
-        /// Deletes a List from the db
-        /// </summary>
-        /// <param name="listModel">List to be deleted</param>
-        /// <returns>Success bool</returns>
         public bool DeleteList(ListModel listModel)
         {
             if (tablesCreated)
