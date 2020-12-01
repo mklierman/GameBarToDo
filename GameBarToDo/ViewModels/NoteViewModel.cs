@@ -99,7 +99,7 @@ namespace GameBarToDo.ViewModels
                         SelectedList,
                         Widget
                     };
-            rootFrame.Navigate(typeof(ListItemsView), list);
+            rootFrame.Navigate(typeof(TasksView), list);
         }
         /// <summary>
         /// Updates the note with the current Note text

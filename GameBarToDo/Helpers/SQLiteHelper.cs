@@ -9,7 +9,7 @@ namespace GameBarToDo.Helpers
 {
     public class SQLiteHelper
     {
-        private readonly string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Lists.db");
+        private readonly string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "GameBarToDo.db");
         private bool tablesCreated = false;
 
         public SQLiteHelper()
@@ -25,7 +25,7 @@ namespace GameBarToDo.Helpers
         {
             try
             {
-                ApplicationData.Current.LocalFolder.CreateFileAsync("Lists.db", CreationCollisionOption.OpenIfExists);
+                _ = ApplicationData.Current.LocalFolder.CreateFileAsync("GameBarToDo.db", CreationCollisionOption.OpenIfExists);
                 using (SqliteConnection db =
                    new SqliteConnection($"Filename={dbpath}"))
                 {
@@ -36,24 +36,27 @@ namespace GameBarToDo.Helpers
                     CREATE TABLE IF NOT EXISTS Lists (
                     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     list_name TEXT NOT NULL,
-                    created_date DEFAULT CURRENT_TIMESTAMP
+                    created_date DEFAULT CURRENT_TIMESTAMP,
+                    last_updated DEFAULT CURRENT_TIMESTAMP
                     );
 
-                    CREATE TABLE IF NOT EXISTS List_items (
+                    CREATE TABLE IF NOT EXISTS Tasks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    list_ID INTEGER,
-                    item_name TEXT NOT NULL,
+                    list_id INTEGER,
+                    task_name TEXT NOT NULL,
                     is_complete BIT NOT NULL,
                     created_date DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY(list_ID) REFERENCES Lists(id)
+                    last_updated DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY(list_id) REFERENCES Lists(id)
                     );
 
-                    CREATE TABLE IF NOT EXISTS Item_notes (
+                    CREATE TABLE IF NOT EXISTS Notes (
                     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    item_ID INTEGER,
-                    note TEXT NOT NULL,
+                    task_id INTEGER,
+                    note_text TEXT NOT NULL,
                     created_date DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY(item_ID) REFERENCES List_items(id)
+                    last_updated DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY(task_ID) REFERENCES Tasks(id)
                     );";
 
                     SqliteCommand createTable = new SqliteCommand(createTables, db);
@@ -154,10 +157,10 @@ namespace GameBarToDo.Helpers
                    new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string insertScript = "INSERT INTO list_items (list_ID, item_name, is_complete) VALUES (@listID, @itemName, 0)";
+                    string insertScript = "INSERT INTO Tasks (list_id, task_name, is_complete) VALUES (@listID, @taskName, 0)";
 
                     SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
-                    insertStuff.Parameters.AddWithValue("@itemName", taskName);
+                    insertStuff.Parameters.AddWithValue("@taskName", taskName);
                     insertStuff.Parameters.AddWithValue("@listID", listID);
 
                     insertStuff.ExecuteNonQuery();
@@ -172,11 +175,11 @@ namespace GameBarToDo.Helpers
         }
 
         /// <summary>
-        /// Adds a row to the Item_notes table
+        /// Adds a row to the Notes table
         /// </summary>
         /// <param name="noteText">The Note text to be added</param>
         /// <param name="taskID">The taskID the Note should be added to</param>
-        /// <returns>A NoteModel object of the newly created note</returns>
+        /// <returns>A NoteModel object of the newly created note_text</returns>
         public NoteModel AddNewNoteToItemTable(string noteText, int taskID)
         {
             if (tablesCreated)
@@ -185,10 +188,10 @@ namespace GameBarToDo.Helpers
                    new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string insertScript = "INSERT INTO Item_notes (item_ID, note) VALUES (@itemID, @noteText)";
+                    string insertScript = "INSERT INTO Notes (task_id, note_text) VALUES (@taskID, @noteText)";
 
                     SqliteCommand insertStuff = new SqliteCommand(insertScript, db);
-                    insertStuff.Parameters.AddWithValue("@itemID", taskID);
+                    insertStuff.Parameters.AddWithValue("@taskID", taskID);
                     insertStuff.Parameters.AddWithValue("@noteText", noteText);
                     insertStuff.ExecuteNonQuery();
                 }
@@ -221,11 +224,10 @@ namespace GameBarToDo.Helpers
                         {
                             id = Convert.ToInt32(reader["id"]),
                             list_name = Convert.ToString(reader["list_name"]),
-                            created_date = Convert.ToDateTime(reader["created_date"])
+                            created_date = Convert.ToDateTime(reader["created_date"]),
+                            last_updated = Convert.ToDateTime(reader["last_updated"])
                         };
                         result.Add(listModel);
-
-                        //result.Add(Convert.ToString(reader["list_name"]));
                     }
                     return result;
                 }
@@ -255,6 +257,7 @@ namespace GameBarToDo.Helpers
                         listModel.id = Convert.ToInt32(reader["id"]);
                         listModel.list_name = Convert.ToString(reader["list_name"]);
                         listModel.created_date = Convert.ToDateTime(reader["created_date"]);
+                        listModel.last_updated = Convert.ToDateTime(reader["last_updated"]);
                     }
                     return listModel;
                 }
@@ -274,19 +277,20 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string selectScript = "Select * from List_Items where item_name = @itemName ORDER BY id desc LIMIT 1;";
+                    string selectScript = "Select * from Tasks where task_name = @taskName ORDER BY id desc LIMIT 1;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
 
-                    command.Parameters.AddWithValue("@itemName", taskName);
+                    command.Parameters.AddWithValue("@taskName", taskName);
                     SqliteDataReader reader = command.ExecuteReader();
                     TaskModel listItemModel = new TaskModel();
                     while (reader.Read())
                     {
                         listItemModel.id = Convert.ToInt32(reader["id"]);
-                        listItemModel.item_name = Convert.ToString(reader["item_name"]);
+                        listItemModel.task_name = Convert.ToString(reader["task_name"]);
                         listItemModel.created_date = Convert.ToDateTime(reader["created_date"]);
-                        listItemModel.list_id = Convert.ToInt32(reader["list_ID"]);
+                        listItemModel.list_id = Convert.ToInt32(reader["list_id"]);
                         listItemModel.is_complete = Convert.ToBoolean(reader["is_complete"]);
+                        listItemModel.last_updated = Convert.ToDateTime(reader["last_updated"]);
                     }
                     return listItemModel;
                 }
@@ -307,9 +311,9 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string selectScript = "Select * from List_items where list_ID = @list_ID;";
+                    string selectScript = "Select * from Tasks where list_id = @list_id;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
-                    command.Parameters.AddWithValue("@list_ID", listName.id);
+                    command.Parameters.AddWithValue("@list_id", listName.id);
                     SqliteDataReader reader = command.ExecuteReader();
                     ObservableCollection<TaskModel> result = new ObservableCollection<TaskModel>();
                     while (reader.Read())
@@ -317,10 +321,11 @@ namespace GameBarToDo.Helpers
                         TaskModel listModel = new TaskModel
                         {
                             id = Convert.ToInt32(reader["id"]),
-                            item_name = Convert.ToString(reader["item_name"]),
+                            task_name = Convert.ToString(reader["task_name"]),
                             created_date = Convert.ToDateTime(reader["created_date"]),
                             is_complete = Convert.ToBoolean(reader["is_complete"]),
-                            list_id = Convert.ToInt32(reader["list_ID"])
+                            list_id = Convert.ToInt32(reader["list_id"]),
+                            last_updated = Convert.ToDateTime(reader["last_updated"])
                         };
                         result.Add(listModel);
                     }
@@ -343,15 +348,15 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string selectScript = "Select * from Item_notes where item_ID = @item_ID;";
+                    string selectScript = "Select * from Notes where task_id = @task_id;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
                     if (taskID < 0)
                     {
-                        command.Parameters.AddWithValue("@item_ID", taskName.id);
+                        command.Parameters.AddWithValue("@task_id", taskName.id);
                     }
                     else
                     {
-                        command.Parameters.AddWithValue("@item_ID", taskID);
+                        command.Parameters.AddWithValue("@task_id", taskID);
                     }
                     SqliteDataReader reader = command.ExecuteReader();
                     NoteModel result = new NoteModel();
@@ -360,9 +365,10 @@ namespace GameBarToDo.Helpers
                         NoteModel noteModel = new NoteModel
                         {
                             id = Convert.ToInt32(reader["id"]),
-                            item_ID = Convert.ToInt32(reader["item_ID"]),
-                            note = Convert.ToString(reader["note"]),
-                            created_date = Convert.ToDateTime(reader["created_date"])
+                            task_id = Convert.ToInt32(reader["task_id"]),
+                            note_text = Convert.ToString(reader["note_text"]),
+                            created_date = Convert.ToDateTime(reader["created_date"]),
+                            last_updated = Convert.ToDateTime(reader["last_updated"])
                         };
                         result = noteModel;
                     }
@@ -384,7 +390,7 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string updateScript = "UPDATE Lists set list_name = @new_name where id = @id; ";
+                    string updateScript = "UPDATE Lists set list_name = @new_name, last_updated = CURRENT_TIMESTAMP where id = @id; ";
                     SqliteCommand command = new SqliteCommand(updateScript, db);
                     command.Parameters.AddWithValue("@new_name", newListName);
                     command.Parameters.AddWithValue("@id", ListID);
@@ -412,9 +418,9 @@ namespace GameBarToDo.Helpers
         }
 
         /// <summary>
-        /// Renames a Task
+        /// Renames a Task or marks it complete
         /// </summary>
-        /// <param name="taskModel">The Taskmodel object to be renamed</param>
+        /// <param name="taskModel">The Taskmodel object to be renamed or marked complete</param>
         /// <returns>True or False</returns>
         public bool UpdateTask(TaskModel taskModel)
         {
@@ -423,9 +429,9 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string updateScript = "Update List_items set item_name = @new_name, is_complete = @is_complete where id = @id;";
+                    string updateScript = "Update Tasks set task_name = @new_name, is_complete = @is_complete, last_updated = CURRENT_TIMESTAMP where id = @id;";
                     SqliteCommand command = new SqliteCommand(updateScript, db);
-                    command.Parameters.AddWithValue("@new_name", taskModel.item_name);
+                    command.Parameters.AddWithValue("@new_name", taskModel.task_name);
                     command.Parameters.AddWithValue("@is_complete", taskModel.is_complete);
                     command.Parameters.AddWithValue("@id", taskModel.id);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
@@ -434,6 +440,11 @@ namespace GameBarToDo.Helpers
             return false;
         }
 
+        /// <summary>
+        /// Renames a Task
+        /// </summary>
+        /// <param name="taskModel">The Taskmodel object to be renamed</param>
+        /// <returns>True or False</returns>
         public bool RenameTask(string newTaskName, int TaskID)
         {
             if (tablesCreated)
@@ -441,7 +452,7 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string updateScript = "UPDATE List_items set item_name = @new_name where id = @TaskID; ";
+                    string updateScript = "UPDATE Tasks set task_name = @new_name where id = @TaskID; ";
                     SqliteCommand command = new SqliteCommand(updateScript, db);
                     command.Parameters.AddWithValue("@new_name", newTaskName);
                     command.Parameters.AddWithValue("@TaskID", TaskID);
@@ -452,21 +463,21 @@ namespace GameBarToDo.Helpers
         }
 
         /// <summary>
-        /// Updates the content of a note
+        /// Updates the content of a note_text
         /// </summary>
-        /// <param name="note">The string content of the note</param>
-        /// <param name="TaskID">The ID of the Task containing the note</param>
+        /// <param name="note_text">The string content of the note_text</param>
+        /// <param name="TaskID">The ID of the Task containing the note_text</param>
         /// <returns>Success bool</returns>
-        public bool UpdateNote(string note, int TaskID)
+        public bool UpdateNote(string note_text, int TaskID)
         {
             if (tablesCreated)
             {
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string updateScript = "UPDATE Item_notes SET note = @note where item_ID = @TaskID; ";
+                    string updateScript = "UPDATE Notes SET note_text = @note_text, last_updated = CURRENT_TIMESTAMP where task_id = @TaskID; ";
                     SqliteCommand command = new SqliteCommand(updateScript, db);
-                    command.Parameters.AddWithValue("@note", note);
+                    command.Parameters.AddWithValue("@note_text", note_text);
                     command.Parameters.AddWithValue("@TaskID", TaskID);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
                 }
@@ -504,7 +515,7 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string deleteScript = "Delete from List_items where id = @id;";
+                    string deleteScript = "Delete from Tasks where id = @id;";
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
                     command.Parameters.AddWithValue("@id", taskModel.id);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
@@ -525,7 +536,7 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string deleteScript = "Delete from Item_notes where id = @id;";
+                    string deleteScript = "Delete from Notes where id = @id;";
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
                     command.Parameters.AddWithValue("@id", noteModel.id);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
@@ -543,7 +554,7 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string deleteScript = "Delete from List_items where list_id = @id;";
+                    string deleteScript = "Delete from Tasks where list_id = @id;";
                     SqliteCommand command = new SqliteCommand(deleteScript, db);
                     command.Parameters.AddWithValue("@id", listModel.id);
                     command.ExecuteNonQuery();
@@ -563,11 +574,11 @@ namespace GameBarToDo.Helpers
 
                     if (listModel != null)
                     {
-                        deleteScript = "DELETE FROM Item_notes WHERE item_id IN (SELECT id FROM List_items WHERE list_id = @id);";
+                        deleteScript = "DELETE FROM Notes WHERE task_id IN (SELECT id FROM Tasks WHERE list_id = @id);";
                     }
                     else if (taskModel != null)
                     {
-                        deleteScript = "DELETE FROM Item_notes WHERE item_id = @id;";
+                        deleteScript = "DELETE FROM Notes WHERE task_id = @id;";
                     }
 
                     SqliteCommand command = new SqliteCommand(deleteScript, db);

@@ -1,28 +1,33 @@
 ﻿using GameBarToDo.ViewModels;
 using Microsoft.Gaming.XboxGameBar;
 using System;
+using System.Collections.Generic;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
-using Windows.ApplicationModel.Activation;
 
 namespace GameBarToDo.Views
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class TasksView : Page
     {
+        public TasksViewModel ViewModel { get; } = new TasksViewModel();
         private XboxGameBarWidget widget = null;
 
-        public MainPage()
+        public TasksView()
         {
             InitializeComponent();
         }
 
-        public MainViewModel ViewModel { get; } = new MainViewModel();
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            widget = e.Parameter as XboxGameBarWidget;
-            ViewModel.Widget = widget;
+            if (e.Parameter != null)
+            {
+                List<object> lists = (List<object>)e.Parameter;
+                ViewModel.SelectedList = (Models.ListModel)lists[0];
+                widget = (XboxGameBarWidget)lists[1];
+                ViewModel.Widget = widget;
+            }
 
             //Hook up events for when the ui is updated.
             if (widget != null)
@@ -34,28 +39,22 @@ namespace GameBarToDo.Views
                 Widget_RequestedOpacityChanged(widget, null);
                 Widget_GameBarDisplayModeChanged(widget, null);
             }
-        }
 
-        private void TextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Enter)
-            {
-                ViewModel.NewListCommand.Execute(ViewModel.NewListName);
-            }
+            base.OnNavigatedTo(e);
         }
 
         private async void Widget_GameBarDisplayModeChanged(XboxGameBarWidget sender, object args)
         {
-            await NewListGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            await NewTaskGrid.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                //If the widget is pinned and the overlay isn't on, hide the New List grid.
+                //If the widget is pinned and the overlay isn't on, hide the New Task grid.
                 if (sender.GameBarDisplayMode == XboxGameBarDisplayMode.PinnedOnly && sender.Pinned)
                 {
-                    NewListGrid.Height = 0;
+                    NewTaskGrid.Height = 0;
                 }
                 else
                 {
-                    NewListGrid.Height = 40;
+                    NewTaskGrid.Height = 40;
                 }
             });
         }
@@ -72,8 +71,15 @@ namespace GameBarToDo.Views
 
         private async void Widget_SettingsClicked(XboxGameBarWidget sender, object args)
         {
-            //Changed to sender.Activate() from widget.Activate()
             await widget.ActivateSettingsAsync();
+        }
+
+        private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                ViewModel.NewTaskCommand.Execute(ViewModel.NewTaskName);
+            }
         }
     }
 }

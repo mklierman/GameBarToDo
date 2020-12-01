@@ -28,7 +28,7 @@
                         <SymbolIcon Symbol="Back" />
                     </Button>
                     <TextBox
-                        x:Name="NewTaskGrid"
+                        x:Name="HeaderTextBox"
                         Grid.Row="1"
                         Margin="8"
                         MaxLength="45"

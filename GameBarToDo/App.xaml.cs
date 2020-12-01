@@ -73,7 +73,7 @@ namespace GameBarToDo
                             widgetArgs,
                             Window.Current.CoreWindow,
                             rootFrame);
-                        rootFrame.Navigate(typeof(MainPage), widget1);
+                        rootFrame.Navigate(typeof(ListsView), widget1);
                         Window.Current.Closed += Widget1Window_Closed;
                     }
                     else if (widgetArgs.AppExtensionId == "Settings")
@@ -144,7 +144,7 @@ namespace GameBarToDo
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(ListsView), e.Arguments);
                 }
                 // Ensure the current window is active
                 float DPI = Windows.Graphics.Display.DisplayInformation.GetForCurrentView().LogicalDpi;

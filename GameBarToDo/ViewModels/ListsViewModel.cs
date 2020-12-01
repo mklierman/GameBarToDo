@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace GameBarToDo.ViewModels
 {
-    public class MainViewModel : Observable
+    public class ListsViewModel : Observable
     {
         private string _newListName;
         private ListModel _selectedList;
@@ -20,7 +20,7 @@ namespace GameBarToDo.ViewModels
         private readonly SQLiteHelper db = new SQLiteHelper();
         private readonly Frame rootFrame = Window.Current.Content as Frame;
 
-        public MainViewModel()
+        public ListsViewModel()
         {
             DeleteListCommand = new RelayCommand<ListModel>(DeleteList);
             NewListCommand = new RelayCommand<string>(AddNewList);
@@ -56,7 +56,7 @@ namespace GameBarToDo.ViewModels
                         SelectedList,
                         Widget
                     };
-                    rootFrame.Navigate(typeof(ListItemsView), list);
+                    rootFrame.Navigate(typeof(TasksView), list);
                 }
             }
         }

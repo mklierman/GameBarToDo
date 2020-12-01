@@ -7,9 +7,10 @@ namespace GameBarToDo.Models
     {
         private int _id;
         private int _list_id;
-        private string _item_name;
+        private string _task_name;
         private bool _is_complete;
         private DateTime _created_date;
+        private DateTime _last_updated;
 
         public int id
         {
@@ -23,10 +24,10 @@ namespace GameBarToDo.Models
             set => Set(ref _list_id, value);
         }
 
-        public string item_name
+        public string task_name
         {
-            get => _item_name;
-            set => Set(ref _item_name, value);
+            get => _task_name;
+            set => Set(ref _task_name, value);
         }
 
         public bool is_complete
@@ -39,6 +40,11 @@ namespace GameBarToDo.Models
         {
             get => _created_date;
             set => Set(ref _created_date, value);
+        }
+        public DateTime last_updated
+        {
+            get => _last_updated;
+            set => Set(ref _last_updated, value);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace GameBarToDo.Tests.MSTest
         [TestMethod]
         public void TestAddingList()
         {
-            MainViewModel mainViewModel = new MainViewModel();
+            ListsViewModel mainViewModel = new ListsViewModel();
             //mainViewModel.NewListCommand("Test");
         }
 

@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace GameBarToDo.ViewModels
 {
-    public class TaskViewModel : Observable
+    public class TasksViewModel : Observable
     {
         private string _listHeader;
         private string _newTaskName;
@@ -20,19 +20,19 @@ namespace GameBarToDo.ViewModels
         private readonly SQLiteHelper db = new SQLiteHelper();
         private readonly Frame rootFrame = Window.Current.Content as Frame;
 
-        public TaskViewModel()
+        public TasksViewModel()
         {
             //Initialize the Relay Commands
             BackCommand = new RelayCommand(GoBack);
             NewTaskCommand = new RelayCommand<string>(AddNewTask);
             DeleteTaskCommand = new RelayCommand<TaskModel>(DeleteTask);
-            ItemCheckedCommand = new RelayCommand<TaskModel>(UpdateTask);
+            TaskCheckedCommand = new RelayCommand<TaskModel>(UpdateTask);
         }
 
         public RelayCommand BackCommand { get; private set; }
         public RelayCommand<string> NewTaskCommand { get; set; }
         public static RelayCommand<TaskModel> DeleteTaskCommand { get; private set; }
-        public static RelayCommand<TaskModel> ItemCheckedCommand { get; private set; }
+        public static RelayCommand<TaskModel> TaskCheckedCommand { get; private set; }
 
         /// <summary>
         /// The header displayed at the top of the ListItemsView page
@@ -97,9 +97,9 @@ namespace GameBarToDo.ViewModels
                     //Navigate to Note page
                     List<object> list = new List<object>
                     {
-                        note.note,
-                        note.item_ID,
-                        SelectedTask.item_name,
+                        note.note_text,
+                        note.task_id,
+                        SelectedTask.task_name,
                         SelectedList,
                         Widget
                     };
@@ -131,8 +131,7 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public void GoBack()
         {
-            rootFrame.Navigate(typeof(MainPage), Widget);
-
+            rootFrame.Navigate(typeof(ListsView), Widget);
         }
 
         private void AddNewTask(string value)
