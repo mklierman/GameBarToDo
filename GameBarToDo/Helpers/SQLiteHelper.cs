@@ -416,7 +416,7 @@ namespace GameBarToDo.Helpers
         /// </summary>
         /// <param name="taskModel">The Taskmodel object to be renamed</param>
         /// <returns>True or False</returns>
-        public bool RenameTask(TaskModel taskModel)
+        public bool UpdateTask(TaskModel taskModel)
         {
             if (tablesCreated)
             {
@@ -428,6 +428,23 @@ namespace GameBarToDo.Helpers
                     command.Parameters.AddWithValue("@new_name", taskModel.item_name);
                     command.Parameters.AddWithValue("@is_complete", taskModel.is_complete);
                     command.Parameters.AddWithValue("@id", taskModel.id);
+                    return Convert.ToBoolean(command.ExecuteNonQuery());
+                }
+            }
+            return false;
+        }
+
+        public bool RenameTask(string newTaskName, int TaskID)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string updateScript = "UPDATE List_items set item_name = @new_name where id = @TaskID; ";
+                    SqliteCommand command = new SqliteCommand(updateScript, db);
+                    command.Parameters.AddWithValue("@new_name", newTaskName);
+                    command.Parameters.AddWithValue("@TaskID", TaskID);
                     return Convert.ToBoolean(command.ExecuteNonQuery());
                 }
             }
