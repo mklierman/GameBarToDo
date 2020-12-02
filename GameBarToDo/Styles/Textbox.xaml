@@ -180,7 +180,7 @@
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="Disabled">
-                                    <Storyboard>
+                                    <!--<Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderContentPresenter" Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlHeaderForegroundDisabled}" />
                                         </ObjectAnimationUsingKeyFrames>
@@ -196,7 +196,7 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlaceholderTextContentPresenter" Storyboard.TargetProperty="Foreground">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding PlaceholderForeground, RelativeSource={RelativeSource Mode=TemplatedParent}, TargetNullValue={ThemeResource TextControlPlaceholderForegroundDisabled}}" />
                                         </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
+                                    </Storyboard>-->
                                 </VisualState>
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>

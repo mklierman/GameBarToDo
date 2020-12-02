@@ -51,10 +51,12 @@ namespace GameBarToDo.Views
                 if (sender.GameBarDisplayMode == XboxGameBarDisplayMode.PinnedOnly && sender.Pinned)
                 {
                     NewTaskGrid.Height = 0;
+                    HeaderTextBox.IsEnabled = false;
                 }
                 else
                 {
                     NewTaskGrid.Height = 40;
+                    HeaderTextBox.IsEnabled = true;
                 }
             });
         }

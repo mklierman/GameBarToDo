@@ -52,10 +52,12 @@ namespace GameBarToDo.Views
                 if (sender.GameBarDisplayMode == XboxGameBarDisplayMode.PinnedOnly && sender.Pinned)
                 {
                     NoteTextBox.IsEnabled = false;
+                    HeaderTextBox.IsEnabled = false;
                 }
                 else
                 {
                     NoteTextBox.IsEnabled = true;
+                    HeaderTextBox.IsEnabled = true;
                 }
             });
         }
