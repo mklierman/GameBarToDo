@@ -2,6 +2,7 @@
 using GameBarToDo.Models;
 using GameBarToDo.Views;
 using Microsoft.Gaming.XboxGameBar;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
@@ -13,6 +14,8 @@ namespace GameBarToDo.ViewModels
     {
         private string _listHeader;
         private string _newTaskName;
+        private string oldListHeader;
+        private string listHeaderPlaceholder;
         private ListModel _selectedList;
         private TaskModel _selectedTask;
         private ObservableCollection<TaskModel> _tasks;
@@ -39,14 +42,42 @@ namespace GameBarToDo.ViewModels
         /// </summary>
         public string ListHeader
         {
-            get => _listHeader;
+            get
+            {
+                oldListHeader = _listHeader;
+                return _listHeader;
+            }
             set
             {
-                Set(ref _listHeader, value);
-                db.RenameList(value, SelectedList.id);
+                if (_listHeader != null && _listHeader != value)
+                {
+                    if (db.RenameList(value, SelectedList.id))
+                    {
+                        Set(ref _listHeader, value);
+                    }
+                    else
+                    {
+                        listHeaderPlaceholder = Guid.NewGuid().ToString();
+                        Set(ref listHeaderPlaceholder, oldListHeader);
+                        ShowRenameListError(value);
+                    }
+                }
+                else
+                {
+                    Set(ref _listHeader, value);
+                }
             }
         }
 
+        private async void ShowRenameListError(string value)
+        {
+            ContentDialog listAlreadyExistsDialog = new ContentDialog
+            {
+                Content = string.Format("A list by the name {0} already exists.", value),
+                CloseButtonText = "Ok"
+            };
+            ContentDialogResult result = await listAlreadyExistsDialog.ShowAsync();
+        }
 
         /// <summary>
         /// The name for a new Task
@@ -91,7 +122,7 @@ namespace GameBarToDo.ViewModels
                     //If it doesn't have a note, create a blank one
                     if (note.id < 1)
                     {
-                        note = db.AddNewNoteToItemTable("", SelectedTask.id);
+                        note = db.AddNewNoteToTable("", SelectedTask.id);
                     }
 
                     //Navigate to Note page

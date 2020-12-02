@@ -180,7 +180,7 @@ namespace GameBarToDo.Helpers
         /// <param name="noteText">The Note text to be added</param>
         /// <param name="taskID">The taskID the Note should be added to</param>
         /// <returns>A NoteModel object of the newly created note_text</returns>
-        public NoteModel AddNewNoteToItemTable(string noteText, int taskID)
+        public NoteModel AddNewNoteToTable(string noteText, int taskID)
         {
             if (tablesCreated)
             {
@@ -387,6 +387,10 @@ namespace GameBarToDo.Helpers
         {
             if (tablesCreated)
             {
+                if (CheckIfListExistsByName(newListName))
+                {
+                    return false;
+                }
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();

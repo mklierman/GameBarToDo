@@ -38,7 +38,7 @@ namespace GameBarToDo.Tests.MSTest
         {
             SQLiteHelper db = new SQLiteHelper();
             db.InitializeDatabase();
-            Assert.AreEqual(db.AddNewNoteToItemTable("TestNote", 0), "Note added");
+            Assert.AreEqual(db.AddNewNoteToTable("TestNote", 0), "Note added");
         }
 
         [TestMethod]
