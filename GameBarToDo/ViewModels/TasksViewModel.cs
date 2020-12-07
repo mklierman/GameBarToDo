@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
+using System.Linq;
 
 namespace GameBarToDo.ViewModels
 {
@@ -188,15 +190,32 @@ namespace GameBarToDo.ViewModels
 
         private void UpdateTask(TaskModel task)
         {
-            db.UpdateTask(task);
 
-            foreach (TaskModel _task in Tasks)
-            {
-                if (_task.id == task.id)
-                {
-                    _task.is_complete = task.is_complete;
-                }
-            }
+            //Tasks.Remove(task);
+
+            //int incompleteIndex = Tasks.IndexOf(Tasks.FirstOrDefault(t => t.is_complete == false && task.created_date < t.created_date));
+            //int earliestCompleteIndex = Tasks.IndexOf(Tasks.FirstOrDefault(t => t.is_complete == true));
+
+            //if (task.is_complete)
+            //{
+            //    if (earliestCompleteIndex == -1)
+            //        earliestCompleteIndex = Tasks.Count;
+
+            //    Tasks.Insert(earliestCompleteIndex, task);
+            //}
+            //else
+            //{
+            //    if (incompleteIndex == -1 || incompleteIndex == 0)
+            //        incompleteIndex = Tasks.IndexOf(Tasks.FirstOrDefault(t => t.is_complete == false && t.created_date > task.created_date)) - 1;
+
+            //    if (incompleteIndex == -1)
+            //        incompleteIndex = 0;
+            //    else if (incompleteIndex == -2)
+            //        incompleteIndex = Tasks.Count;
+            //    Tasks.Insert(incompleteIndex, task);
+            //}
+
+            db.UpdateTask(task);
         }
     }
 }

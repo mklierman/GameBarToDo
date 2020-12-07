@@ -311,7 +311,7 @@ namespace GameBarToDo.Helpers
                 using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
                 {
                     db.Open();
-                    string selectScript = "Select * from Tasks where list_id = @list_id;";
+                    string selectScript = "Select * from Tasks where list_id = @list_id and is_complete = 0 order by created_date asc;";
                     SqliteCommand command = new SqliteCommand(selectScript, db);
                     command.Parameters.AddWithValue("@list_id", listName.id);
                     SqliteDataReader reader = command.ExecuteReader();
@@ -326,6 +326,24 @@ namespace GameBarToDo.Helpers
                             is_complete = Convert.ToBoolean(reader["is_complete"]),
                             list_id = Convert.ToInt32(reader["list_id"]),
                             last_updated = Convert.ToDateTime(reader["last_updated"])
+                        };
+                        result.Add(listModel);
+                    }
+
+                    selectScript = "Select * from Tasks where list_id = @list_id and is_complete = 1 order by last_updated desc;";
+                    SqliteCommand command2 = new SqliteCommand(selectScript, db);
+                    command2.Parameters.AddWithValue("@list_id", listName.id);
+                    SqliteDataReader reader2 = command2.ExecuteReader();
+                    while (reader2.Read())
+                    {
+                        TaskModel listModel = new TaskModel
+                        {
+                            id = Convert.ToInt32(reader2["id"]),
+                            task_name = Convert.ToString(reader2["task_name"]),
+                            created_date = Convert.ToDateTime(reader2["created_date"]),
+                            is_complete = Convert.ToBoolean(reader2["is_complete"]),
+                            list_id = Convert.ToInt32(reader2["list_id"]),
+                            last_updated = Convert.ToDateTime(reader2["last_updated"])
                         };
                         result.Add(listModel);
                     }
