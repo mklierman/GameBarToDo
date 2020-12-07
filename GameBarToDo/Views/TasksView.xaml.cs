@@ -83,5 +83,16 @@ namespace GameBarToDo.Views
                 ViewModel.NewTaskCommand.Execute(ViewModel.NewTaskName);
             }
         }
+
+        private void TextBlock_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            TextBlock tb = (TextBlock)sender;
+            Grid g =(Grid)tb.Parent;
+            CheckBox cb = (CheckBox)g.Children[0];
+            if (cb.IsChecked == true)
+            {
+                tb.Foreground = (Windows.UI.Xaml.Media.Brush)Resources["ButtonDisabledForegroundThemeBrush"];
+            }
+        }
     }
 }

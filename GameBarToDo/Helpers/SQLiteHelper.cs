@@ -300,6 +300,40 @@ namespace GameBarToDo.Helpers
         }
 
         /// <summary>
+        /// Gets a Task by ID
+        /// </summary>
+        /// <param name="taskName">The ID of the Task to get</param>
+        /// <returns>A TaskModel object</returns>
+        public TaskModel GetSpecificTask(int taskID)
+        {
+            if (tablesCreated)
+            {
+                using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
+                {
+                    db.Open();
+                    string selectScript = "Select * from Tasks where id = @taskID ORDER BY id desc LIMIT 1;";
+                    SqliteCommand command = new SqliteCommand(selectScript, db);
+
+                    command.Parameters.AddWithValue("@taskID", taskID);
+                    SqliteDataReader reader = command.ExecuteReader();
+                    TaskModel listItemModel = new TaskModel();
+                    while (reader.Read())
+                    {
+                        listItemModel.id = Convert.ToInt32(reader["id"]);
+                        listItemModel.task_name = Convert.ToString(reader["task_name"]);
+                        listItemModel.created_date = Convert.ToDateTime(reader["created_date"]);
+                        listItemModel.list_id = Convert.ToInt32(reader["list_id"]);
+                        listItemModel.is_complete = Convert.ToBoolean(reader["is_complete"]);
+                        listItemModel.last_updated = Convert.ToDateTime(reader["last_updated"]);
+                    }
+                    return listItemModel;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets all Tasks for a given List
         /// </summary>
         /// <param name="listName">The name of the list to get Tasks for</param>

@@ -191,7 +191,19 @@ namespace GameBarToDo.ViewModels
         private void UpdateTask(TaskModel task)
         {
 
-            //Tasks.Remove(task);
+            db.UpdateTask(task);
+            Tasks.Remove(task);
+            ObservableCollection<TaskModel> updatedTasks = db.GetTasks(SelectedList);
+            TaskModel updatedTask = db.GetSpecificTask(task.id);
+            int newIndex = -1;
+            foreach (TaskModel t in updatedTasks)
+            {
+                if (t.id == task.id)
+                {
+                    newIndex = updatedTasks.IndexOf(t);
+                }
+            }
+            Tasks.Insert(newIndex, updatedTask);
 
             //int incompleteIndex = Tasks.IndexOf(Tasks.FirstOrDefault(t => t.is_complete == false && task.created_date < t.created_date));
             //int earliestCompleteIndex = Tasks.IndexOf(Tasks.FirstOrDefault(t => t.is_complete == true));
@@ -215,7 +227,6 @@ namespace GameBarToDo.ViewModels
             //    Tasks.Insert(incompleteIndex, task);
             //}
 
-            db.UpdateTask(task);
         }
     }
 }

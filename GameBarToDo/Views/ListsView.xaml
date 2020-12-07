@@ -9,8 +9,8 @@
     xmlns:lm="using:GameBarToDo.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:GameBarToDo.ViewModels"
-    MaxWidth="400"
-    MaxHeight="600"
+    Width="400"
+    Height="600"
     mc:Ignorable="d">
     <Grid>
         <Grid x:Name="BackgroundGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
