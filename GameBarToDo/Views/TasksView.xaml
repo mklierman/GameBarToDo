@@ -10,8 +10,6 @@
     xmlns:local="using:GameBarToDo.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:GameBarToDo.ViewModels"
-    Width="400"
-    Height="600"
     mc:Ignorable="d">
     <Grid>
         <Grid x:Name="BackgroundGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />

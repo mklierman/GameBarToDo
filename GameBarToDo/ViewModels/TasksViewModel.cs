@@ -204,29 +204,6 @@ namespace GameBarToDo.ViewModels
                 }
             }
             Tasks.Insert(newIndex, updatedTask);
-
-            //int incompleteIndex = Tasks.IndexOf(Tasks.FirstOrDefault(t => t.is_complete == false && task.created_date < t.created_date));
-            //int earliestCompleteIndex = Tasks.IndexOf(Tasks.FirstOrDefault(t => t.is_complete == true));
-
-            //if (task.is_complete)
-            //{
-            //    if (earliestCompleteIndex == -1)
-            //        earliestCompleteIndex = Tasks.Count;
-
-            //    Tasks.Insert(earliestCompleteIndex, task);
-            //}
-            //else
-            //{
-            //    if (incompleteIndex == -1 || incompleteIndex == 0)
-            //        incompleteIndex = Tasks.IndexOf(Tasks.FirstOrDefault(t => t.is_complete == false && t.created_date > task.created_date)) - 1;
-
-            //    if (incompleteIndex == -1)
-            //        incompleteIndex = 0;
-            //    else if (incompleteIndex == -2)
-            //        incompleteIndex = Tasks.Count;
-            //    Tasks.Insert(incompleteIndex, task);
-            //}
-
         }
     }
 }

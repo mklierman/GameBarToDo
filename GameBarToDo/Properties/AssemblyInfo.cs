@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GameBar ToDo")]
 [assembly: AssemblyDescription("An Xbox Game Bar compatible To-Do List")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("DL Coding")]
 [assembly: AssemblyProduct("GameBar ToDo")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]

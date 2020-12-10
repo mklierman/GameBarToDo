@@ -7,15 +7,15 @@
          IgnorableNamespaces="uap uap3 mp">
 
   <Identity
-    Name="D8FA6AB9-AC1B-4745-89CE-D3B4BEF5C715"
-    Publisher="CN=Mark"
+    Name="36610MarkLierman.GameBarTo-Do"
+    Publisher="CN=9AB0FCDC-AE43-4D16-9AD0-29A58E6A3866"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="D8FA6AB9-AC1B-4745-89CE-D3B4BEF5C715" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="c150063b-3aeb-458a-ade4-867bd3f85f9a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>GameBarToDo</DisplayName>
-    <PublisherDisplayName>Mark Lierman &amp; Derek Drennan</PublisherDisplayName>
+    <DisplayName>Game Bar To-Do</DisplayName>
+    <PublisherDisplayName>Mark Lierman and Derek Drennan</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -36,7 +36,7 @@
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="ms-resource:AppDescription"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>  
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
 
@@ -47,7 +47,7 @@
                              DisplayName="Game Bar To-Do"
                              Description="A To-Do Application for the Xbox Game Bar"
                              PublicFolder="Assets">
-            <uap3:Properties>	
+            <uap3:Properties>
               <GameBarWidget Type="Standard">
                 <HomeMenuVisible>true</HomeMenuVisible>
                 <PinningSupported>true</PinningSupported>
@@ -94,7 +94,7 @@
 					</GameBarWidget>
 				</uap3:Properties>
 			</uap3:AppExtension>
-		</uap3:Extension> 
+		</uap3:Extension>
       </Extensions>
     </Application>
   </Applications>
