@@ -41,7 +41,6 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="lm:TaskModel">
                             <Grid
-                                Background="{ThemeResource ButtonBackgroundThemeBrush}"
                                 BorderBrush="#FF303030"
                                 BorderThickness="1">
                                 <FlyoutBase.AttachedFlyout>

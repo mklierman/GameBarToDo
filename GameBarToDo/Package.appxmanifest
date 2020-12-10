@@ -9,7 +9,7 @@
   <Identity
     Name="36610MarkLierman.GameBarTo-Do"
     Publisher="CN=9AB0FCDC-AE43-4D16-9AD0-29A58E6A3866"
-    Version="1.0.0.0" />
+    Version="1.0.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="c150063b-3aeb-458a-ade4-867bd3f85f9a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
